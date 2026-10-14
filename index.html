@@ -43,6 +43,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .mix-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--color-border-line); min-height: 14px; }
   .mix-bar > div { height: 100%; }
   .mix-legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: var(--cds-gap-sm); }
+  .mix-bar > div.here { box-shadow: inset 0 0 0 2px var(--color-fg); }
+  .here-note { font-size: var(--cds-font-size-caption); font-weight: 600; color: var(--color-fg); }
   .mix-item { display: grid; gap: 2px; font-size: var(--cds-font-size-caption); }
   .mix-item .lab { display: flex; align-items: center; gap: 6px; color: var(--color-fg-muted); }
   .mix-item .sw { width: 10px; height: 10px; border-radius: 3px; flex: none; }
@@ -349,11 +351,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       return;
     }
     barEl.classList.remove('dash-skeleton');
+    const selR = rowsAll().find((x) => x.sym === state.sel);
+    const hereLabel = selR ? selR.oct_signal : null;
     d.data.forEach((row, i) => {
       const seg = document.createElement('div');
-      seg.className = 'c-' + CLS[i];
+      seg.className = 'c-' + CLS[i] + (row.label === hereLabel ? ' here' : '');
       seg.style.width = (row.share * 100) + '%';
-      seg.title = row.label;
+      seg.title = row.label + (row.label === hereLabel ? ' · ' + selR.name : '');
       barEl.appendChild(seg);
       const item = document.createElement('div');
       item.className = 'mix-item';
@@ -373,6 +377,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       n.textContent = row.n;
       sub.append(n, document.createTextNode(row.n === 1 ? ' holding' : ' holdings'));
       item.append(lab, num, sub);
+      if (row.label === hereLabel) { const hn = document.createElement('div'); hn.className = 'here-note'; hn.textContent = '▲ ' + selR.name; item.appendChild(hn); }
       legEl.appendChild(item);
     });
   }
@@ -394,7 +399,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     box.classList.remove('dash-skeleton');
     const o = ov.status === 'ok' && ov.data.length ? ov.data[0] : null;
     const posField = { '1 year': 'pos1_share', '3 years': 'pos3_share', '5 years': 'pos5_share' };
-    HZ.forEach(([, horizon]) => {
+    const selH = rowsAll().find((x) => x.sym === state.sel);
+    HZ.forEach(([hkey, horizon]) => {
       const rows = LT.map((label) => d.data.find((r) => r.horizon === horizon && r.label === label));
       const row = document.createElement('div'); row.className = 'hz-row';
       const head = document.createElement('div'); head.className = 'hz-head';
@@ -411,8 +417,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         if (!r) { nums.appendChild(document.createElement('div')); return; }
         const where = 'horizon=' + enc(horizon) + '&label=' + enc(r.label);
         const seg = document.createElement('div');
-        seg.className = 'c-' + CLS[i];
+        const isHere = !!selH && selH[hkey] === r.label;
+        seg.className = 'c-' + CLS[i] + (isHere ? ' here' : '');
         seg.style.width = (r.share * 100) + '%';
+        if (isHere) seg.title = selH.name;
         bar.appendChild(seg);
         const cell = document.createElement('div');
         const pct = document.createElement('span'); pct.className = 'pct';
@@ -424,6 +432,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         nn.textContent = r.n;
         n.append(nn, document.createTextNode(r.n === 1 ? ' holding' : ' holdings'));
         cell.append(pct, n);
+        if (isHere) { const hn = document.createElement('span'); hn.className = 'here-note'; hn.textContent = '▲ ' + selH.name; cell.appendChild(hn); }
         nums.appendChild(cell);
       });
       row.append(head, bar, nums);
@@ -517,15 +526,30 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   }
 
   // ---------- detail ----------
+  function hiddenByTableFilters(r) {
+    return !((!state.q || (r.name + ' ' + r.sym).toLowerCase().includes(state.q)) &&
+      (!state.oct || r.oct_signal === state.oct) &&
+      (!state.lt || r[state.ltH] === state.lt) &&
+      (!state.mkt || r.market === state.mkt));
+  }
   function select(sym, scrollTable) {
     state.sel = sym;
+    // a pick made outside the table must also show up in the table: clear any filter that hides it
+    const picked = rowsAll().find((x) => x.sym === sym);
+    if (scrollTable !== false && picked && hiddenByTableFilters(picked)) {
+      state.q = ''; state.oct = ''; state.lt = ''; state.mkt = '';
+      qEl.value = ''; fOct.value = ''; fLt.value = ''; fMkt.value = '';
+    }
+    drawMix('oct_counts', OCT, document.getElementById('bar-oct'), document.getElementById('leg-oct'));
+    drawHorizons();
     drawTable();
     drawDetail();
     drawQuad();
     drawMonthly();
-    if (scrollTable === true) {
+    if (scrollTable !== false) {
+      const wrap = tbody.closest('.tbl-wrap');
       const tr = tbody.querySelector('tr[data-key="' + CSS.escape(sym) + '"]');
-      if (tr) tr.scrollIntoView({ block: 'nearest' });
+      if (wrap && tr) wrap.scrollTop = Math.max(0, tr.offsetTop - wrap.clientHeight / 3);
     }
     const det = document.getElementById('detail');
     if (det && scrollTable !== 'monthly') det.scrollIntoView({ block: 'nearest' });
@@ -910,8 +934,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const sorted = rows.slice().sort((a, b) => b.value_sek - a.value_sek);
     g.selectAll('circle.dot').data(sorted).join('circle').attr('class', 'dot')
       .attr('cx', (r) => x(r.oct_score)).attr('cy', (r) => y(r[ys])).attr('r', (r) => Math.max(3, rad(r.value_sek)))
-      .style('fill', col).style('fill-opacity', (r) => (state.sel && r.sym !== state.sel ? 0.2 : 0.45))
-      .style('stroke', col).style('stroke-width', (r) => (r.sym === state.sel ? 2.5 : 1)).style('cursor', 'pointer')
+      .style('fill', col).style('fill-opacity', (r) => (r.sym === state.sel ? 0.9 : state.sel ? 0.2 : 0.45))
+      .style('stroke', (r) => (r.sym === state.sel ? 'var(--color-fg)' : col(r))).style('stroke-width', (r) => (r.sym === state.sel ? 3 : 1)).style('cursor', 'pointer')
       .on('mousemove', (event, r) => {
         const [px, py] = d3.pointer(event, quad);
         tip.replaceChildren();
@@ -930,13 +954,17 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       })
       .on('mouseleave', () => { tip.hidden = true; })
       .on('click', (event, r) => { select(r.sym, true); });
+    g.selectAll('circle.dot').filter((r) => r.sym === state.sel).raise();
     // label the biggest positions, avoiding overlaps
     const placed = [];
-    sorted.slice(0, 14).forEach((r) => {
+    const labelSet = sorted.slice(0, 14);
+    const selRow = sorted.find((r) => r.sym === state.sel);
+    if (selRow && !labelSet.includes(selRow)) labelSet.unshift(selRow);
+    labelSet.forEach((r) => {
       const cx = x(r.oct_score), cy = y(r[ys]), rr = Math.max(3, rad(r.value_sek));
       const label = r.name.length > 18 ? r.name.slice(0, 17) + '…' : r.name;
       const tx = g.append('text').attr('x', cx).attr('y', cy - rr - 4).attr('text-anchor', 'middle')
-        .style('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').style('pointer-events', 'none').text(label);
+        .style('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').style('pointer-events', 'none').style('font-weight', r.sym === state.sel ? 700 : 400).text(label);
       const bb = tx.node().getBBox();
       const hit = placed.some((p) => !(bb.x + bb.width < p.x || p.x + p.width < bb.x || bb.y + bb.height < p.y || p.y + p.height < bb.y));
       if (hit || bb.x < 0 || bb.x + bb.width > W) tx.remove(); else placed.push(bb);
@@ -955,6 +983,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       take.querySelector('[data-field="bear_n"]').textContent = o.bear_n;
       take.querySelector('[data-field="bear_share"]').textContent = fmtPct1(o.bear_share);
       ['pos1_share', 'pos3_share', 'pos5_share'].forEach((f) => { take.querySelector('[data-field="' + f + '"]').textContent = fmtPct1(o[f]); });
+    }
+    if (!state.sel) {
+      const hd0 = dash.data('holdings');
+      if (hd0.status === 'ok' && hd0.data.length) state.sel = hd0.data.slice().sort((a, b) => b.value_sek - a.value_sek)[0].sym;
     }
     drawMix('oct_counts', OCT, document.getElementById('bar-oct'), document.getElementById('leg-oct'));
     drawHorizons();
