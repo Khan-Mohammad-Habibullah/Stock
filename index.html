@@ -325,7 +325,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <summary>How the ranking works</summary>
       <ul>
         <li>Universe: common stocks listed in the market and based in that country (cross-listings are left out; when a company has several share classes, the one traded most is kept).</li>
-        <li>Large caps: the 30 biggest companies on the market by market value. Mid caps (the next 70) appear only if they reach a score of 85 or more, and at most 3 of the 10 places go to mid caps. Smaller companies are not screened.</li>
+        <li>Large caps: the 30 biggest companies on each market by market value (so "large" is relative to that market; in smaller markets these include companies that would be mid-sized elsewhere). Mid caps (the next 40, ranks 31 to 70) appear only if they reach a score of 85 or more, and at most 3 of the 10 places go to mid caps. Smaller companies are not screened.</li>
         <li>Each company gets one point for every reading below that is true. A reading with no data earns nothing and is left out of the maximum; companies with fewer than 8 readings available are skipped.</li>
         <li>Trend: price above its 50-day average; price above its 200-day average; 50-day above 200-day.</li>
         <li>Momentum: RSI between 50 and 75; MACD above its signal line; up over 1 month; up over 3 months; ADX at least 20 with +DI above −DI.</li>
@@ -1600,7 +1600,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       'Perf.1M', 'Perf.3M', 'ADX', 'ADX+DI', 'ADX-DI', 'ChaikinMoneyFlow', 'market_cap_basic', 'total_revenue_yoy_growth_ttm', 'net_margin_ttm',
       'recommendation_mark', 'price_target_average', 'sector', 'update_mode'];
     const X = {}; COLS.forEach((c, i) => { X[c] = i; });
-    const LARGE_N = 30, MID_N = 70, MID_MIN = 85, MID_MAX = 3, MIN_AVAIL = 8, TOP_N = 10;
+    const LARGE_N = 30, MID_N = 40, MID_MIN = 85, MID_MAX = 3, MIN_AVAIL = 8, TOP_N = 10;
     const RULES = [
       { id: 'sma50', grp: 'Trend', t: 'Price above its 50-day average', f: (d) => (d.close != null && d.sma50 != null ? d.close > d.sma50 : null), v: (d) => pctTxt(d.vs50) },
       { id: 'sma200', grp: 'Trend', t: 'Price above its 200-day average', f: (d) => (d.close != null && d.sma200 != null ? d.close > d.sma200 : null), v: (d) => pctTxt(d.vs200) },
