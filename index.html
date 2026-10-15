@@ -137,6 +137,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .live button { font: inherit; font-size: var(--cds-font-size-caption); margin-left: auto; padding: 3px 10px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); cursor: pointer; }
   @keyframes livepulse { 50% { opacity: .35; } }
   @media (prefers-reduced-motion: reduce) { .live.ok .dot { animation: none; } }
+  .stale { color: var(--color-warn); font-weight: 600; }
   .ditem.sel, .etf.sel { outline: 2px solid var(--color-fg); outline-offset: -1px; }
   .etf { cursor: pointer; }
   .ditem { display: grid; gap: 4px; padding: 8px 10px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); cursor: pointer; background: var(--color-bg); }
@@ -159,15 +160,16 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 <div class="hs">
   <header class="hs-head" id="top">
     <h1>Holdings signal board</h1>
-    <p class="hs-take dash-skeleton" id="takeaway"><b data-source="overview" data-field="bull_n">—</b> of <b data-source="overview" data-field="total">—</b> holdings lean bullish for the rest of October and <b data-source="overview" data-field="bear_n">—</b> lean bearish. The bearish group holds <b data-source="overview" data-field="bear_share">—</b> of the portfolio's value. Holdings with a positive or leaning-positive outlook hold <b data-source="overview" data-field="pos1_share">—</b> of the value over 1 year, <b data-source="overview" data-field="pos3_share">—</b> over 3 years and <b data-source="overview" data-field="pos5_share">—</b> over 5 years. Outside the US, <b data-source="dec_overview" data-field="sell_n">—</b> holdings (<b data-source="dec_overview" data-field="sell_share">—</b> of that value) are flagged to consider selling or trimming by December and <b data-source="dec_overview" data-field="add_n">—</b> (<b data-source="dec_overview" data-field="add_share">—</b>) to consider adding.</p>
+    <p class="hs-take dash-skeleton" id="takeaway"><b data-source="overview" data-field="bull_n">—</b> of <b data-source="overview" data-field="total">—</b> holdings lean bullish for the rest of <span class="mo">October</span> and <b data-source="overview" data-field="bear_n">—</b> lean bearish. The bearish group holds <b data-source="overview" data-field="bear_share">—</b> of the portfolio's value. Holdings with a positive or leaning-positive outlook hold <b data-source="overview" data-field="pos1_share">—</b> of the value over 1 year, <b data-source="overview" data-field="pos3_share">—</b> over 3 years and <b data-source="overview" data-field="pos5_share">—</b> over 5 years. Outside the US, <b data-source="dec_overview" data-field="sell_n">—</b> holdings (<b data-source="dec_overview" data-field="sell_share">—</b> of that value) are flagged to consider selling or trimming by December and <b data-source="dec_overview" data-field="add_n">—</b> (<b data-source="dec_overview" data-field="add_share">—</b>) to consider adding.</p>
     <p class="hs-asof">Daily prices to the 13 October 2026 close, from TradingView. Fundamentals from TradingView's screener. Money-flow readings from TradingView's screener on the morning of 15 October (US: the 14 October close). ETF facts from the issuers and fund-data sites, dated on each card. Signals describe what the indicators show, not advice on what to buy or sell.</p>
     <div class="live" id="live" role="status" aria-live="polite"><span class="dot"></span><b id="live-msg">Connecting to TradingView…</b><span class="sep">·</span><span id="live-pv"></span><button type="button" id="live-btn">Pause</button></div>
+    <p class="hs-note stale" id="stale-top" hidden></p>
     <p class="hs-note" id="live-note">Price, today's move, RSI, MACD and the moving averages are read straight from TradingView by your browser, about every minute while this tab is open (TradingView shows them 15 minutes late). Signals, outlooks, sector flows and the December lists are the snapshot described above and do not change until the board is rebuilt. Values in SEK follow the live price with exchange rates held at the 13 October level.</p>
   </header>
 
   <section class="hs-grid2" id="mix">
     <div class="hs-card" id="mix-oct">
-      <h2>October signal</h2>
+      <h2><span class="mo">October</span> signal</h2>
       <p class="hs-note">Share of portfolio value in each group, with the number of holdings.</p>
       <div class="mix" data-source="oct_counts">
         <div class="mix-bar dash-skeleton" id="bar-oct"></div>
@@ -186,7 +188,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-card" id="quadrant">
     <h2>Short term against long term</h2>
-    <p class="hs-note">Each circle is a holding, sized by its value. Right means stronger October signals, up means a better outlook over the horizon you pick. Hover for details, click to open it in the table.</p>
+    <p class="hs-note">Each circle is a holding, sized by its value. Right means stronger <span class="mo">October</span> signals, up means a better outlook over the horizon you pick. Hover for details, click to open it in the table.</p>
     <div class="ctl">
       <label class="lbl" for="q-h">Long term means</label>
       <select id="q-h">
@@ -207,7 +209,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-card" id="december">
     <h2>Sell or add by December</h2>
-    <p class="hs-note">Each holding is scored on four things: whether money is entering or leaving its sector in its own market (for an ETF, the companies it holds most of), its October signal, its 1-year outlook, and its own money flow. The lowest scores are flagged to consider selling or trimming, the highest to consider adding. These are signals to weigh, not instructions. In an ISK, selling has no tax effect either way. Click a holding to see it in full.</p>
+    <p class="hs-note">Each holding is scored on four things: whether money is entering or leaving its sector in its own market (for an ETF, the companies it holds most of), its <span class="mo">October</span> signal, its 1-year outlook, and its own money flow. The lowest scores are flagged to consider selling or trimming, the highest to consider adding. These are signals to weigh, not instructions. In an ISK, selling has no tax effect either way. Click a holding to see it in full.</p>
     <div class="ctl">
       <select id="d-mkt" aria-label="Which holdings">
         <option value="nonus">Outside the US</option><option value="">All markets</option><option value="US">US stocks</option><option value="Sweden">Sweden</option><option value="Norway">Norway</option><option value="etf">ETFs</option>
@@ -245,8 +247,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <p class="hs-note">Click a column to sort and a row to see every indicator for that holding. Prices are in each listing's own currency. Money flow reads each stock's own trading over the last 20 to 60 days: whether heavy-volume days and closing prices point to big buyers or big sellers.</p>
     <div class="ctl">
       <input id="q" type="search" placeholder="Search holdings" aria-label="Search holdings">
-      <select id="f-oct" aria-label="October signal">
-        <option value="">All October signals</option>
+      <select id="f-oct" aria-label="Signal for the current month">
+        <option value="" id="f-oct-all">All October signals</option>
         <option>Bullish</option><option>Mildly bullish</option><option>Neutral</option><option>Mildly bearish</option><option>Bearish</option>
       </select>
       <select id="f-h" aria-label="Outlook horizon">
@@ -270,6 +272,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       </select>
       <span class="count" id="shown"></span>
     </div>
+    <p class="hs-note stale" id="stale-tbl" hidden></p>
     <div class="tbl-wrap">
       <table class="hold" id="tbl" data-source="holdings" data-row-key="sym">
         <thead><tr>
@@ -283,10 +286,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           <th class="sec" data-field="macd"><button data-k="macd">MACD</button></th>
           <th class="num sec" data-field="vs50"><button data-k="vs50">vs 50-day</button></th>
           <th class="sec" data-field="alligator"><button data-k="alligator">Alligator</button></th>
-          <th class="sec" data-field="cpr"><button data-k="cpr">Oct CPR</button></th>
+          <th class="sec" data-field="cpr"><button data-k="cpr"><span class="mo3">Oct</span> CPR</button></th>
           <th class="sec" data-field="bollinger"><button data-k="bollinger">Bollinger</button></th>
           <th class="num sec" data-field="udv"><button data-k="udv">Up/down vol</button></th>
-          <th data-field="oct_signal"><button data-k="oct_score">October</button></th>
+          <th data-field="oct_signal"><button data-k="oct_score"><span class="mo">October</span></button></th>
           <th data-field="o1y"><button data-k="o1y_score">1 year</button></th>
           <th class="sec" data-field="o3y"><button data-k="o3y_score">3 years</button></th>
           <th data-field="o5y"><button data-k="o5y_score">5 years</button></th>
@@ -335,8 +338,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <section class="hs-card" id="method">
     <h2>How the signals are worked out</h2>
     <div class="method">
-      <p><b>October signal.</b> Each holding gets a point for each bullish reading and loses one for each bearish reading, on daily bars: RSI(14) between 55 and 75 or below 45; MACD(12,26,9) above or below its signal line and moving the same way; price above or below both the 20- and 50-day averages; the Williams Alligator eating up or down; price above the top or below the bottom of this month's CPR; buying or selling pressure (Chaikin money flow over 20 days together with up/down volume); higher highs and lows or lower highs and lows; and a break above or below the 55-day range. Bollinger bands riding the upper or lower band and a bullish or bearish candlestick pattern in the last three days count half a point. A total of 4 or more is Bullish, 1.5 to 4 Mildly bullish, −1.5 to 1.5 Neutral, −4 to −1.5 Mildly bearish and −4 or lower Bearish.</p>
-      <p><b>Monthly CPR</b> is the central pivot range for October, built from September's high, low and close. Trading above its top is read as bullish for the month, below its bottom as bearish. R1 and S1 are the first resistance and support levels.</p>
+      <p><b><span class="mo">October</span> signal.</b> Each holding gets a point for each bullish reading and loses one for each bearish reading, on daily bars: RSI(14) between 55 and 75 or below 45; MACD(12,26,9) above or below its signal line and moving the same way; price above or below both the 20- and 50-day averages; the Williams Alligator eating up or down; price above the top or below the bottom of this month's CPR; buying or selling pressure (Chaikin money flow over 20 days together with up/down volume); higher highs and lows or lower highs and lows; and a break above or below the 55-day range. Bollinger bands riding the upper or lower band and a bullish or bearish candlestick pattern in the last three days count half a point. A total of 4 or more is Bullish, 1.5 to 4 Mildly bullish, −1.5 to 1.5 Neutral, −4 to −1.5 Mildly bearish and −4 or lower Bearish.</p>
+      <p><b>Monthly CPR</b> is the central pivot range for <span class="mo">October</span>, built from <span class="mop">September</span>'s high, low and close. Trading above its top is read as bullish for the month, below its bottom as bearish. R1 and S1 are the first resistance and support levels.</p>
       <p><b>Outlook over 1, 3 and 5 years.</b> Each horizon is a score that weighs different evidence, sorted into the same five groups (Positive at +3.5 or more, Leaning positive from +1, Mixed between, Leaning negative from −1, Negative at −3.5 or less). <b>1 year</b> leans on what tends to persist for months: price against the 40-week average and whether that average is rising, weekly MACD, the last 6 months against the S&amp;P 500 or OMX Stockholm, a small share of the October score, a penalty for being more than half below the 52-week high, revenue and earnings growth, and the analyst consensus and average target. <b>3 years</b> leans on the business: revenue growth (the biggest weight), earnings growth, net margin, free cash flow, return on equity, debt to equity and the P/E, with a light weight on the weekly trend and analysts. <b>5 years</b> leans on durability: profitability, return on equity, free cash flow, gross margin, whether revenue is growing or shrinking, debt, how much growth the valuation already assumes, and size (under $1B counts against, over $50B for). ETFs are scored on trend only, with a small credit at 3 and 5 years for spreading company risk; holdings with no fundamentals in TradingView's screener are Mixed at 3 and 5 years. These are rules of thumb built from current data, not forecasts: no one predicts 5-year returns reliably, and the further out the horizon, the more the score describes the business rather than the share price.</p>
       <p><b>Where money is moving.</b> There is no public record of what institutions buy, so the board infers it from price and volume, the way a sector ETF's flows show up in its chart. For each market (US companies worth over $2 billion, Swedish and Norwegian companies worth over 1 billion kronor, and European companies worth over $5 billion on their home exchange), TradingView's sector groups are compared with the market as a whole on four readings, each capped so no one reading decides: the move over the last month (every 3 points ahead of the market counts 1) and the last three months (every 6 points counts 1), Chaikin money flow over 20 days against the market's (every 0.05 counts 1), and the share of stocks above their 50-day average against the market's (every 15 points counts 1). Companies are weighted by the square root of their market value, so one giant cannot decide a sector. A total of +1.5 or more reads as money coming in, −1.5 or less as money leaving. Holdings are matched to their industry where at least six (US and Europe) or four (Sweden and Norway) companies share it, otherwise to their sector. Four are matched by hand because TradingView's group does not fit: AstraZeneca (a UK company) to European pharma, Hemnet to Swedish technology services, Aker Solutions to Norwegian oil services, and Xanadu (filed as a financial company after its SPAC listing) to US electronic equipment.</p>
       <p><b>Money flow in each stock.</b> Big investors leave footprints in volume: they buy or sell over days and weeks, so their trades show up as heavy-volume days and closes near the day's high or low. Each holding gets five readings from its daily bars to 13 October, each capped: Chaikin money flow over 20 days (every 0.1 counts 1, up to ±1.5) and 60 days (up to ±1); volume on up days against down days over 50 days (1.5 times counts +1, up to ±1.5); heavy-volume up days against heavy-volume down days in the last 25 sessions, where heavy means above the 50-day average and the move is at least 0.2% (every 3 days of difference counts 1, up to ±1.5); and on-balance volume above or below its 50-day average (±0.5). A total of +2 or more reads as money coming in, −2 or less as money leaving. Holdings trading less than about 1 million kronor a day are marked too thinly traded to tell, since a few orders can swing the reading. For ETFs this is trading on Xetra, which is mostly market makers, not money going into or out of the fund. These readings infer flows from trading; they are not reported ownership changes, which arrive months later in quarterly filings.</p>
@@ -379,6 +382,40 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 })();
 </script>
 <script>
+
+  // ---------- the month in the labels follows the calendar ----------
+  const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const nowYM = () => { const d = new Date(); return { y: d.getFullYear(), m: d.getMonth() }; };
+  const MON = () => MONTH_NAMES[nowYM().m];
+  // the month the signals were computed for: the first month-end in the monthly ranges (set by the board build)
+  function signalYM() {
+    const md = dash.data('monthly');
+    const first = md.status === 'ok' && md.data.length ? md.data.reduce((a, r) => (r.month < a ? r.month : a), md.data[0].month) : null;
+    if (!first) return null;
+    const [y, mm] = first.split('-').map(Number);
+    return { y, m: mm - 1 };
+  }
+  let shownMonth = null;
+  function refreshMonth() {
+    const c = nowYM();
+    const name = MONTH_NAMES[c.m], prev = MONTH_NAMES[(c.m + 11) % 12];
+    const changed = shownMonth !== null && shownMonth !== name;
+    shownMonth = name;
+    document.querySelectorAll('.mo').forEach((e) => { if (e.textContent !== name) e.textContent = name; });
+    document.querySelectorAll('.mo3').forEach((e) => { const t = name.slice(0, 3); if (e.textContent !== t) e.textContent = t; });
+    document.querySelectorAll('.mop').forEach((e) => { if (e.textContent !== prev) e.textContent = prev; });
+    const all = document.getElementById('f-oct-all'); if (all) all.textContent = 'All ' + name + ' signals';
+    const sel = document.getElementById('f-oct'); if (sel) sel.setAttribute('aria-label', name + ' signal');
+    const sy = signalYM();
+    const stale = !!sy && (sy.y !== c.y || sy.m !== c.m);
+    const msg = stale ? 'Heads up: the signals, scores and levels shown here were last computed for ' + MONTH_NAMES[sy.m] + ' ' + sy.y + '. They update when the board is rebuilt for ' + name + '.' : '';
+    ['stale-top', 'stale-tbl'].forEach((id) => { const e = document.getElementById(id); if (e) { e.hidden = !stale; e.textContent = msg; } });
+    // the month turned over while the page was open: redraw so chart axes and tooltips pick up the new name
+    if (changed && window.dash && dash.redraw) { window.__liveTick = true; try { dash.redraw(); } finally { window.__liveTick = false; } }
+  }
+  setInterval(refreshMonth, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshMonth(); });
+
   const OCT = ['Bullish', 'Mildly bullish', 'Neutral', 'Mildly bearish', 'Bearish'];
   const LT = ['Positive', 'Leaning positive', 'Mixed', 'Leaning negative', 'Negative'];
   const CLS = ['b2', 'b1', 'n', 'e1', 'e2'];
@@ -1160,7 +1197,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         ['Up/down volume (20d)', 'udv', plain(r.udv, 2)],
         ['On-balance volume', 'obv', r.obv],
       ]),
-      kvBox('October levels', [
+      kvBox(MON() + ' levels', [
         ['Alligator', 'alligator', r.alligator],
         ['Position vs CPR', 'cpr', r.cpr || '—'],
         ['CPR top', 'cpr_tc', plain(r.cpr_tc, 2)],
@@ -1190,7 +1227,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       return b;
     };
     grid2.append(
-      sig('October signal', 'oct_signal', r.oct_signal, 'oct_score', r.oct_score, 'oct_why', r.oct_why),
+      sig(MON() + ' signal', 'oct_signal', r.oct_signal, 'oct_score', r.oct_score, 'oct_why', r.oct_why),
       sig('1-year outlook', 'o1y', r.o1y, 'o1y_score', r.o1y_score, 'o1y_why', r.o1y_why),
       sig('3-year outlook', 'o3y', r.o3y, 'o3y_score', r.o3y_score, 'o3y_why', r.o3y_why),
       sig('5-year outlook', 'o5y', r.o5y, 'o5y_score', r.o5y_score, 'o5y_why', r.o5y_why),
@@ -1327,7 +1364,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       .style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((t) => (t > 0 ? '+' : '') + t);
     g.selectAll('.ty').data(ticks).join('text').attr('x', m.l - 8).attr('y', (t) => y(t) + 4).attr('text-anchor', 'end')
       .style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((t) => (t > 0 ? '+' : '') + t);
-    g.append('text').attr('x', W - m.r).attr('y', H - 6).attr('text-anchor', 'end').style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text('October signal score →');
+    g.append('text').attr('x', W - m.r).attr('y', H - 6).attr('text-anchor', 'end').style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(MON() + ' signal score →');
     g.append('text').attr('x', m.l).attr('y', 14).attr('text-anchor', 'start').style('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text('↑ ' + hzName(state.qH) + ' outlook score');
     // quadrant labels
     const ql = [[ext * 0.97, ext * 0.92, 'end', 'Bullish now, positive long term'], [-ext * 0.97, -ext * 0.92, 'start', 'Bearish now, negative long term'], [ext * 0.97, -ext * 0.92, 'end', 'Bullish now, weak long term'], [-ext * 0.97, ext * 0.92, 'start', 'Bearish now, positive long term']];
@@ -1343,7 +1380,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         tip.replaceChildren();
         const t1 = document.createElement('div'); t1.className = 't1'; t1.textContent = r.name;
         const t2 = document.createElement('div'); t2.className = 't2'; t2.textContent = fmtInt(r.value_sek) + ' SEK';
-        const t3 = document.createElement('div'); t3.textContent = 'October: ' + r.oct_signal + ' (' + (r.oct_score > 0 ? '+' : '') + r.oct_score.toFixed(1) + ')';
+        const t3 = document.createElement('div'); t3.textContent = MON() + ': ' + r.oct_signal + ' (' + (r.oct_score > 0 ? '+' : '') + r.oct_score.toFixed(1) + ')';
         const t4s = HZ.map(([k, h]) => { const t = document.createElement('div'); t.textContent = h + ': ' + r[k] + ' (' + (r[k + '_score'] > 0 ? '+' : '') + r[k + '_score'].toFixed(1) + ')'; return t; });
         tip.append(t1, t2, t3, ...t4s);
         tip.hidden = false;
@@ -1394,6 +1431,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         if (['US', 'Sweden', 'Norway', 'Europe'].includes(top0.flow_market)) stateMk = top0.flow_market;
       }
     }
+    refreshMonth();
     drawMix('oct_counts', OCT, document.getElementById('bar-oct'), document.getElementById('leg-oct'));
     drawHorizons();
     const dv = dash.data('dec_overview');
@@ -1415,6 +1453,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   });
 
 
+  refreshMonth();
   // ---------- live prices straight from TradingView ----------
   const LIVE = { paused: false, last: null, ok: false, busy: false, timer: null };
   const LIVE_COLS = ['close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA20', 'SMA50', 'SMA200', 'update_mode'];
