@@ -129,6 +129,14 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .dlist ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
   .mix-bar > div.here { box-shadow: inset 0 0 0 2px var(--color-fg); }
   .here-note { font-size: var(--cds-font-size-caption); font-weight: 600; color: var(--color-fg); }
+  .live { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: var(--cds-font-size-caption); padding: 8px 12px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-panel); }
+  .live .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cds-chart-muted); flex: none; }
+  .live.ok .dot { background: var(--color-ok); animation: livepulse 2s ease-in-out infinite; }
+  .live.err .dot { background: var(--color-warn); }
+  .live .sep { color: var(--color-fg-muted); }
+  .live button { font: inherit; font-size: var(--cds-font-size-caption); margin-left: auto; padding: 3px 10px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); cursor: pointer; }
+  @keyframes livepulse { 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .live.ok .dot { animation: none; } }
   .ditem.sel, .etf.sel { outline: 2px solid var(--color-fg); outline-offset: -1px; }
   .etf { cursor: pointer; }
   .ditem { display: grid; gap: 4px; padding: 8px 10px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); cursor: pointer; background: var(--color-bg); }
@@ -153,6 +161,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <h1>Holdings signal board</h1>
     <p class="hs-take dash-skeleton" id="takeaway"><b data-source="overview" data-field="bull_n">—</b> of <b data-source="overview" data-field="total">—</b> holdings lean bullish for the rest of October and <b data-source="overview" data-field="bear_n">—</b> lean bearish. The bearish group holds <b data-source="overview" data-field="bear_share">—</b> of the portfolio's value. Holdings with a positive or leaning-positive outlook hold <b data-source="overview" data-field="pos1_share">—</b> of the value over 1 year, <b data-source="overview" data-field="pos3_share">—</b> over 3 years and <b data-source="overview" data-field="pos5_share">—</b> over 5 years. Outside the US, <b data-source="dec_overview" data-field="sell_n">—</b> holdings (<b data-source="dec_overview" data-field="sell_share">—</b> of that value) are flagged to consider selling or trimming by December and <b data-source="dec_overview" data-field="add_n">—</b> (<b data-source="dec_overview" data-field="add_share">—</b>) to consider adding.</p>
     <p class="hs-asof">Daily prices to the 13 October 2026 close, from TradingView. Fundamentals from TradingView's screener. Money-flow readings from TradingView's screener on the morning of 15 October (US: the 14 October close). ETF facts from the issuers and fund-data sites, dated on each card. Signals describe what the indicators show, not advice on what to buy or sell.</p>
+    <div class="live" id="live" role="status" aria-live="polite"><span class="dot"></span><b id="live-msg">Connecting to TradingView…</b><span class="sep">·</span><span id="live-pv"></span><button type="button" id="live-btn">Pause</button></div>
+    <p class="hs-note" id="live-note">Price, today's move, RSI, MACD and the moving averages are read straight from TradingView by your browser, about every minute while this tab is open (TradingView shows them 15 minutes late). Signals, outlooks, sector flows and the December lists are the snapshot described above and do not change until the board is rebuilt. Values in SEK follow the live price with exchange rates held at the 13 October level.</p>
   </header>
 
   <section class="hs-grid2" id="mix">
@@ -265,6 +275,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <thead><tr>
           <th data-field="name"><button data-k="name">Holding</button></th>
           <th class="num" data-field="value_sek"><button data-k="value_sek">Value SEK</button></th>
+          <th class="num" data-field="price_live">Price now</th>
+          <th class="num" data-field="day_chg"><button data-k="day_chg">Today</button></th>
           <th class="num" data-field="r1m"><button data-k="r1m">1 month</button></th>
           <th data-field="sflow"><button data-k="sflow_score">Money flow</button></th>
           <th class="num" data-field="rsi"><button data-k="rsi">RSI</button></th>
@@ -362,7 +374,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     calc:function(id,o){calcs[id]=o;delete cache[id];},
     onData:function(f){fns.push(f);f();},
     colors:[0,1,2,3,4,5,6,7].map(function(i){return 'var(--series-'+i+')';}),
-    params:function(){return{};},setParams:function(){},resetParams:function(){},refresh:function(){},setLink:function(){}
+    redraw:function(){cache={};fns.forEach(function(f){f();});},params:function(){return{};},setParams:function(){},resetParams:function(){},refresh:function(){},setLink:function(){}
   };
 })();
 </script>
@@ -851,6 +863,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tr.append(
         td(r.name, 'nm'),
         td(fmtInt(r.value_sek), 'num'),
+        td(r.price_live == null ? '—' : plain(r.price_live, r.price_live < 10 ? 3 : 2) + ' ' + r.cur, 'num'),
+        td(signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
         td(signed(r.r1m), 'num ' + tone(r.r1m)),
         chip(r.sflow),
         td(plain(r.rsi, 0), 'num'),
@@ -1077,6 +1091,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   function drawDetail() {
     const box = document.getElementById('det');
+    if (window.__liveTick && box.contains(document.activeElement)) return;
     const r = rowsAll().find((x) => x.sym === state.sel);
     if (!r) { box.replaceChildren(Object.assign(document.createElement('p'), { className: 'hs-note', textContent: 'Pick a holding in the table or the chart to see all of its indicators here.' })); return; }
     const where = 'sym=' + enc(r.sym);
@@ -1108,7 +1123,21 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     };
 
     const grid = document.createElement('div'); grid.className = 'dgrid';
+    const L = r.price_live;
+    const pct = (a, b) => (a == null || b == null || !b ? null : (a / b - 1) * 100);
+    const liveBox = L == null ? null : kvBox('Live from TradingView', [
+      ['Price now (' + r.cur + ')', 'price_live', plain(L, L < 10 ? 3 : 2)],
+      ['Today', 'day_chg', signed(r.day_chg, 2), tone(r.day_chg)],
+      ['Since 13 Oct close', 'since_close', signed(pct(L, r.__p0), 2), tone(pct(L, r.__p0))],
+      ['RSI (14)', 'live_rsi', plain(r.live_rsi, 0)],
+      ['MACD', 'live_macd', r.live_macd == null ? '—' : (r.live_macd > r.live_macd_sig ? 'Above its signal line' : 'Below its signal line'), r.live_macd == null ? 'mut' : (r.live_macd > r.live_macd_sig ? 'pos' : 'neg')],
+      ['vs 20-day avg', 'live_vs20', signed(pct(L, r.live_sma20)), tone(pct(L, r.live_sma20))],
+      ['vs 50-day avg', 'live_vs50', signed(pct(L, r.live_sma50)), tone(pct(L, r.live_sma50))],
+      ['vs 200-day avg', 'live_vs200', signed(pct(L, r.live_sma200)), tone(pct(L, r.live_sma200))],
+      ['Volume today', 'live_vol', r.live_vol == null ? '—' : fmtInt(r.live_vol)],
+    ]);
     grid.append(
+      ...(liveBox ? [liveBox] : []),
       kvBox('Price and trend', [
         ['Last close (' + r.cur + ')', 'price', plain(r.price, 2)],
         ['1 month', 'r1m', signed(r.r1m), tone(r.r1m)],
@@ -1384,5 +1413,69 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     drawDetail();
     drawMonthly();
   });
+
+
+  // ---------- live prices straight from TradingView ----------
+  const LIVE = { paused: false, last: null, ok: false, busy: false, timer: null };
+  const LIVE_COLS = ['close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA20', 'SMA50', 'SMA200', 'update_mode'];
+  const liveEl = document.getElementById('live');
+  const liveMsg = document.getElementById('live-msg');
+  const livePv = document.getElementById('live-pv');
+  const liveBtn = document.getElementById('live-btn');
+  const clock = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  function setLive(cls, msg) { liveEl.classList.remove('ok', 'err'); if (cls) liveEl.classList.add(cls); liveMsg.textContent = msg; }
+  function applyLive(list) {
+    const rows = rowsAll();
+    const by = new Map(list.map((x) => [x.s, x.d]));
+    let n = 0, mode = null;
+    rows.forEach((r) => {
+      if (r.__p0 == null) { r.__p0 = r.price; r.__v0 = r.value_sek; r.__w0 = r.weight; }
+      const d = by.get(r.sym);
+      if (!d || d[0] == null) return;
+      n += 1; mode = d[9] || mode;
+      r.price_live = d[0]; r.day_chg = d[1]; r.live_vol = d[2]; r.live_rsi = d[3];
+      r.live_macd = d[4]; r.live_macd_sig = d[5]; r.live_sma20 = d[6]; r.live_sma50 = d[7]; r.live_sma200 = d[8];
+      if (r.__p0 > 0) r.value_sek = Math.round(r.__v0 * (d[0] / r.__p0));
+    });
+    const v0 = d3.sum(rows, (r) => r.__v0), v1 = d3.sum(rows, (r) => r.value_sek);
+    rows.forEach((r) => { if (r.__v0 > 0) r.weight = r.__w0 * (r.value_sek / r.__v0) / (v1 / v0); });
+    livePv.textContent = 'Portfolio ' + fmtInt(v1) + ' SEK, ' + signed((v1 / v0 - 1) * 100, 2) + ' since the 13 Oct close';
+    return { n, mode, total: rows.length };
+  }
+  async function liveTick(manual) {
+    if (LIVE.busy || (LIVE.paused && !manual)) return;
+    if (document.hidden && !manual) return;
+    LIVE.busy = true;
+    const ctl = new AbortController();
+    const to = setTimeout(() => ctl.abort(), 12000);
+    try {
+      const syms = rowsAll().map((r) => r.sym);
+      const res = await fetch('https://scanner.tradingview.com/global/scan', {
+        method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, signal: ctl.signal,
+        body: JSON.stringify({ symbols: { tickers: syms, query: { types: [] } }, columns: LIVE_COLS }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const j = await res.json();
+      const info = applyLive(j.data || []);
+      if (!info.n) throw new Error('no data');
+      LIVE.last = new Date(); LIVE.ok = true;
+      window.__liveTick = true;
+      try { dash.redraw(); } finally { window.__liveTick = false; }
+      const delayed = /delayed/.test(info.mode || '');
+      setLive('ok', 'Live from TradingView' + (delayed ? ' (15 min delayed)' : '') + ' · ' + info.n + ' of ' + info.total + ' holdings · updated ' + clock(LIVE.last));
+    } catch (e) {
+      LIVE.ok = false;
+      setLive('err', LIVE.last ? 'Could not reach TradingView; showing the data from ' + clock(LIVE.last) : 'Live prices unavailable; showing the 13 Oct close');
+    } finally { clearTimeout(to); LIVE.busy = false; }
+  }
+  liveBtn.addEventListener('click', () => {
+    LIVE.paused = !LIVE.paused;
+    liveBtn.textContent = LIVE.paused ? 'Resume' : 'Pause';
+    if (LIVE.paused) setLive('', 'Live updates paused' + (LIVE.last ? ' · last update ' + clock(LIVE.last) : ''));
+    else liveTick(true);
+  });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && !LIVE.paused && (!LIVE.last || Date.now() - LIVE.last > 60000)) liveTick(); });
+  LIVE.timer = setInterval(liveTick, 60000);
+  liveTick();
 </script>
 
