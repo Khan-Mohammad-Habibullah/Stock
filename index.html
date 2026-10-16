@@ -178,7 +178,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <p class="hs-asof">Daily prices to the 13 October 2026 close, from TradingView. Fundamentals from TradingView's screener. Money-flow readings from TradingView's screener on the morning of 15 October (US: the 14 October close). ETF facts from the issuers and fund-data sites, dated on each card. Signals describe what the indicators show, not advice on what to buy or sell.</p>
     <div class="live" id="live" role="status" aria-live="polite"><span class="dot"></span><b id="live-msg">Connecting to TradingView…</b><span class="sep">·</span><span id="live-pv"></span><button type="button" id="live-btn">Pause</button></div>
     <p class="hs-note stale" id="stale-top" hidden></p>
-    <p class="hs-note" id="live-note">Price, today's move, RSI, MACD and the moving averages are read straight from TradingView by your browser, about every minute while this tab is open (TradingView shows them 15 minutes late). Signals, outlooks, sector flows and the December lists are the snapshot described above and do not change until the board is rebuilt. Values in SEK follow the live price with exchange rates held at the 13 October level.</p>
+    <p class="hs-note" id="live-note">Price, today's move, RSI, MACD and the moving averages are read straight from TradingView by your browser, about every minute while this tab is open (TradingView shows them 15 minutes late). Signals, outlooks, sector flows and the December lists are the snapshot described above and do not change until the board is rebuilt. Before the US market opens, holdings that have a pre-market quote show that price (marked "pre") and the move against the last close; the other holdings keep their last price. Values in SEK follow the live price with exchange rates held at the 13 October level.</p>
   </header>
 
   <section class="hs-grid2" id="mix">
@@ -320,7 +320,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-card" id="screen">
     <h2>Strongest bullish readings by market</h2>
-    <p class="hs-note">A rules-based screen of the biggest listed companies in each market, ranked by how many of 13 published TradingView readings point up. It is not a recommendation to buy or sell anything and says nothing about what a stock will do next. These stocks are not your holdings. Prices come straight from TradingView in your browser (15 minutes delayed) and refresh every 5 minutes.</p>
+    <p class="hs-note">A rules-based screen of the biggest listed companies in each market, ranked by how many of 13 published TradingView readings point up. It is not a recommendation to buy or sell anything and says nothing about what a stock will do next. These stocks are not your holdings. Prices come straight from TradingView in your browser (15 minutes delayed) and refresh every 5 minutes. Before the US market opens, stocks with a pre-market quote show that price (marked "pre") and the move against the last close.</p>
     <details class="scr-how">
       <summary>How the ranking works</summary>
       <ul>
@@ -331,6 +331,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <li>Momentum: RSI between 50 and 75; MACD above its signal line; up over 1 month; up over 3 months; ADX at least 20 with +DI above −DI.</li>
         <li>Money flow: Chaikin money flow above zero (20 days).</li>
         <li>Analysts and fundamentals: average analyst rating 2.0 or better (1 = strong buy, 5 = sell); average price target at least 10% above the price; revenue growing year on year; net margin above zero.</li>
+        <li>The score uses TradingView's last official close and its daily indicators, not pre-market quotes, because those trade thinly; the pre-market price is shown beside it for reference.</li>
         <li>Score = points earned divided by readings available, as a number out of 100. The 10 highest scores per market are listed, strongest first; ties go to the larger company.</li>
       </ul>
     </details>
@@ -990,7 +991,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tr.append(
         td(r.name, 'nm'),
         td(fmtInt(r.value_sek), 'num'),
-        td(r.price_live == null ? '—' : plain(r.price_live, r.price_live < 10 ? 3 : 2) + ' ' + r.cur, 'num'),
+        td(r.price_live == null ? '—' : plain(r.price_live, r.price_live < 10 ? 3 : 2) + ' ' + r.cur + (r.session === 'pre' ? ' · pre' : ''), 'num'),
         td(signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
         td(signed(r.r1m), 'num ' + tone(r.r1m)),
         chip(r.sflow),
@@ -1253,15 +1254,15 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const L = r.price_live;
     const pct = (a, b) => (a == null || b == null || !b ? null : (a / b - 1) * 100);
     const liveBox = L == null ? null : kvBox('Live from TradingView', [
-      ['Price now (' + r.cur + ')', 'price_live', plain(L, L < 10 ? 3 : 2)],
-      ['Today', 'day_chg', signed(r.day_chg, 2), tone(r.day_chg)],
+      [(r.session === 'pre' ? 'Pre-market price (' : 'Price now (') + r.cur + ')', 'price_live', plain(L, L < 10 ? 3 : 2)],
+      [r.session === 'pre' ? 'Pre-market vs last close' : 'Today', 'day_chg', signed(r.day_chg, 2), tone(r.day_chg)],
       ['Since 13 Oct close', 'since_close', signed(pct(L, r.__p0), 2), tone(pct(L, r.__p0))],
       ['RSI (14)', 'live_rsi', plain(r.live_rsi, 0)],
       ['MACD', 'live_macd', r.live_macd == null ? '—' : (r.live_macd > r.live_macd_sig ? 'Above its signal line' : 'Below its signal line'), r.live_macd == null ? 'mut' : (r.live_macd > r.live_macd_sig ? 'pos' : 'neg')],
       ['vs 20-day avg', 'live_vs20', signed(pct(L, r.live_sma20)), tone(pct(L, r.live_sma20))],
       ['vs 50-day avg', 'live_vs50', signed(pct(L, r.live_sma50)), tone(pct(L, r.live_sma50))],
       ['vs 200-day avg', 'live_vs200', signed(pct(L, r.live_sma200)), tone(pct(L, r.live_sma200))],
-      ['Volume today', 'live_vol', r.live_vol == null ? '—' : fmtInt(r.live_vol)],
+      [r.session === 'pre' ? 'Pre-market volume' : 'Volume today', 'live_vol', r.live_vol == null ? '—' : fmtInt(r.live_vol)],
     ]);
     grid.append(
       ...(liveBox ? [liveBox] : []),
@@ -1546,7 +1547,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   refreshMonth();
   // ---------- live prices straight from TradingView ----------
   const LIVE = { paused: false, last: null, ok: false, busy: false, timer: null };
-  const LIVE_COLS = ['close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA20', 'SMA50', 'SMA200', 'update_mode'];
+  const LIVE_COLS = ['close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA20', 'SMA50', 'SMA200', 'update_mode', 'premarket_close', 'premarket_change', 'premarket_volume', 'current_session'];
   const liveEl = document.getElementById('live');
   const liveMsg = document.getElementById('live-msg');
   const livePv = document.getElementById('live-pv');
@@ -1556,20 +1557,24 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   function applyLive(list) {
     const rows = rowsAll();
     const by = new Map(list.map((x) => [x.s, x.d]));
-    let n = 0, mode = null;
+    let n = 0, mode = null, pre = 0;
     rows.forEach((r) => {
       if (r.__p0 == null) { r.__p0 = r.price; r.__v0 = r.value_sek; r.__w0 = r.weight; }
       const d = by.get(r.sym);
       if (!d || d[0] == null) return;
       n += 1; mode = d[9] || mode;
-      r.price_live = d[0]; r.day_chg = d[1]; r.live_vol = d[2]; r.live_rsi = d[3];
+      // before the US open TradingView still reports yesterday's close as the price; use the pre-market price when it exists
+      const isPre = d[13] === 'pre_market' && d[10] != null;
+      if (isPre) pre += 1;
+      r.session = isPre ? 'pre' : null;
+      r.price_live = isPre ? d[10] : d[0]; r.day_chg = isPre && d[11] != null ? d[11] : d[1]; r.live_vol = isPre ? d[12] : d[2]; r.live_rsi = d[3];
       r.live_macd = d[4]; r.live_macd_sig = d[5]; r.live_sma20 = d[6]; r.live_sma50 = d[7]; r.live_sma200 = d[8];
-      if (r.__p0 > 0) r.value_sek = Math.round(r.__v0 * (d[0] / r.__p0));
+      if (r.__p0 > 0) r.value_sek = Math.round(r.__v0 * (r.price_live / r.__p0));
     });
     const v0 = d3.sum(rows, (r) => r.__v0), v1 = d3.sum(rows, (r) => r.value_sek);
     rows.forEach((r) => { if (r.__v0 > 0) r.weight = r.__w0 * (r.value_sek / r.__v0) / (v1 / v0); });
     livePv.textContent = 'Portfolio ' + fmtInt(v1) + ' SEK, ' + signed((v1 / v0 - 1) * 100, 2) + ' since the 13 Oct close';
-    return { n, mode, total: rows.length };
+    return { n, mode, total: rows.length, pre };
   }
   async function liveTick(manual) {
     if (LIVE.busy || (LIVE.paused && !manual)) return;
@@ -1591,7 +1596,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       window.__liveTick = true;
       try { dash.redraw(); } finally { window.__liveTick = false; }
       const delayed = /delayed/.test(info.mode || '');
-      setLive('ok', 'Live from TradingView' + (delayed ? ' (15 min delayed)' : '') + ' · ' + info.n + ' of ' + info.total + ' holdings · updated ' + clock(LIVE.last));
+      setLive('ok', 'Live from TradingView' + (delayed ? ' (15 min delayed)' : '') + ' · ' + info.n + ' of ' + info.total + ' holdings' + (info.pre ? ' · ' + info.pre + ' at pre-market prices' : '') + ' · updated ' + clock(LIVE.last));
     } catch (e) {
       LIVE.ok = false;
       setLive('err', LIVE.last ? 'Could not reach TradingView; showing the data from ' + clock(LIVE.last) : 'Live prices unavailable; showing the 13 Oct close');
@@ -1620,7 +1625,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     ];
     const COLS = ['name', 'description', 'exchange', 'currency', 'close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA50', 'SMA200',
       'Perf.1M', 'Perf.3M', 'ADX', 'ADX+DI', 'ADX-DI', 'ChaikinMoneyFlow', 'market_cap_basic', 'total_revenue_yoy_growth_ttm', 'net_margin_ttm',
-      'recommendation_mark', 'price_target_average', 'sector', 'update_mode'];
+      'recommendation_mark', 'price_target_average', 'sector', 'update_mode', 'premarket_close', 'premarket_change', 'current_session'];
     const X = {}; COLS.forEach((c, i) => { X[c] = i; });
     const LARGE_N = 30, MID_N = 40, MID_MIN = 85, MID_MAX = 3, MIN_AVAIL = 8, TOP_N = 10;
     const RULES = [
@@ -1648,7 +1653,9 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         sma50: num(g('SMA50')), sma200: num(g('SMA200')), perf1m: num(g('Perf.1M')), perf3m: num(g('Perf.3M')), adx: num(g('ADX')), dip: num(g('ADX+DI')), dim: num(g('ADX-DI')),
         cmf: num(g('ChaikinMoneyFlow')), mcap: num(g('market_cap_basic')), revg: num(g('total_revenue_yoy_growth_ttm')), margin: num(g('net_margin_ttm')),
         rec: num(g('recommendation_mark')), target: num(g('price_target_average')), sector: g('sector'), mode: g('update_mode'),
+        pre: g('current_session') === 'pre_market' && num(g('premarket_close')) != null, prePx: num(g('premarket_close')), preChg: num(g('premarket_change')),
       };
+      d.px = d.pre ? d.prePx : d.close; d.dchg = d.pre && d.preChg != null ? d.preChg : d.change;
       d.vs50 = d.close != null && d.sma50 ? (d.close / d.sma50 - 1) * 100 : null;
       d.vs200 = d.close != null && d.sma200 ? (d.close / d.sma200 - 1) * 100 : null;
       d.upside = d.close && d.target ? (d.target / d.close - 1) * 100 : null;
@@ -1703,7 +1710,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       draw();
     }));
     const keyVal = {
-      rank: (d) => d.rank, name: (d) => d.name, size: (d) => d.size, close: (d) => d.close, change: (d) => d.change, perf1m: (d) => d.perf1m, perf3m: (d) => d.perf3m,
+      rank: (d) => d.rank, name: (d) => d.name, size: (d) => d.size, close: (d) => d.px, change: (d) => d.dchg, perf1m: (d) => d.perf1m, perf3m: (d) => d.perf3m,
       rsi: (d) => d.rsi, macd: (d) => (d.macd != null && d.macds != null ? d.macd - d.macds : null), vs50: (d) => d.vs50, vs200: (d) => d.vs200, cmf: (d) => d.cmf,
       rec: (d) => d.rec, upside: (d) => d.upside, revg: (d) => d.revg, margin: (d) => d.margin, mcap: (d) => d.mcap, score: (d) => d.score,
     };
@@ -1736,8 +1743,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         const cmfTxt = d.cmf == null ? '—' : (d.cmf > 0.05 ? 'Coming in' : d.cmf < -0.05 ? 'Leaving' : 'Flat');
         tr.append(
           td(d.rank, 'rk'), nm, td(d.size, 'sec'),
-          td(d.close == null ? '—' : plain(d.close, d.close < 10 ? 3 : 2) + ' ' + d.cur, 'num sec'),
-          td(signed(d.change, 2), 'num sec ' + tone(d.change)), td(signed(d.perf1m), 'num sec ' + tone(d.perf1m)), td(signed(d.perf3m), 'num sec ' + tone(d.perf3m)),
+          td(d.px == null ? '—' : plain(d.px, d.px < 10 ? 3 : 2) + ' ' + d.cur + (d.pre ? ' · pre' : ''), 'num sec'),
+          td(signed(d.dchg, 2), 'num sec ' + tone(d.dchg)), td(signed(d.perf1m), 'num sec ' + tone(d.perf1m)), td(signed(d.perf3m), 'num sec ' + tone(d.perf3m)),
           td(plain(d.rsi, 0), 'num sec'), td(macdTxt, 'sec ' + (macdTxt === 'Bullish' ? 'pos' : macdTxt === 'Bearish' ? 'neg' : 'mut')),
           td(signed(d.vs50), 'num sec ' + tone(d.vs50)), td(signed(d.vs200), 'num sec ' + tone(d.vs200)),
           td(cmfTxt, 'sec ' + (cmfTxt === 'Coming in' ? 'pos' : cmfTxt === 'Leaving' ? 'neg' : 'mut')),
