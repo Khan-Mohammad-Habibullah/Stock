@@ -979,11 +979,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   });
   tbody.addEventListener('click', (e) => {
     const tr = e.target.closest('tr[data-key]');
-    if (tr) {
-      select(tr.dataset.key, 'monthly');
-      const mCard = document.getElementById('monthly');
-      if (mCard) mCard.scrollIntoView({ block: 'start', behavior: 'smooth' });
-    }
+    if (tr) select(tr.dataset.key, 'monthly');
   });
 
   function rowsAll() {
