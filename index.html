@@ -243,26 +243,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     </div>
   </section>
 
-  <section class="hs-card" id="etfs">
-    <h2>Your ETFs, looked through</h2>
-    <p class="hs-note">What each fund holds, what it costs, how it overlaps with the rest of your portfolio, and whether money is flowing into its biggest holdings. The 1-year return is from TradingView's Xetra prices in euros to 13 October; longer-run returns are the issuer's or data site's, as dated.</p>
-    <div class="etf-grid" id="etf-cards"></div>
-    <h3 class="h3" id="twice">Companies you own twice</h3>
-    <p class="hs-note">Direct holdings that are also in an ETF's top 10, and semiconductors as a theme. The ETF part is your ETF value times the company's weight in the fund. For the theme, only chip makers in each fund's top 10 are counted (all of the VanEck fund), so it is a minimum.</p>
-    <div class="tbl-wrap">
-      <table class="hold" id="xtbl" data-source="exposure" data-row-key="company">
-        <thead><tr>
-          <th data-field="company">Company</th>
-          <th class="num" data-field="direct_sek">Direct, SEK</th>
-          <th class="num" data-field="via_etf_sek">Through ETFs, SEK</th>
-          <th class="num" data-field="total_sek">Total, SEK</th>
-          <th class="sec" data-field="via">Through</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
-
   <section class="hs-card" id="holdings">
     <h2>Every holding</h2>
     <p class="hs-note">Click a column to sort and a row to see every indicator for that holding. Prices are in each listing's own currency. Money flow ranks each stock against its own market to 16 October: its 12-month trend counts three parts, heavy-volume buying over 60 days and 20-day Chaikin money flow one part each; "strong" is the top or bottom 10% with at least 20 million kronor traded a day.</p>
@@ -325,12 +305,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     </div>
   </section>
 
-  <section class="hs-card" id="detail">
-    <div class="detail" id="det">
-      <p class="hs-note" id="det-empty">Pick a holding in the table or the chart to see all of its indicators here.</p>
-    </div>
-  </section>
-
   <section class="hs-card" id="monthly">
     <h2>Possible price, month by month</h2>
     <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. A range with a modest tilt, not a forecast.</p>
@@ -353,6 +327,11 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         </tr></thead>
         <tbody></tbody>
       </table>
+    </div>
+  </section>
+  <section class="hs-card" id="detail">
+    <div class="detail" id="det">
+      <p class="hs-note" id="det-empty">Pick a holding in the table or the chart to see all of its indicators here.</p>
     </div>
   </section>
 
@@ -430,6 +409,25 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   </section>
   </div>
 
+  <section class="hs-card" id="etfs">
+    <h2>Your ETFs, looked through</h2>
+    <p class="hs-note">What each fund holds, what it costs, how it overlaps with the rest of your portfolio, and whether money is flowing into its biggest holdings. The 1-year return is from TradingView's Xetra prices in euros to 13 October; longer-run returns are the issuer's or data site's, as dated.</p>
+    <div class="etf-grid" id="etf-cards"></div>
+    <h3 class="h3" id="twice">Companies you own twice</h3>
+    <p class="hs-note">Direct holdings that are also in an ETF's top 10, and semiconductors as a theme. The ETF part is your ETF value times the company's weight in the fund. For the theme, only chip makers in each fund's top 10 are counted (all of the VanEck fund), so it is a minimum.</p>
+    <div class="tbl-wrap">
+      <table class="hold" id="xtbl" data-source="exposure" data-row-key="company">
+        <thead><tr>
+          <th data-field="company">Company</th>
+          <th class="num" data-field="direct_sek">Direct, SEK</th>
+          <th class="num" data-field="via_etf_sek">Through ETFs, SEK</th>
+          <th class="num" data-field="total_sek">Total, SEK</th>
+          <th class="sec" data-field="via">Through</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
   <section class="hs-card" id="method">
     <h2>How the signals are worked out</h2>
     <div class="method">
