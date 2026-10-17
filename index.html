@@ -103,7 +103,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .m-tbl { max-height: none; }
   table.hold td.strong { font-weight: 700; }
   table.hold td.ml { font-weight: 500; }
-  table.hold td.ml .pct { color: var(--color-fg-muted); font-weight: 400; margin-left: 5px; }
   #m-sel { max-width: 100%; }
   .hz { display: grid; gap: var(--cds-gap-md); }
   .hz-legend, .hz-nums { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
@@ -308,7 +307,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-card" id="monthly">
     <h2>Possible price, month by month</h2>
-    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle, with its move from today's price beside it. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. A range with a modest tilt, not a forecast.</p>
+    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. A range with a modest tilt, not a forecast.</p>
     <div class="ctl">
       <input id="m-q" type="search" placeholder="Search by name or ticker" aria-label="Search holdings for the monthly range" autocomplete="off">
       <select id="m-sel" aria-label="Holding for the monthly range"></select>
@@ -1150,18 +1149,11 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tr.dataset.key = enc(r.sym) + ',' + enc(r.month);
       const cell = (text, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = text; return c; };
       const pc = (v) => Math.round(v * 100) + '%';
-      const mlCell = document.createElement('td');
-      mlCell.className = 'num ml';
-      mlCell.append(document.createTextNode(f(r.most_likely)));
-      const mlPct = document.createElement('span');
-      mlPct.className = 'pct';
-      mlPct.textContent = ' (' + signed((r.most_likely / h.price - 1) * 100) + ')';
-      mlCell.appendChild(mlPct);
       tr.append(
         cell(r.month),
         cell(f(r.likely_low), 'num' + (r.leans === 'Low' ? ' strong neg' : '')),
         cell(pc(r.chance_low), 'num mut'),
-        mlCell,
+        cell(f(r.most_likely), 'num ml'),
         cell(f(r.likely_high), 'num' + (r.leans === 'High' ? ' strong pos' : '')),
         cell(pc(r.chance_high), 'num mut'),
       );
