@@ -169,11 +169,27 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .scr-how summary { cursor: pointer; font-size: var(--cds-font-size-caption); }
   .scr-how ul { margin: 6px 0 0; padding-left: 1.2rem; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: grid; gap: 2px; }
   @media (max-width: 900px) { .sec { display: none; } }
+  .site-tabs { position: sticky; top: 0; z-index: 30; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 0; background: var(--color-bg); border-bottom: 1px solid var(--color-border-line); }
+  .site-tabs .site-name { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-body); color: var(--color-fg-muted); margin-right: auto; }
+  .site-tabs a { font-size: var(--cds-font-size-body); font-weight: 500; text-decoration: none; color: var(--color-fg-muted); padding: 7px 16px; border-radius: 999px; border: 1px solid transparent; }
+  .site-tabs a:hover { color: var(--color-fg); border-color: var(--color-border-line); }
+  .site-tabs a[aria-selected="true"] { color: var(--color-bg); background: var(--color-fg); border-color: var(--color-fg); }
+  .site-tabs a:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .pane { display: grid; gap: var(--cds-gap-xl); min-width: 0; }
+  .pane[hidden] { display: none; }
+  @media (max-width: 600px) { .site-tabs .site-name { display: none; } .site-tabs a { flex: 1; text-align: center; padding: 7px 8px; } }
 </style>
 
 <div class="hs">
+  <nav class="site-tabs" role="tablist" aria-label="Pages">
+    <span class="site-name">Holdings signal board</span>
+    <a href="#my-holdings" role="tab" id="tab-holdings" data-tab="holdings" aria-controls="pane-holdings" aria-selected="true">My holdings</a>
+    <a href="#strategy" role="tab" id="tab-strategy" data-tab="strategy" aria-controls="pane-strategy" aria-selected="false">Strategy</a>
+  </nav>
+
+  <div class="pane" id="pane-holdings" role="tabpanel" aria-labelledby="tab-holdings">
   <header class="hs-head" id="top">
-    <h1>Holdings signal board</h1>
+    <h1>My holdings</h1>
     <p class="hs-take dash-skeleton" id="takeaway"><b data-source="overview" data-field="bull_n">—</b> of <b data-source="overview" data-field="total">—</b> holdings lean bullish for the rest of <span class="mo">October</span> and <b data-source="overview" data-field="bear_n">—</b> lean bearish. The bearish group holds <b data-source="overview" data-field="bear_share">—</b> of the portfolio's value. Holdings with a positive or leaning-positive outlook hold <b data-source="overview" data-field="pos1_share">—</b> of the value over 1 year, <b data-source="overview" data-field="pos3_share">—</b> over 3 years and <b data-source="overview" data-field="pos5_share">—</b> over 5 years. Outside the US, <b data-source="dec_overview" data-field="sell_n">—</b> holdings (<b data-source="dec_overview" data-field="sell_share">—</b> of that value) are flagged to consider selling or trimming by December and <b data-source="dec_overview" data-field="add_n">—</b> (<b data-source="dec_overview" data-field="add_share">—</b>) to consider adding.</p>
     <p class="hs-asof">Holdings, quantities and values from your Nordnet export of 16 October 2026 (16:02). Daily prices to the 13 October 2026 close, from TradingView. Fundamentals from TradingView's screener. Money-flow readings to the 16 October close, from TradingView's screener and daily bars. ETF facts from the issuers and fund-data sites, dated on each card. Signals describe what the indicators show, not advice on what to buy or sell. The thirteen holdings added on 16 October (AQ Group, Fuchs, Bavarian Nordic, Getinge, Exxon Mobil, Ambu, BW Energy, Medistim, NTG, Vaisala, SAP, Whitecap Resources, Puuilo) are scored the same way, but their 1-, 3- and 5-year outlooks are estimated from the screener data and are approximate. Their sector money flow uses the Europe-wide sector for Denmark, Germany and Finland, and the US oil industry for Canada.</p>
     <div class="live" id="live" role="status" aria-live="polite"><span class="dot"></span><b id="live-msg">Connecting to TradingView…</b><span class="sep">·</span><span id="live-pv"></span><button type="button" id="live-btn">Pause</button></div>
@@ -210,15 +226,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       </select>
     </div>
     <div class="quad-box" id="quad" data-source="holdings"></div>
-  </section>
-
-  <section class="hs-card" id="money">
-    <h2>Where money is moving</h2>
-    <p class="hs-note">Each bar is a sector, ranked against the other sectors of its own market by the reading that tested best on four years of data: its companies' 12-month trend (the last month left out) counts three parts and their heavy-volume buying over the last 60 days one part. Dark green and dark red are the top and bottom sixth. Bold sectors are ones you own; the figure at the end is what you hold there. Hover for the details.</p>
-    <div class="ctl"><div class="seg" id="mk-seg" role="group" aria-label="Market"></div></div>
-    <p class="hs-take" id="mk-sum"></p>
-    <div class="flow-box" id="flowchart" data-source="flows flow_yours flow_picks"></div>
-    <p class="hs-note">Under each bar, three of the sector's most-traded companies that show its direction most clearly, read the same way as your holdings: where money is coming in, the strongest; where it is leaving, the weakest; where there is no clear direction, the three most traded. The arrow is the stock's own reading: ↑↑ strong inflow, ↑ money coming in, ↓ leaving, ↓↓ strong outflow, · no clear direction. Hover a row for all three, with their 12-month trend against the market and how much each trades a day. A name here is an example of the flow, not a recommendation.</p>
   </section>
 
   <section class="hs-card" id="december">
@@ -318,6 +325,46 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     </div>
   </section>
 
+  <section class="hs-card" id="detail">
+    <div class="detail" id="det">
+      <p class="hs-note" id="det-empty">Pick a holding in the table or the chart to see all of its indicators here.</p>
+    </div>
+  </section>
+
+  <section class="hs-card" id="monthly">
+    <h2>Possible price, month by month</h2>
+    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. A range with a modest tilt, not a forecast.</p>
+    <div class="ctl">
+      <input id="m-q" type="search" placeholder="Search by name or ticker" aria-label="Search holdings for the monthly range" autocomplete="off">
+      <select id="m-sel" aria-label="Holding for the monthly range"></select>
+      <span class="count" id="m-match"></span>
+    </div>
+    <p class="hs-note" id="m-sub"></p>
+    <div class="m-box" id="mchart" data-source="monthly holdings"></div>
+    <div class="tbl-wrap m-tbl">
+      <table class="hold" id="mtbl" data-source="monthly" data-row-key="sym,month">
+        <thead><tr>
+          <th data-field="month">Month-end</th>
+          <th class="num" data-field="likely_low">Likely low</th>
+          <th class="num" data-field="chance_low">Chance of low</th>
+          <th class="num" data-field="most_likely">Most likely</th>
+          <th class="num" data-field="likely_high">Likely high</th>
+          <th class="num" data-field="chance_high">Chance of high</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  </div>
+
+  <div class="pane" id="pane-strategy" role="tabpanel" aria-labelledby="tab-strategy" hidden>
+  <header class="hs-head" id="strategy-top">
+    <h1>Strategy</h1>
+    <p class="hs-take">Where money is moving across the US, Swedish, Norwegian and European markets, and which large companies have the strongest bullish readings, to help you decide what to look at next. Sectors you own are shown in bold; everything else here is about the market, not your holdings.</p>
+    <p class="hs-asof">Sector money flow and the stocks under each sector are to the 16 October close, from TradingView daily bars. The market screen is read live from TradingView about every 5 minutes while this page is open. These are readings to weigh, not advice on what to buy or sell.</p>
+  </header>
+
   <section class="hs-card" id="screen">
     <h2>Strongest bullish readings by market</h2>
     <p class="hs-note">A rules-based screen of the biggest listed companies in each market, ranked by how many of 13 published TradingView readings point up. It is not a recommendation to buy or sell anything and says nothing about what a stock will do next. These stocks are not your holdings. Prices come straight from TradingView in your browser (15 minutes delayed) and refresh every 5 minutes. Before the US market opens, stocks with a pre-market quote show that price (marked "pre") and the move against the last close.</p>
@@ -373,36 +420,15 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     </div>
   </section>
 
-  <section class="hs-card" id="detail">
-    <div class="detail" id="det">
-      <p class="hs-note" id="det-empty">Pick a holding in the table or the chart to see all of its indicators here.</p>
-    </div>
+  <section class="hs-card" id="money">
+    <h2>Where money is moving</h2>
+    <p class="hs-note">Each bar is a sector, ranked against the other sectors of its own market by the reading that tested best on four years of data: its companies' 12-month trend (the last month left out) counts three parts and their heavy-volume buying over the last 60 days one part. Dark green and dark red are the top and bottom sixth. Bold sectors are ones you own; the figure at the end is what you hold there. Hover for the details.</p>
+    <div class="ctl"><div class="seg" id="mk-seg" role="group" aria-label="Market"></div></div>
+    <p class="hs-take" id="mk-sum"></p>
+    <div class="flow-box" id="flowchart" data-source="flows flow_yours flow_picks"></div>
+    <p class="hs-note">Under each bar, three of the sector's most-traded companies that show its direction most clearly, read the same way as your holdings: where money is coming in, the strongest; where it is leaving, the weakest; where there is no clear direction, the three most traded. The arrow is the stock's own reading: ↑↑ strong inflow, ↑ money coming in, ↓ leaving, ↓↓ strong outflow, · no clear direction. Hover a row for all three, with their 12-month trend against the market and how much each trades a day. A name here is an example of the flow, not a recommendation.</p>
   </section>
-
-  <section class="hs-card" id="monthly">
-    <h2>Possible price, month by month</h2>
-    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. A range with a modest tilt, not a forecast.</p>
-    <div class="ctl">
-      <input id="m-q" type="search" placeholder="Search by name or ticker" aria-label="Search holdings for the monthly range" autocomplete="off">
-      <select id="m-sel" aria-label="Holding for the monthly range"></select>
-      <span class="count" id="m-match"></span>
-    </div>
-    <p class="hs-note" id="m-sub"></p>
-    <div class="m-box" id="mchart" data-source="monthly holdings"></div>
-    <div class="tbl-wrap m-tbl">
-      <table class="hold" id="mtbl" data-source="monthly" data-row-key="sym,month">
-        <thead><tr>
-          <th data-field="month">Month-end</th>
-          <th class="num" data-field="likely_low">Likely low</th>
-          <th class="num" data-field="chance_low">Chance of low</th>
-          <th class="num" data-field="most_likely">Most likely</th>
-          <th class="num" data-field="likely_high">Likely high</th>
-          <th class="num" data-field="chance_high">Chance of high</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+  </div>
 
   <section class="hs-card" id="method">
     <h2>How the signals are worked out</h2>
@@ -733,7 +759,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           if (i) t.append('tspan').style('fill', 'var(--color-fg-muted)').text('   ');
           t.append('tspan').style('fill', acol(p.stock_flow)).style('font-weight', 600).text(arrow(p.stock_flow) + ' ');
           const nameSp = t.append('tspan').style('fill', 'var(--color-fg)').style('font-weight', p.sym === state.sel ? 700 : 400).style('text-decoration', p.sym === state.sel ? 'underline' : 'none').text(p.name);
-          if (p.owned) nameSp.style('cursor', 'pointer').on('click', (ev) => { ev.stopPropagation(); select(p.sym, true); });
+          if (p.owned) nameSp.style('cursor', 'pointer').on('click', (ev) => { ev.stopPropagation(); if (window.__showTab) window.__showTab('holdings'); select(p.sym, true); });
           t.append('tspan').style('fill', 'var(--color-fg-muted)').text(' ' + p.ticker + (p.owned ? ', yours' : ''));
         });
         if (n < list.length) t.append('tspan').style('fill', 'var(--color-fg-muted)').text('   …');
@@ -1814,6 +1840,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         $('scr-status').textContent = SC.last ? 'Could not reach TradingView; showing the data from ' + SC.last.toLocaleTimeString() : 'Could not reach TradingView, so this screen is empty for now. It retries every 5 minutes.';
       } finally { clearTimeout(to); SC.busy = false; draw(); }
     }
+    SC.draw = draw;
     window.__scr = SC;
     draw();
     refresh(true);
@@ -1821,4 +1848,42 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     document.addEventListener('visibilitychange', () => { if (!document.hidden && (!SC.last || Date.now() - SC.last > 300000)) refresh(); });
   })();
 </script>
+
+<script>
+  // ---------- two pages: My holdings and Strategy ----------
+  (function () {
+    const tabs = [...document.querySelectorAll('.site-tabs a[role="tab"]')];
+    const panes = { holdings: document.getElementById('pane-holdings'), strategy: document.getElementById('pane-strategy') };
+    const HASH = { holdings: '#my-holdings', strategy: '#strategy' };
+    const fromHash = () => (location.hash === '#strategy' ? 'strategy' : 'holdings');
+    let current = null;
+    function show(name) {
+      if (!panes[name]) name = 'holdings';
+      Object.entries(panes).forEach(([k, p]) => { p.hidden = k !== name; });
+      tabs.forEach((a) => { const on = a.dataset.tab === name; a.setAttribute('aria-selected', String(on)); a.tabIndex = on ? 0 : -1; });
+      document.title = (name === 'strategy' ? 'Strategy' : 'My holdings') + ' · Holdings signal board';
+      if (current !== name) {
+        current = name;
+        // charts are sized from their box, so draw them again now that the page is visible
+        requestAnimationFrame(() => {
+          if (window.dash && dash.redraw) { window.__liveTick = true; try { dash.redraw(); } finally { window.__liveTick = false; } }
+          if (window.__scr && window.__scr.draw) window.__scr.draw();
+        });
+      }
+    }
+    window.__showTab = (name) => { if (location.hash !== HASH[name]) history.replaceState(null, '', HASH[name]); show(name); };
+    tabs.forEach((a, i) => {
+      a.addEventListener('click', (e) => { e.preventDefault(); window.__showTab(a.dataset.tab); window.scrollTo({ top: 0 }); });
+      a.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        n.focus(); window.__showTab(n.dataset.tab);
+      });
+    });
+    window.addEventListener('hashchange', () => show(fromHash()));
+    show(fromHash());
+  })();
+</script>
+
 
