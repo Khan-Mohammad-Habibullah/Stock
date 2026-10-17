@@ -307,7 +307,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-card" id="monthly">
     <h2>Possible price, month by month</h2>
-    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. A range with a modest tilt, not a forecast.</p>
+    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. Chance of most likely is the chance of landing in that middle band rather than beyond either tail, which is why it is close to 50% throughout. A range with a modest tilt, not a forecast.</p>
     <div class="ctl">
       <input id="m-q" type="search" placeholder="Search by name or ticker" aria-label="Search holdings for the monthly range" autocomplete="off">
       <select id="m-sel" aria-label="Holding for the monthly range"></select>
@@ -322,6 +322,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           <th class="num" data-field="likely_low">Likely low</th>
           <th class="num" data-field="chance_low">Chance of low</th>
           <th class="num" data-field="most_likely">Most likely</th>
+          <th class="num" data-field="chance_ml">Chance of Most likely</th>
           <th class="num" data-field="likely_high">Likely high</th>
           <th class="num" data-field="chance_high">Chance of high</th>
         </tr></thead>
@@ -1149,11 +1150,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tr.dataset.key = enc(r.sym) + ',' + enc(r.month);
       const cell = (text, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = text; return c; };
       const pc = (v) => Math.round(v * 100) + '%';
+      const chanceMl = Math.max(0, 1 - r.chance_low - r.chance_high);
       tr.append(
         cell(r.month),
         cell(f(r.likely_low), 'num' + (r.leans === 'Low' ? ' strong neg' : '')),
         cell(pc(r.chance_low), 'num mut'),
         cell(f(r.most_likely), 'num ml'),
+        cell(pc(chanceMl), 'num mut'),
         cell(f(r.likely_high), 'num' + (r.leans === 'High' ? ' strong pos' : '')),
         cell(pc(r.chance_high), 'num mut'),
       );
