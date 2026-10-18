@@ -1,0 +1,43 @@
+name: Update crypto data
+
+on:
+  schedule:
+    # 06:15 UTC daily -- after the daily candle closes everywhere, before a
+    # typical European morning check of the board.
+    - cron: "15 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-crypto
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch fresh crypto data
+        run: python3 scripts/update_crypto.py
+
+      - name: Bake it into index.html
+        run: python3 scripts/bake_crypto.py
+
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "crypto-data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html data/crypto_holdings.json data/crypto_monthly.json data/crypto_extracted.txt
+          if git diff --cached --quiet; then
+            echo "No data changes, nothing to commit."
+          else
+            git commit -m "Update crypto data ($(cat data/crypto_extracted.txt))"
+            git push
+          fi
