@@ -210,7 +210,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <p class="hs-asof">Holdings, quantities and values from your Nordnet export of 16 October 2026 (16:02). Daily prices to the 13 October 2026 close, from TradingView. Fundamentals from TradingView's screener. Money-flow readings to the 16 October close, from TradingView's screener and daily bars. ETF facts from the issuers and fund-data sites, dated on each card. Signals describe what the indicators show, not advice on what to buy or sell. The thirteen holdings added on 16 October (AQ Group, Fuchs, Bavarian Nordic, Getinge, Exxon Mobil, Ambu, BW Energy, Medistim, NTG, Vaisala, SAP, Whitecap Resources, Puuilo) are scored the same way, but their 1-, 3- and 5-year outlooks are estimated from the screener data and are approximate. Their sector money flow uses the Europe-wide sector for Denmark, Germany and Finland, and the US oil industry for Canada.</p>
     <div class="live" id="live" role="status" aria-live="polite"><span class="dot"></span><b id="live-msg">Connecting to TradingView…</b><span class="sep">·</span><span id="live-pv"></span><button type="button" id="live-btn">Pause</button></div>
     <p class="hs-note stale" id="stale-top" hidden></p>
-    <p class="hs-note" id="live-note">Price, today's move, RSI, MACD and the moving averages are read straight from TradingView by your browser, about every second while this tab is open (TradingView shows them 15 minutes late). Signals, outlooks, sector flows and the December lists are the snapshot described above and do not change until the board is rebuilt. Before the US market opens, holdings that have a pre-market quote show that price (marked "pre") and the move against the last close; the other holdings keep their last price. Values in SEK follow the live price with exchange rates held at the level of your Nordnet export of 16 October.</p>
+    <p class="hs-note" id="live-note">Price, today's move, RSI, MACD and the moving averages are read straight from TradingView by your browser, about every minute while this tab is open (TradingView shows them 15 minutes late). Signals, outlooks, sector flows and the December lists are the snapshot described above and do not change until the board is rebuilt. Before the US market opens, holdings that have a pre-market quote show that price (marked "pre") and the move against the last close; the other holdings keep their last price. Values in SEK follow the live price with exchange rates held at the level of your Nordnet export of 16 October.</p>
   </header>
 
   <section class="hs-grid2" id="mix">
@@ -454,7 +454,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <p class="hs-take">A watchlist of 30 coins you hold, read the same way as your stock holdings where the data allows. No amounts are set for these, so there are no values or weights here &mdash; each coin stands on its own.</p>
     <p class="hs-asof">Prices and signals are to the 17 October close, from TradingView's screener and exchange daily bars. This board is not advice on what to buy or sell.</p>
     <div class="live" id="live-c" role="status" aria-live="polite"><span class="dot"></span><b id="live-msg-c">Connecting to TradingView…</b><span class="sep">·</span><span id="live-pv-c"></span><button type="button" id="live-btn-c">Pause</button></div>
-    <p class="hs-note" id="live-note-c">Price and today's move in the table below are read straight from TradingView by your browser, about every second while this tab is open (TradingView shows them 15 minutes late). The signal, money flow, outlook and monthly-range figures are the snapshot above and do not change until the next automatic update.</p>
+    <p class="hs-note" id="live-note-c">Price and today's move in the table below are read straight from TradingView by your browser, about every minute while this tab is open (TradingView shows them 15 minutes late). The signal, money flow, outlook and monthly-range figures are the snapshot above and do not change until the next automatic update.</p>
   </header>
 
   <section class="hs-card" id="cmix">
@@ -1778,7 +1778,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     else liveTick(true);
   });
   document.addEventListener('visibilitychange', () => { if (!document.hidden && !LIVE.paused && (!LIVE.last || Date.now() - LIVE.last > 60000)) liveTick(); });
-  LIVE.timer = setInterval(liveTick, 1000);
+  LIVE.timer = setInterval(liveTick, 60000);
   liveTick();
 
   // ---------- strongest bullish readings by market (rules-based screen, live from TradingView) ----------
@@ -2396,7 +2396,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       else liveTickCrypto(true);
     });
     document.addEventListener('visibilitychange', () => { if (!document.hidden && !CLIVE.paused) liveTickCrypto(); });
-    setInterval(liveTickCrypto, 1000);
+    setInterval(liveTickCrypto, 60000);
     liveTickCrypto();
   })();
 
