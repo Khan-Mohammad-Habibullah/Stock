@@ -37,6 +37,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .hs-take { margin: 0; font-size: var(--cds-font-size-body); max-width: 70ch; }
   .hs-take b { font-weight: 600; }
   .hs-asof { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .hs-extracted { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 4px; padding: 3px 10px; border-radius: 999px; background: var(--color-panel); border: 1px solid var(--color-border-line); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .hs-extracted .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ok); flex: none; }
   .hs-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-md); min-width: 0; }
   .hs-card h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
   .hs-note { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); max-width: 80ch; }
@@ -192,6 +194,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <div class="pane" id="pane-holdings" role="tabpanel" aria-labelledby="tab-holdings">
   <header class="hs-head" id="top">
     <h1>My holdings</h1>
+    <p class="hs-extracted"><span class="dot"></span>Data last extracted: 16 October 2026, 16:02</p>
     <p class="hs-take dash-skeleton" id="takeaway"><b data-source="overview" data-field="bull_n">—</b> of <b data-source="overview" data-field="total">—</b> holdings lean bullish for the rest of <span class="mo">October</span> and <b data-source="overview" data-field="bear_n">—</b> lean bearish. The bearish group holds <b data-source="overview" data-field="bear_share">—</b> of the portfolio's value. Holdings with a positive or leaning-positive outlook hold <b data-source="overview" data-field="pos1_share">—</b> of the value over 1 year, <b data-source="overview" data-field="pos3_share">—</b> over 3 years and <b data-source="overview" data-field="pos5_share">—</b> over 5 years. Outside the US, <b data-source="dec_overview" data-field="sell_n">—</b> holdings (<b data-source="dec_overview" data-field="sell_share">—</b> of that value) are flagged to consider selling or trimming by December and <b data-source="dec_overview" data-field="add_n">—</b> (<b data-source="dec_overview" data-field="add_share">—</b>) to consider adding.</p>
     <p class="hs-asof">Holdings, quantities and values from your Nordnet export of 16 October 2026 (16:02). Daily prices to the 13 October 2026 close, from TradingView. Fundamentals from TradingView's screener. Money-flow readings to the 16 October close, from TradingView's screener and daily bars. ETF facts from the issuers and fund-data sites, dated on each card. Signals describe what the indicators show, not advice on what to buy or sell. The thirteen holdings added on 16 October (AQ Group, Fuchs, Bavarian Nordic, Getinge, Exxon Mobil, Ambu, BW Energy, Medistim, NTG, Vaisala, SAP, Whitecap Resources, Puuilo) are scored the same way, but their 1-, 3- and 5-year outlooks are estimated from the screener data and are approximate. Their sector money flow uses the Europe-wide sector for Denmark, Germany and Finland, and the US oil industry for Canada.</p>
     <div class="live" id="live" role="status" aria-live="polite"><span class="dot"></span><b id="live-msg">Connecting to TradingView…</b><span class="sep">·</span><span id="live-pv"></span><button type="button" id="live-btn">Pause</button></div>
@@ -363,6 +366,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <div class="pane" id="pane-strategy" role="tabpanel" aria-labelledby="tab-strategy" hidden>
   <header class="hs-head" id="strategy-top">
     <h1>Strategy</h1>
+    <p class="hs-extracted"><span class="dot"></span>Data last extracted: 16 October 2026</p>
     <p class="hs-take">Where money is moving across the US, Swedish, Norwegian and European markets, and which large companies have the strongest bullish readings, to help you decide what to look at next. Sectors you own are shown in bold; everything else here is about the market, not your holdings.</p>
     <p class="hs-asof">Sector money flow and the stocks under each sector are to the 16 October close, from TradingView daily bars. The market screen is read live from TradingView about every 5 minutes while this page is open. These are readings to weigh, not advice on what to buy or sell.</p>
   </header>
@@ -435,6 +439,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <div class="pane" id="pane-crypto" role="tabpanel" aria-labelledby="tab-crypto" hidden>
   <header class="hs-head" id="crypto-top">
     <h1>Crypto holdings</h1>
+    <p class="hs-extracted"><span class="dot"></span>Data last extracted: 17 October 2026</p>
     <p class="hs-take">A watchlist of 30 coins you hold, read the same way as your stock holdings where the data allows. No amounts are set for these, so there are no values or weights here &mdash; each coin stands on its own.</p>
     <p class="hs-asof">Prices and signals are to the 17 October close, from TradingView's screener and exchange daily bars. This board is not advice on what to buy or sell.</p>
   </header>
@@ -509,6 +514,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <div class="pane" id="pane-cryptostrategy" role="tabpanel" aria-labelledby="tab-cryptostrategy" hidden>
   <header class="hs-head" id="cryptostrategy-top">
     <h1>Crypto strategy</h1>
+    <p class="hs-extracted"><span class="dot"></span>Data last extracted: 17 October 2026</p>
     <p class="hs-take">Where money is moving across your 30 coins, and which of them currently show the strongest bullish readings. Crypto has no sectors to group by, so this reads each coin on its own, ranked against the rest of your watchlist rather than the broader market.</p>
     <p class="hs-asof">To the 17 October close. These are readings to weigh, not advice on what to buy or sell.</p>
   </header>
