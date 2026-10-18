@@ -231,7 +231,9 @@ def volatility_for(ticker, name):
 
 
 def main():
-    today = time.strftime("%Y-%m-%d", time.gmtime())
+    now = time.gmtime()
+    today = time.strftime("%Y-%m-%d", now)
+    extracted_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", now)
     raw = fetch_scan()
     if raw.get("totalCount") != len(TICKER_OF):
         print("warning: scanner returned %s rows, expected %d" % (raw.get("totalCount"), len(TICKER_OF)), file=sys.stderr)
@@ -298,7 +300,7 @@ def main():
     print("wrote crypto_monthly.json:", len(M), "rows")
 
     with open(HERE + "/../data/crypto_extracted.txt", "w") as f:
-        f.write(today)
+        f.write(extracted_at)
 
 
 if __name__ == "__main__":

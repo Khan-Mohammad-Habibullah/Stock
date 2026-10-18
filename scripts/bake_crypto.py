@@ -80,8 +80,13 @@ def main():
     holdings = load("crypto_holdings")
     monthly = load("crypto_monthly")
     with open(HERE + "/../data/crypto_extracted.txt") as f:
-        iso_date = f.read().strip()
-    pretty = datetime.date.fromisoformat(iso_date).strftime("%-d %B %Y")
+        stamp = f.read().strip()
+    # accept either a bare date (old format) or a full UTC timestamp
+    if "T" in stamp:
+        dt = datetime.datetime.strptime(stamp, "%Y-%m-%dT%H:%M:%SZ")
+        pretty = dt.strftime("%-d %B %Y, %H:%M UTC")
+    else:
+        pretty = datetime.date.fromisoformat(stamp).strftime("%-d %B %Y")
 
     html = open(INDEX, encoding="utf-8").read()
     html = replace_dataset(html, "crypto_holdings", dumps(holdings))
