@@ -1154,7 +1154,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const td = (text, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = text; return c; };
       const chip = (label, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; const s = document.createElement('span'); s.className = 'chip ' + chipCls(label); s.textContent = label; c.appendChild(s); return c; };
       tr.append(
-        nameTd(r.name, r.sym),
+        nameTd(r.name, r.sym, null, () => select(r.sym, 'monthly')),
         td(fmtInt(r.value_sek), 'num'),
         td(r.price_live == null ? '—' : plain(r.price_live, r.price_live < 10 ? 3 : 2) + ' ' + r.cur + (r.session === 'pre' ? ' · pre' : ''), 'num'),
         td(signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
@@ -2100,7 +2100,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const chip = (label, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; const sp = document.createElement('span'); sp.className = 'chip ' + chipCls(label); sp.textContent = label; c.appendChild(sp); return c; };
       const dec = r.price < 1 ? 5 : r.price < 10 ? 4 : 2;
       tr.append(
-        nameTd(r.name + ' (' + r.ticker + ')', r.sym),
+        nameTd(r.name + ' (' + r.ticker + ')', r.sym, null, () => cSelect(r.sym, 'monthly')),
         td(plain(r.price, dec), 'num'),
         td(signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
         td(signed(r.r1m), 'num ' + tone(r.r1m)),
@@ -2401,10 +2401,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   })();
 
   // ---------- per-row chart modal: TradingView's own embeddable chart ----------
-  function nameTd(label, sym, cls) {
+  function nameTd(label, sym, cls, onSelect) {
     const c = document.createElement('td'); c.className = cls || 'nm';
     const b = document.createElement('button'); b.type = 'button'; b.className = 'chart-link'; b.textContent = label;
-    b.addEventListener('click', (e) => { e.stopPropagation(); openChart(sym, label); });
+    b.addEventListener('click', (e) => { e.stopPropagation(); if (onSelect) onSelect(); openChart(sym, label); });
     c.appendChild(b);
     return c;
   }
