@@ -438,15 +438,27 @@ def main():
     out = {}
     for sym, yt in SYMS.items():
         print("fetching", sym, yt, file=sys.stderr)
-        bars = fetch_bars(yt)
-        T = analyse(bars)
+        try:
+            bars = fetch_bars(yt)
+            T = analyse(bars)
+        except Exception as e:
+            out[sym] = {"error": "bars/analyse: %r" % (e,)}
+            print("  FAILED (bars):", e, file=sys.stderr)
+            continue
         time.sleep(1)
-        F = fetch_fundamentals(yt)
+        try:
+            F = fetch_fundamentals(yt)
+        except Exception as e:
+            out[sym] = {"T": T, "error": "fundamentals: %r" % (e,)}
+            print("  FAILED (fundamentals):", e, file=sys.stderr)
+            time.sleep(1)
+            continue
         out[sym] = {"T": T, "F": F}
         time.sleep(1)
     with open(HERE + "/../data/new_stock_signals.json", "w") as f:
-        json.dump(out, f, indent=1)
-    print("wrote", len(out), "symbols", file=sys.stderr)
+        json.dump(out, f, indent=1, default=str)
+    n_ok = sum(1 for v in out.values() if "error" not in v)
+    print("wrote", len(out), "symbols,", n_ok, "ok", file=sys.stderr)
 
 
 if __name__ == "__main__":
