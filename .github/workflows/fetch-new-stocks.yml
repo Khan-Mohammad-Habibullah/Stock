@@ -1,0 +1,25 @@
+name: Fetch data for new holdings (one-off)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/fetch_new_stocks.py
+      - name: Commit result
+        run: |
+          git config user.name "stock-data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/new_stock_signals.json
+          git diff --cached --quiet && echo "no changes" && exit 0
+          git commit -m "Fetch data for new holdings ($(date -u +%FT%TZ))"
+          git push
