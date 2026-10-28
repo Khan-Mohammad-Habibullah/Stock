@@ -25,6 +25,7 @@ import math
 import statistics
 import sys
 import time
+import urllib.parse
 import urllib.request
 
 HERE = __file__.rsplit("/", 1)[0]
@@ -40,10 +41,36 @@ SYMS = {
 }
 
 
+import http.cookiejar
+_cj = http.cookiejar.CookieJar()
+_opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(_cj))
+_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36"
+_crumb = None
+
+
 def http_json(url, timeout=20):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (holdings-signal-board one-off fetch)"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
+    req = urllib.request.Request(url, headers={"User-Agent": _UA})
+    with _opener.open(req, timeout=timeout) as r:
         return json.loads(r.read().decode("utf-8"))
+
+
+def http_text(url, timeout=20):
+    req = urllib.request.Request(url, headers={"User-Agent": _UA})
+    with _opener.open(req, timeout=timeout) as r:
+        return r.read().decode("utf-8")
+
+
+def get_crumb():
+    global _crumb
+    if _crumb is not None:
+        return _crumb
+    # prime cookies, then fetch a crumb -- Yahoo's quoteSummary API requires both
+    try:
+        _opener.open(urllib.request.Request("https://fc.yahoo.com", headers={"User-Agent": _UA}), timeout=15).read()
+    except Exception:
+        pass
+    _crumb = http_text("https://query2.finance.yahoo.com/v1/test/getcrumb")
+    return _crumb
 
 
 def fetch_bars(yticker):
@@ -63,7 +90,8 @@ def fetch_bars(yticker):
 
 def fetch_fundamentals(yticker):
     mods = "financialData,defaultKeyStatistics,summaryDetail,recommendationTrend,price"
-    url = "https://query1.finance.yahoo.com/v10/finance/quoteSummary/%s?modules=%s" % (yticker, mods)
+    crumb = get_crumb()
+    url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/%s?modules=%s&crumb=%s" % (yticker, mods, urllib.parse.quote(crumb))
     j = http_json(url)
     r = j["quoteSummary"]["result"][0]
     fd = r.get("financialData", {})
