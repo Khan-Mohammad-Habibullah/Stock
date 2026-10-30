@@ -31,6 +31,7 @@ output file (not just the log) so they can be inspected after the run.
 import datetime
 import http.cookiejar
 import json
+import re
 import statistics
 import sys
 import time
@@ -91,8 +92,8 @@ def universe(m):
     out = []
     for x in j.get("data") or []:
         tk, nm, sec, ind, mc, cur = x["d"]
-        if not sec:
-            continue
+        if not sec or re.search(r"\bTEMP(ORARY)?\b", (nm or "").upper()):
+            continue  # temporary tender/rights lines duplicate a company already in the list
         out.append(dict(sym=x["s"], tk=tk, name=nm or tk, sector=sec, industry=ind or "", mcap=mc, cur=cur))
     return out
 
