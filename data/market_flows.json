@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-30T17:36Z",
+ "generated": "2026-10-30T17:48Z",
  "flows": [
   {
    "market": "Denmark",
@@ -475,16 +475,16 @@
    "group": "Technology Services",
    "sector": "Technology Services",
    "n": 7,
-   "r1m": 8.7,
-   "r3m": 15.4,
+   "r1m": 8.8,
+   "r3m": 15.6,
    "mom_rel": -16.8,
-   "acc_rank": 52,
+   "acc_rank": 53,
    "tv_share": 0.118,
    "tv_usd_m": 519,
    "breadth": 0.71,
    "vratio": 0.9,
    "top": "SAP SE, Scout24 SE, Nemetschek SE",
-   "flow_score": -5.9,
+   "flow_score": -5.8,
    "flow": "Strong outflow"
   },
   {
@@ -494,7 +494,7 @@
    "sector": "Producer Manufacturing",
    "n": 16,
    "r1m": -5.4,
-   "r3m": -4.9,
+   "r3m": -4.6,
    "mom_rel": 20.2,
    "acc_rank": 39,
    "tv_share": 0.178,
@@ -502,8 +502,8 @@
    "breadth": 0.31,
    "vratio": 1.14,
    "top": "Siemens Energy AG, Siemens AG, AIXTRON SE",
-   "flow_score": 2.7,
-   "flow": "Money coming in"
+   "flow_score": 2.3,
+   "flow": "No clear direction"
   },
   {
    "market": "Germany",
@@ -512,7 +512,7 @@
    "sector": "Finance",
    "n": 14,
    "r1m": 1.3,
-   "r3m": -1.3,
+   "r3m": -1.1,
    "mom_rel": -4.4,
    "acc_rank": 44,
    "tv_share": 0.198,
@@ -520,8 +520,8 @@
    "breadth": 0.5,
    "vratio": 1.07,
    "top": "Allianz SE, Deutsche Bank Aktiengesellschaft, Munchener Ruckversicherungs-Gesellschaft AG",
-   "flow_score": -2.7,
-   "flow": "Money leaving"
+   "flow_score": -2.3,
+   "flow": "No clear direction"
   },
   {
    "market": "Germany",
@@ -529,16 +529,16 @@
    "group": "Communications",
    "sector": "Communications",
    "n": 4,
-   "r1m": -1.6,
-   "r3m": 7.8,
-   "mom_rel": -5.5,
-   "acc_rank": 35,
+   "r1m": -1.5,
+   "r3m": 8.0,
+   "mom_rel": -5.6,
+   "acc_rank": 36,
    "tv_share": 0.052,
    "tv_usd_m": 228,
    "breadth": 0.25,
    "vratio": 1.01,
    "top": "Deutsche Telekom AG, freenet AG, United Internet AG",
-   "flow_score": -4.8,
+   "flow_score": -4.6,
    "flow": "Money leaving"
   },
   {
@@ -548,15 +548,15 @@
    "sector": "Electronic Technology",
    "n": 9,
    "r1m": -4.6,
-   "r3m": -10.3,
+   "r3m": -10.1,
    "mom_rel": 30.3,
-   "acc_rank": 53,
+   "acc_rank": 54,
    "tv_share": 0.125,
    "tv_usd_m": 550,
    "breadth": 0.33,
    "vratio": 1.04,
    "top": "Infineon Technologies AG, Rheinmetall AG, MTU Aero Engines AG",
-   "flow_score": 5.9,
+   "flow_score": 5.8,
    "flow": "Strong inflow"
   },
   {
@@ -566,15 +566,15 @@
    "sector": "Transportation",
    "n": 5,
    "r1m": -1.1,
-   "r3m": 1.5,
-   "mom_rel": 18.5,
-   "acc_rank": 52,
+   "r3m": 1.7,
+   "mom_rel": 18.4,
+   "acc_rank": 53,
    "tv_share": 0.033,
    "tv_usd_m": 146,
    "breadth": 0.6,
    "vratio": 0.85,
    "top": "DHL AG, Deutsche Lufthansa AG, Delivery Hero SE",
-   "flow_score": 1.6,
+   "flow_score": 1.2,
    "flow": "No clear direction"
   },
   {
@@ -584,15 +584,15 @@
    "sector": "Health Technology",
    "n": 10,
    "r1m": 3.2,
-   "r3m": 6.6,
+   "r3m": 6.8,
    "mom_rel": 10.3,
-   "acc_rank": 53,
+   "acc_rank": 54,
    "tv_share": 0.047,
    "tv_usd_m": 206,
    "breadth": 0.7,
    "vratio": 1.11,
    "top": "Bayer AG, Merck KGaA, Siemens Healthineers AG",
-   "flow_score": 0.5,
+   "flow_score": 0.0,
    "flow": "No clear direction"
   },
   {
@@ -602,7 +602,7 @@
    "sector": "Utilities",
    "n": 5,
    "r1m": -0.9,
-   "r3m": 3.5,
+   "r3m": 3.7,
    "mom_rel": 16.8,
    "acc_rank": 59,
    "tv_share": 0.032,
@@ -610,7 +610,7 @@
    "breadth": 0.2,
    "vratio": 0.91,
    "top": "RWE AG, E.ON SE, Uniper SE",
-   "flow_score": 3.8,
+   "flow_score": 3.5,
    "flow": "Money coming in"
   },
   {
@@ -619,8 +619,8 @@
    "group": "Process Industries",
    "sector": "Process Industries",
    "n": 9,
-   "r1m": -1.0,
-   "r3m": 4.9,
+   "r1m": -0.9,
+   "r3m": 5.1,
    "mom_rel": 25.0,
    "acc_rank": 71,
    "tv_share": 0.045,
@@ -628,7 +628,7 @@
    "breadth": 0.44,
    "vratio": 0.98,
    "top": "BASF SE, Symrise AG, Evonik Industries AG",
-   "flow_score": 7.0,
+   "flow_score": 6.9,
    "flow": "Strong inflow"
   },
   {
@@ -637,8 +637,8 @@
    "group": "Consumer Durables",
    "sector": "Consumer Durables",
    "n": 6,
-   "r1m": -2.2,
-   "r3m": -8.9,
+   "r1m": -2.1,
+   "r3m": -8.7,
    "mom_rel": -8.0,
    "acc_rank": 18,
    "tv_share": 0.064,
@@ -646,7 +646,7 @@
    "breadth": 0.0,
    "vratio": 0.98,
    "top": "Mercedes-Benz Group AG, Bayerische Motoren Werke AG, Daimler Truck Holding AG",
-   "flow_score": -7.0,
+   "flow_score": -6.9,
    "flow": "Strong outflow"
   },
   {
@@ -656,15 +656,15 @@
    "sector": "Consumer Non-Durables",
    "n": 5,
    "r1m": 6.1,
-   "r3m": 5.8,
+   "r3m": 6.0,
    "mom_rel": 2.2,
-   "acc_rank": 58,
+   "acc_rank": 59,
    "tv_share": 0.035,
    "tv_usd_m": 156,
    "breadth": 0.8,
    "vratio": 1.0,
    "top": "adidas AG, Beiersdorf AG, PUMA SE",
-   "flow_score": -0.5,
+   "flow_score": -1.2,
    "flow": "No clear direction"
   },
   {
@@ -673,8 +673,8 @@
    "group": "Non-Energy Minerals",
    "sector": "Non-Energy Minerals",
    "n": 4,
-   "r1m": -7.5,
-   "r3m": -10.0,
+   "r1m": -7.4,
+   "r3m": -9.8,
    "mom_rel": 30.8,
    "acc_rank": 30,
    "tv_share": 0.029,
@@ -682,26 +682,8 @@
    "breadth": 0.0,
    "vratio": 0.98,
    "top": "Heidelberg Materials AG, thyssenkrupp AG, Aurubis AG",
-   "flow_score": 4.8,
+   "flow_score": 4.6,
    "flow": "Money coming in"
-  },
-  {
-   "market": "Germany",
-   "level": "sector",
-   "group": "Retail Trade",
-   "sector": "Retail Trade",
-   "n": 3,
-   "r1m": 7.7,
-   "r3m": 12.2,
-   "mom_rel": -5.5,
-   "acc_rank": 60,
-   "tv_share": 0.006,
-   "tv_usd_m": 29,
-   "breadth": 1.0,
-   "vratio": 0.84,
-   "top": "Zalando SE, CECONOMY AG TEMP, CECONOMY AG",
-   "flow_score": -1.6,
-   "flow": "No clear direction"
   },
   {
    "market": "Germany",
@@ -709,16 +691,16 @@
    "group": "Consumer Services",
    "sector": "Consumer Services",
    "n": 3,
-   "r1m": 7.2,
-   "r3m": 7.7,
+   "r1m": 7.3,
+   "r3m": 7.9,
    "mom_rel": -16.8,
-   "acc_rank": 65,
+   "acc_rank": 66,
    "tv_share": 0.007,
    "tv_usd_m": 33,
    "breadth": 1.0,
    "vratio": 0.91,
    "top": "TUI AG, CTS Eventim AG & Co. KGaA, Springer Nature AG & Co. KGaA",
-   "flow_score": -3.8,
+   "flow_score": -3.5,
    "flow": "Money leaving"
   },
   {
@@ -728,7 +710,7 @@
    "sector": "Producer Manufacturing",
    "n": 7,
    "r1m": -2.3,
-   "r3m": -2.7,
+   "r3m": -2.5,
    "mom_rel": 15.4,
    "acc_rank": 30,
    "tv_share": 0.082,
@@ -746,7 +728,7 @@
    "sector": "Utilities",
    "n": 5,
    "r1m": -0.9,
-   "r3m": 3.5,
+   "r3m": 3.7,
    "mom_rel": 16.8,
    "acc_rank": 59,
    "tv_share": 0.032,
@@ -763,8 +745,8 @@
    "group": "Aerospace & Defense",
    "sector": "Electronic Technology",
    "n": 4,
-   "r1m": 1.0,
-   "r3m": -9.3,
+   "r1m": 1.1,
+   "r3m": -9.1,
    "mom_rel": -28.3,
    "acc_rank": 59,
    "tv_share": 0.066,
@@ -782,7 +764,7 @@
    "sector": "Health Technology",
    "n": 7,
    "r1m": 1.9,
-   "r3m": 7.6,
+   "r3m": 7.8,
    "mom_rel": -0.4,
    "acc_rank": 55,
    "tv_share": 0.012,
@@ -800,9 +782,9 @@
    "sector": "Process Industries",
    "n": 4,
    "r1m": -1.2,
-   "r3m": 2.4,
+   "r3m": 2.6,
    "mom_rel": 35.8,
-   "acc_rank": 79,
+   "acc_rank": 80,
    "tv_share": 0.036,
    "tv_usd_m": 158,
    "breadth": 0.25,
@@ -818,7 +800,7 @@
    "sector": "Consumer Durables",
    "n": 5,
    "r1m": -2.0,
-   "r3m": -10.1,
+   "r3m": -9.9,
    "mom_rel": -10.0,
    "acc_rank": 10,
    "tv_share": 0.058,
@@ -835,8 +817,8 @@
    "group": "Auto Parts: OEM",
    "sector": "Producer Manufacturing",
    "n": 4,
-   "r1m": -6.7,
-   "r3m": -9.9,
+   "r1m": -6.6,
+   "r3m": -9.7,
    "mom_rel": -3.1,
    "acc_rank": 29,
    "tv_share": 0.008,
@@ -853,8 +835,8 @@
    "group": "Real Estate Development",
    "sector": "Finance",
    "n": 4,
-   "r1m": -0.6,
-   "r3m": -15.4,
+   "r1m": -0.5,
+   "r3m": -15.2,
    "mom_rel": -31.6,
    "acc_rank": 24,
    "tv_share": 0.024,
@@ -871,12 +853,12 @@
    "group": "Finance",
    "sector": "Finance",
    "n": 25,
-   "r1m": 1.5,
-   "r3m": 0.0,
+   "r1m": 1.6,
+   "r3m": -0.0,
    "mom_rel": -4.8,
    "acc_rank": 56,
    "tv_share": 0.377,
-   "tv_usd_m": 3832,
+   "tv_usd_m": 3834,
    "breadth": 0.8,
    "vratio": 0.95,
    "top": "Toronto-Dominion Bank, Royal Bank of Canada, Bank of Montreal",
@@ -907,7 +889,7 @@
    "group": "Industrial Services",
    "sector": "Industrial Services",
    "n": 9,
-   "r1m": 5.4,
+   "r1m": 5.5,
    "r3m": 2.1,
    "mom_rel": -19.3,
    "acc_rank": 37,
@@ -925,8 +907,8 @@
    "group": "Non-Energy Minerals",
    "sector": "Non-Energy Minerals",
    "n": 32,
-   "r1m": -18.6,
-   "r3m": -2.6,
+   "r1m": -18.5,
+   "r3m": -2.5,
    "mom_rel": 19.7,
    "acc_rank": 60,
    "tv_share": 0.128,
@@ -944,7 +926,7 @@
    "sector": "Transportation",
    "n": 4,
    "r1m": -8.7,
-   "r3m": -8.0,
+   "r3m": -8.2,
    "mom_rel": 18.2,
    "acc_rank": 27,
    "tv_share": 0.028,
@@ -962,7 +944,7 @@
    "sector": "Retail Trade",
    "n": 8,
    "r1m": 7.4,
-   "r3m": 4.2,
+   "r3m": 4.0,
    "mom_rel": -8.0,
    "acc_rank": 47,
    "tv_share": 0.041,
@@ -980,7 +962,7 @@
    "sector": "Technology Services",
    "n": 6,
    "r1m": 8.7,
-   "r3m": 12.6,
+   "r3m": 12.5,
    "mom_rel": -23.7,
    "acc_rank": 65,
    "tv_share": 0.034,
@@ -997,7 +979,7 @@
    "group": "Electronic Technology",
    "sector": "Electronic Technology",
    "n": 3,
-   "r1m": -14.3,
+   "r1m": -14.2,
    "r3m": -10.4,
    "mom_rel": 11.1,
    "acc_rank": 40,
@@ -1015,7 +997,7 @@
    "group": "Process Industries",
    "sector": "Process Industries",
    "n": 3,
-   "r1m": 4.3,
+   "r1m": 4.4,
    "r3m": 12.8,
    "mom_rel": 22.0,
    "acc_rank": 38,
@@ -1033,7 +1015,7 @@
    "group": "Utilities",
    "sector": "Utilities",
    "n": 8,
-   "r1m": 3.3,
+   "r1m": 3.4,
    "r3m": -2.7,
    "mom_rel": -9.1,
    "acc_rank": 59,
@@ -1052,13 +1034,13 @@
    "sector": "Communications",
    "n": 4,
    "r1m": 1.6,
-   "r3m": -4.6,
+   "r3m": -4.8,
    "mom_rel": -28.3,
    "acc_rank": 48,
    "tv_share": 0.03,
-   "tv_usd_m": 305,
+   "tv_usd_m": 306,
    "breadth": 0.5,
-   "vratio": 1.05,
+   "vratio": 1.06,
    "top": "BCE Inc., Rogers Communications Inc. Class B, TELUS Corporation",
    "flow_score": -5.8,
    "flow": "Strong outflow"
@@ -1069,12 +1051,12 @@
    "group": "Distribution Services",
    "sector": "Distribution Services",
    "n": 3,
-   "r1m": -9.9,
-   "r3m": -0.5,
+   "r1m": -10.0,
+   "r3m": -0.8,
    "mom_rel": 1.2,
    "acc_rank": 33,
    "tv_share": 0.008,
-   "tv_usd_m": 77,
+   "tv_usd_m": 78,
    "breadth": 0.33,
    "vratio": 0.83,
    "top": "Toromont Industries Ltd., Finning International Inc., Groupe Dynamite Inc.",
@@ -1087,7 +1069,7 @@
    "group": "Consumer Non-Durables",
    "sector": "Consumer Non-Durables",
    "n": 3,
-   "r1m": -5.1,
+   "r1m": -5.0,
    "r3m": -10.4,
    "mom_rel": -26.7,
    "acc_rank": 35,
@@ -1105,12 +1087,12 @@
    "group": "Major Banks",
    "sector": "Finance",
    "n": 5,
-   "r1m": -0.9,
+   "r1m": -0.8,
    "r3m": 0.6,
    "mom_rel": 19.5,
    "acc_rank": 73,
    "tv_share": 0.273,
-   "tv_usd_m": 2777,
+   "tv_usd_m": 2779,
    "breadth": 0.8,
    "vratio": 1.19,
    "top": "Toronto-Dominion Bank, Royal Bank of Canada, Bank of Montreal",
@@ -1123,8 +1105,8 @@
    "group": "Integrated Oil",
    "sector": "Energy Minerals",
    "n": 7,
-   "r1m": 7.5,
-   "r3m": 12.9,
+   "r1m": 7.6,
+   "r3m": 12.8,
    "mom_rel": 42.4,
    "acc_rank": 41,
    "tv_share": 0.115,
@@ -1141,7 +1123,7 @@
    "group": "Oil & Gas Pipelines",
    "sector": "Industrial Services",
    "n": 5,
-   "r1m": 5.5,
+   "r1m": 5.6,
    "r3m": -3.6,
    "mom_rel": -0.2,
    "acc_rank": 25,
@@ -1159,8 +1141,8 @@
    "group": "Investment Managers",
    "sector": "Finance",
    "n": 4,
-   "r1m": 0.8,
-   "r3m": -1.3,
+   "r1m": 0.9,
+   "r3m": -1.4,
    "mom_rel": -14.9,
    "acc_rank": 64,
    "tv_share": 0.018,
@@ -1177,12 +1159,12 @@
    "group": "Precious Metals",
    "sector": "Non-Energy Minerals",
    "n": 22,
-   "r1m": -18.6,
+   "r1m": -18.5,
    "r3m": -0.4,
    "mom_rel": 23.2,
    "acc_rank": 64,
    "tv_share": 0.084,
-   "tv_usd_m": 852,
+   "tv_usd_m": 853,
    "breadth": 0.0,
    "vratio": 0.85,
    "top": "Barrick Mining Corporation, Agnico Eagle Mines Limited, Kinross Gold Corporation",
@@ -1196,7 +1178,7 @@
    "sector": "Retail Trade",
    "n": 4,
    "r1m": 4.7,
-   "r3m": 4.4,
+   "r3m": 4.2,
    "mom_rel": -9.8,
    "acc_rank": 34,
    "tv_share": 0.014,
@@ -1213,8 +1195,8 @@
    "group": "Packaged Software",
    "sector": "Technology Services",
    "n": 4,
-   "r1m": 5.3,
-   "r3m": 10.6,
+   "r1m": 5.4,
+   "r3m": 10.5,
    "mom_rel": -12.4,
    "acc_rank": 64,
    "tv_share": 0.022,
@@ -1231,12 +1213,12 @@
    "group": "Other Metals/Minerals",
    "sector": "Non-Energy Minerals",
    "n": 9,
-   "r1m": -19.7,
-   "r3m": -8.8,
+   "r1m": -19.5,
+   "r3m": -8.7,
    "mom_rel": 13.8,
    "acc_rank": 44,
    "tv_share": 0.043,
-   "tv_usd_m": 433,
+   "tv_usd_m": 432,
    "breadth": 0.0,
    "vratio": 1.05,
    "top": "Cameco Corporation, Teck Resources Limited Class B, First Quantum Minerals Ltd.",
@@ -1249,8 +1231,8 @@
    "group": "Electric Utilities",
    "sector": "Utilities",
    "n": 6,
-   "r1m": 4.0,
-   "r3m": -2.7,
+   "r1m": 4.1,
+   "r3m": -2.6,
    "mom_rel": -14.9,
    "acc_rank": 58,
    "tv_share": 0.031,
@@ -1273,8 +1255,8 @@
    "industry": "Pharmaceuticals: Major",
    "P": 0.133,
    "mom_rel": -28.5,
-   "tv_usd_m": 180.7,
-   "tv_msek": 1775.8,
+   "tv_usd_m": 180.8,
+   "tv_msek": 1774.4,
    "basis": "none"
   },
   {
@@ -1288,7 +1270,7 @@
    "P": 0.805,
    "mom_rel": 19.5,
    "tv_usd_m": 97.5,
-   "tv_msek": 957.8,
+   "tv_msek": 957.0,
    "basis": "none"
   },
   {
@@ -1302,7 +1284,7 @@
    "P": 0.336,
    "mom_rel": -33.4,
    "tv_usd_m": 24.0,
-   "tv_msek": 236.1,
+   "tv_msek": 235.9,
    "basis": "none"
   },
   {
@@ -1330,7 +1312,7 @@
    "P": 0.867,
    "mom_rel": 77.1,
    "tv_usd_m": 44.7,
-   "tv_msek": 439.2,
+   "tv_msek": 438.9,
    "basis": "in"
   },
   {
@@ -1413,8 +1395,8 @@
    "industry": "Chemicals: Specialty",
    "P": 0.727,
    "mom_rel": -0.5,
-   "tv_usd_m": 45.5,
-   "tv_msek": 447.5,
+   "tv_usd_m": 45.6,
+   "tv_msek": 447.1,
    "basis": "in"
   },
   {
@@ -1470,7 +1452,7 @@
    "P": 0.711,
    "mom_rel": 5.2,
    "tv_usd_m": 33.9,
-   "tv_msek": 332.9,
+   "tv_msek": 332.6,
    "basis": "out"
   },
   {
@@ -1511,8 +1493,8 @@
    "industry": "Other Consumer Specialties",
    "P": 0.273,
    "mom_rel": -11.3,
-   "tv_usd_m": 27.3,
-   "tv_msek": 268.7,
+   "tv_usd_m": 27.4,
+   "tv_msek": 268.5,
    "basis": "out"
   },
   {
@@ -1526,7 +1508,7 @@
    "P": 0.633,
    "mom_rel": 35.3,
    "tv_usd_m": 10.6,
-   "tv_msek": 104.4,
+   "tv_msek": 104.3,
    "basis": "none"
   },
   {
@@ -1540,7 +1522,7 @@
    "P": 0.055,
    "mom_rel": -29.8,
    "tv_usd_m": 2.4,
-   "tv_msek": 23.3,
+   "tv_msek": 23.2,
    "basis": "none"
   },
   {
@@ -1568,7 +1550,7 @@
    "P": 0.07,
    "mom_rel": -22.9,
    "tv_usd_m": 11.4,
-   "tv_msek": 112.1,
+   "tv_msek": 112.0,
    "basis": "none"
   },
   {
@@ -1582,7 +1564,7 @@
    "P": 0.492,
    "mom_rel": 5.8,
    "tv_usd_m": 9.4,
-   "tv_msek": 92.5,
+   "tv_msek": 92.4,
    "basis": "none"
   },
   {
@@ -1638,7 +1620,7 @@
    "P": 0.602,
    "mom_rel": 8.6,
    "tv_usd_m": 8.1,
-   "tv_msek": 79.6,
+   "tv_msek": 79.5,
    "basis": "out"
   },
   {
@@ -1694,7 +1676,7 @@
    "P": 0.493,
    "mom_rel": 13.2,
    "tv_usd_m": 95.7,
-   "tv_msek": 940.7,
+   "tv_msek": 939.4,
    "basis": "none"
   },
   {
@@ -1708,7 +1690,7 @@
    "P": 0.55,
    "mom_rel": -12.1,
    "tv_usd_m": 38.1,
-   "tv_msek": 374.2,
+   "tv_msek": 373.6,
    "basis": "none"
   },
   {
@@ -1736,7 +1718,7 @@
    "P": 0.893,
    "mom_rel": 33.0,
    "tv_usd_m": 1.8,
-   "tv_msek": 18.2,
+   "tv_msek": 18.1,
    "basis": "in"
   },
   {
@@ -1750,7 +1732,7 @@
    "P": 0.836,
    "mom_rel": 36.9,
    "tv_usd_m": 137.0,
-   "tv_msek": 1346.5,
+   "tv_msek": 1344.6,
    "basis": "in"
   },
   {
@@ -1848,7 +1830,7 @@
    "P": 0.279,
    "mom_rel": -13.5,
    "tv_usd_m": 3.2,
-   "tv_msek": 31.8,
+   "tv_msek": 31.7,
    "basis": "out"
   },
   {
@@ -1904,7 +1886,7 @@
    "P": 0.736,
    "mom_rel": -2.2,
    "tv_usd_m": 6.7,
-   "tv_msek": 65.8,
+   "tv_msek": 65.7,
    "basis": "none"
   },
   {
@@ -1918,7 +1900,7 @@
    "P": 0.979,
    "mom_rel": 121.0,
    "tv_usd_m": 3.4,
-   "tv_msek": 33.1,
+   "tv_msek": 33.0,
    "basis": "none"
   },
   {
@@ -1946,7 +1928,7 @@
    "P": 0.936,
    "mom_rel": 68.6,
    "tv_usd_m": 5.6,
-   "tv_msek": 54.7,
+   "tv_msek": 54.6,
    "basis": "in"
   },
   {
@@ -2002,7 +1984,7 @@
    "P": 0.821,
    "mom_rel": 52.3,
    "tv_usd_m": 2.0,
-   "tv_msek": 19.6,
+   "tv_msek": 19.5,
    "basis": "in"
   },
   {
@@ -2016,7 +1998,7 @@
    "P": 0.707,
    "mom_rel": 77.5,
    "tv_usd_m": 2.3,
-   "tv_msek": 22.6,
+   "tv_msek": 22.5,
    "basis": "in"
   },
   {
@@ -2114,7 +2096,7 @@
    "P": 0.024,
    "mom_rel": -44.5,
    "tv_usd_m": 7.8,
-   "tv_msek": 76.2,
+   "tv_msek": 76.1,
    "basis": "out"
   },
   {
@@ -2125,10 +2107,10 @@
    "ticker": "G24",
    "full_name": "Scout24 SE",
    "industry": "Internet Software/Services",
-   "P": 0.118,
+   "P": 0.119,
    "mom_rel": -33.9,
    "tv_usd_m": 30.7,
-   "tv_msek": 301.7,
+   "tv_msek": 301.3,
    "basis": "out"
   },
   {
@@ -2139,10 +2121,10 @@
    "ticker": "NEM",
    "full_name": "Nemetschek SE",
    "industry": "Packaged Software",
-   "P": 0.193,
+   "P": 0.195,
    "mom_rel": -40.4,
    "tv_usd_m": 17.7,
-   "tv_msek": 173.6,
+   "tv_msek": 173.4,
    "basis": "out"
   },
   {
@@ -2153,81 +2135,81 @@
    "ticker": "ENR",
    "full_name": "Siemens Energy AG",
    "industry": "Electrical Products",
-   "P": 0.901,
-   "mom_rel": 31.5,
-   "tv_usd_m": 340.3,
-   "tv_msek": 3343.9,
-   "basis": "in"
+   "P": 0.9,
+   "mom_rel": 31.4,
+   "tv_usd_m": 340.2,
+   "tv_msek": 3339.1,
+   "basis": "none"
   },
   {
    "market": "Germany",
    "sector": "Producer Manufacturing",
    "rank": 2,
-   "sym": "XETR:NDX1",
-   "ticker": "NDX1",
-   "full_name": "Nordex SE",
-   "industry": "Electrical Products",
-   "P": 0.825,
-   "mom_rel": 49.0,
-   "tv_usd_m": 22.6,
-   "tv_msek": 222.5,
-   "basis": "in"
+   "sym": "XETR:SIE",
+   "ticker": "SIE",
+   "full_name": "Siemens AG",
+   "industry": "Industrial Machinery",
+   "P": 0.595,
+   "mom_rel": 9.4,
+   "tv_usd_m": 275.0,
+   "tv_msek": 2698.8,
+   "basis": "none"
   },
   {
    "market": "Germany",
    "sector": "Producer Manufacturing",
    "rank": 3,
-   "sym": "XETR:DEZ",
-   "ticker": "DEZ",
-   "full_name": "DEUTZ AG",
-   "industry": "Trucks/Construction/Farm Machinery",
-   "P": 0.712,
-   "mom_rel": 25.4,
-   "tv_usd_m": 8.6,
-   "tv_msek": 84.4,
-   "basis": "in"
+   "sym": "XETR:AIXA",
+   "ticker": "AIXA",
+   "full_name": "AIXTRON SE",
+   "industry": "Industrial Machinery",
+   "P": 0.71,
+   "mom_rel": 164.3,
+   "tv_usd_m": 33.1,
+   "tv_msek": 324.8,
+   "basis": "none"
   },
   {
    "market": "Germany",
    "sector": "Finance",
    "rank": 1,
-   "sym": "XETR:VNA",
-   "ticker": "VNA",
-   "full_name": "Vonovia SE",
-   "industry": "Real Estate Development",
-   "P": 0.014,
-   "mom_rel": -37.1,
-   "tv_usd_m": 65.4,
-   "tv_msek": 642.4,
-   "basis": "out"
+   "sym": "XETR:ALV",
+   "ticker": "ALV",
+   "full_name": "Allianz SE",
+   "industry": "Multi-Line Insurance",
+   "P": 0.567,
+   "mom_rel": 16.9,
+   "tv_usd_m": 190.7,
+   "tv_msek": 1871.9,
+   "basis": "none"
   },
   {
    "market": "Germany",
    "sector": "Finance",
    "rank": 2,
-   "sym": "XETR:FTK",
-   "ticker": "FTK",
-   "full_name": "flatexDEGIRO SE",
+   "sym": "XETR:DBK",
+   "ticker": "DBK",
+   "full_name": "Deutsche Bank Aktiengesellschaft",
    "industry": "Investment Banks/Brokers",
-   "P": 0.061,
-   "mom_rel": -16.2,
-   "tv_usd_m": 13.2,
-   "tv_msek": 129.9,
-   "basis": "out"
+   "P": 0.395,
+   "mom_rel": -1.1,
+   "tv_usd_m": 164.1,
+   "tv_msek": 1611.2,
+   "basis": "none"
   },
   {
    "market": "Germany",
    "sector": "Finance",
    "rank": 3,
-   "sym": "XETR:LEG",
-   "ticker": "LEG",
-   "full_name": "LEG Immobilien SE",
-   "industry": "Real Estate Development",
-   "P": 0.127,
-   "mom_rel": -33.4,
-   "tv_usd_m": 30.2,
-   "tv_msek": 296.8,
-   "basis": "out"
+   "sym": "XETR:MUV2",
+   "ticker": "MUV2",
+   "full_name": "Munchener Ruckversicherungs-Gesellschaft AG",
+   "industry": "Life/Health Insurance",
+   "P": 0.529,
+   "mom_rel": -8.4,
+   "tv_usd_m": 132.5,
+   "tv_msek": 1300.3,
+   "basis": "none"
   },
   {
    "market": "Germany",
@@ -2240,7 +2222,7 @@
    "P": 0.09,
    "mom_rel": -17.4,
    "tv_usd_m": 7.7,
-   "tv_msek": 75.8,
+   "tv_msek": 75.7,
    "basis": "out"
   },
   {
@@ -2251,10 +2233,10 @@
    "ticker": "DTE",
    "full_name": "Deutsche Telekom AG",
    "industry": "Major Telecommunications",
-   "P": 0.212,
+   "P": 0.214,
    "mom_rel": -4.4,
-   "tv_usd_m": 215.6,
-   "tv_msek": 2118.5,
+   "tv_usd_m": 215.5,
+   "tv_msek": 2115.5,
    "basis": "out"
   },
   {
@@ -2265,7 +2247,7 @@
    "ticker": "UTDI",
    "full_name": "United Internet AG",
    "industry": "Major Telecommunications",
-   "P": 0.325,
+   "P": 0.329,
    "mom_rel": -11.2,
    "tv_usd_m": 3.6,
    "tv_msek": 35.0,
@@ -2282,7 +2264,7 @@
    "P": 0.995,
    "mom_rel": 110.3,
    "tv_usd_m": 5.2,
-   "tv_msek": 50.8,
+   "tv_msek": 50.7,
    "basis": "in"
   },
   {
@@ -2293,10 +2275,10 @@
    "ticker": "WAF",
    "full_name": "Siltronic AG",
    "industry": "Semiconductors",
-   "P": 0.844,
+   "P": 0.843,
    "mom_rel": 45.5,
    "tv_usd_m": 9.5,
-   "tv_msek": 93.5,
+   "tv_msek": 93.4,
    "basis": "in"
   },
   {
@@ -2307,10 +2289,10 @@
    "ticker": "IFX",
    "full_name": "Infineon Technologies AG",
    "industry": "Semiconductors",
-   "P": 0.816,
+   "P": 0.814,
    "mom_rel": 71.8,
-   "tv_usd_m": 234.6,
-   "tv_msek": 2305.2,
+   "tv_usd_m": 234.5,
+   "tv_msek": 2301.9,
    "basis": "in"
   },
   {
@@ -2324,7 +2306,7 @@
    "P": 0.948,
    "mom_rel": 38.7,
    "tv_usd_m": 87.8,
-   "tv_msek": 863.0,
+   "tv_msek": 861.8,
    "basis": "none"
   },
   {
@@ -2335,10 +2317,10 @@
    "ticker": "LHA",
    "full_name": "Deutsche Lufthansa AG",
    "industry": "Airlines",
-   "P": 0.259,
+   "P": 0.262,
    "mom_rel": -1.4,
-   "tv_usd_m": 32.7,
-   "tv_msek": 320.9,
+   "tv_usd_m": 32.6,
+   "tv_msek": 320.4,
    "basis": "none"
   },
   {
@@ -2349,10 +2331,10 @@
    "ticker": "DHER",
    "full_name": "Delivery Hero SE",
    "industry": "Air Freight/Couriers",
-   "P": 0.873,
+   "P": 0.881,
    "mom_rel": 63.6,
    "tv_usd_m": 16.9,
-   "tv_msek": 165.9,
+   "tv_msek": 165.7,
    "basis": "none"
   },
   {
@@ -2363,10 +2345,10 @@
    "ticker": "BAYN",
    "full_name": "Bayer AG",
    "industry": "Pharmaceuticals: Major",
-   "P": 0.958,
+   "P": 0.957,
    "mom_rel": 67.1,
    "tv_usd_m": 109.4,
-   "tv_msek": 1074.9,
+   "tv_msek": 1073.4,
    "basis": "none"
   },
   {
@@ -2377,10 +2359,10 @@
    "ticker": "MRK",
    "full_name": "Merck KGaA",
    "industry": "Pharmaceuticals: Major",
-   "P": 0.646,
+   "P": 0.652,
    "mom_rel": 17.1,
    "tv_usd_m": 42.4,
-   "tv_msek": 416.4,
+   "tv_msek": 415.8,
    "basis": "none"
   },
   {
@@ -2391,10 +2373,10 @@
    "ticker": "SHL",
    "full_name": "Siemens Healthineers AG",
    "industry": "Medical Specialties",
-   "P": 0.401,
+   "P": 0.405,
    "mom_rel": -23.9,
    "tv_usd_m": 40.7,
-   "tv_msek": 400.2,
+   "tv_msek": 399.6,
    "basis": "none"
   },
   {
@@ -2405,10 +2387,10 @@
    "ticker": "RWE",
    "full_name": "RWE AG",
    "industry": "Electric Utilities",
-   "P": 0.939,
+   "P": 0.938,
    "mom_rel": 35.5,
    "tv_usd_m": 70.9,
-   "tv_msek": 696.5,
+   "tv_msek": 695.5,
    "basis": "in"
   },
   {
@@ -2419,10 +2401,10 @@
    "ticker": "UN0",
    "full_name": "Uniper SE",
    "industry": "Electric Utilities",
-   "P": 0.693,
+   "P": 0.7,
    "mom_rel": 52.2,
    "tv_usd_m": 0.2,
-   "tv_msek": 1.7,
+   "tv_msek": 1.6,
    "basis": "in"
   },
   {
@@ -2433,10 +2415,10 @@
    "ticker": "EOAN",
    "full_name": "E.ON SE",
    "industry": "Electric Utilities",
-   "P": 0.684,
+   "P": 0.69,
    "mom_rel": 2.5,
    "tv_usd_m": 69.8,
-   "tv_msek": 685.7,
+   "tv_msek": 684.7,
    "basis": "in"
   },
   {
@@ -2450,7 +2432,7 @@
    "P": 0.976,
    "mom_rel": 40.5,
    "tv_usd_m": 28.0,
-   "tv_msek": 275.2,
+   "tv_msek": 274.8,
    "basis": "in"
   },
   {
@@ -2475,10 +2457,10 @@
    "ticker": "SY1",
    "full_name": "Symrise AG",
    "industry": "Chemicals: Specialty",
-   "P": 0.892,
+   "P": 0.89,
    "mom_rel": 24.5,
    "tv_usd_m": 44.3,
-   "tv_msek": 435.4,
+   "tv_msek": 434.7,
    "basis": "in"
   },
   {
@@ -2492,7 +2474,7 @@
    "P": 0.005,
    "mom_rel": -26.7,
    "tv_usd_m": 6.0,
-   "tv_msek": 58.6,
+   "tv_msek": 58.5,
    "basis": "out"
   },
   {
@@ -2506,7 +2488,7 @@
    "P": 0.033,
    "mom_rel": -30.1,
    "tv_usd_m": 109.2,
-   "tv_msek": 1073.2,
+   "tv_msek": 1071.6,
    "basis": "out"
   },
   {
@@ -2520,7 +2502,7 @@
    "P": 0.071,
    "mom_rel": -33.5,
    "tv_usd_m": 86.7,
-   "tv_msek": 851.7,
+   "tv_msek": 850.5,
    "basis": "out"
   },
   {
@@ -2531,10 +2513,10 @@
    "ticker": "ADS",
    "full_name": "adidas AG",
    "industry": "Apparel/Footwear",
-   "P": 0.505,
+   "P": 0.51,
    "mom_rel": -14.3,
-   "tv_usd_m": 94.3,
-   "tv_msek": 926.4,
+   "tv_usd_m": 94.2,
+   "tv_msek": 925.1,
    "basis": "none"
   },
   {
@@ -2545,10 +2527,10 @@
    "ticker": "BEI",
    "full_name": "Beiersdorf AG",
    "industry": "Household/Personal Care",
-   "P": 0.203,
+   "P": 0.205,
    "mom_rel": -18.8,
    "tv_usd_m": 29.9,
-   "tv_msek": 294.0,
+   "tv_msek": 293.5,
    "basis": "none"
   },
   {
@@ -2559,10 +2541,10 @@
    "ticker": "PUM",
    "full_name": "PUMA SE",
    "industry": "Apparel/Footwear",
-   "P": 0.675,
+   "P": 0.681,
    "mom_rel": 19.7,
-   "tv_usd_m": 16.7,
-   "tv_msek": 163.6,
+   "tv_usd_m": 16.6,
+   "tv_msek": 163.4,
    "basis": "none"
   },
   {
@@ -2573,10 +2555,10 @@
    "ticker": "TKA",
    "full_name": "thyssenkrupp AG",
    "industry": "Steel",
-   "P": 0.92,
+   "P": 0.919,
    "mom_rel": 49.8,
    "tv_usd_m": 30.3,
-   "tv_msek": 297.7,
+   "tv_msek": 297.3,
    "basis": "in"
   },
   {
@@ -2587,10 +2569,10 @@
    "ticker": "SZG",
    "full_name": "Salzgitter AG",
    "industry": "Steel",
-   "P": 0.854,
+   "P": 0.852,
    "mom_rel": 68.6,
    "tv_usd_m": 8.2,
-   "tv_msek": 80.7,
+   "tv_msek": 80.6,
    "basis": "in"
   },
   {
@@ -2601,53 +2583,11 @@
    "ticker": "NDA",
    "full_name": "Aurubis AG",
    "industry": "Other Metals/Minerals",
-   "P": 0.608,
+   "P": 0.614,
    "mom_rel": 34.5,
    "tv_usd_m": 27.0,
-   "tv_msek": 265.4,
+   "tv_msek": 265.0,
    "basis": "in"
-  },
-  {
-   "market": "Germany",
-   "sector": "Retail Trade",
-   "rank": 1,
-   "sym": "XETR:ZAL",
-   "ticker": "ZAL",
-   "full_name": "Zalando SE",
-   "industry": "Internet Retail",
-   "P": 0.458,
-   "mom_rel": -9.8,
-   "tv_usd_m": 27.8,
-   "tv_msek": 273.0,
-   "basis": "none"
-  },
-  {
-   "market": "Germany",
-   "sector": "Retail Trade",
-   "rank": 2,
-   "sym": "XETR:CECV",
-   "ticker": "CECV",
-   "full_name": "CECONOMY AG TEMP",
-   "industry": "Department Stores",
-   "P": 0.778,
-   "mom_rel": -0.0,
-   "tv_usd_m": 0.6,
-   "tv_msek": 6.4,
-   "basis": "none"
-  },
-  {
-   "market": "Germany",
-   "sector": "Retail Trade",
-   "rank": 3,
-   "sym": "XETR:CEC",
-   "ticker": "CEC",
-   "full_name": "CECONOMY AG",
-   "industry": "Department Stores",
-   "P": 0.165,
-   "mom_rel": -6.7,
-   "tv_usd_m": 0.2,
-   "tv_msek": 1.7,
-   "basis": "none"
   },
   {
    "market": "Germany",
@@ -2657,7 +2597,7 @@
    "ticker": "SPG",
    "full_name": "Springer Nature AG & Co. KGaA",
    "industry": "Publishing: Books/Magazines",
-   "P": 0.241,
+   "P": 0.243,
    "mom_rel": -8.8,
    "tv_usd_m": 1.0,
    "tv_msek": 10.2,
@@ -2671,10 +2611,10 @@
    "ticker": "TUI1",
    "full_name": "TUI AG",
    "industry": "Other Consumer Services",
-   "P": 0.316,
+   "P": 0.319,
    "mom_rel": -9.3,
    "tv_usd_m": 18.8,
-   "tv_msek": 184.9,
+   "tv_msek": 184.6,
    "basis": "out"
   },
   {
@@ -2685,10 +2625,10 @@
    "ticker": "EVD",
    "full_name": "CTS Eventim AG & Co. KGaA",
    "industry": "Movies/Entertainment",
-   "P": 0.335,
+   "P": 0.338,
    "mom_rel": -32.4,
    "tv_usd_m": 13.1,
-   "tv_msek": 128.4,
+   "tv_msek": 128.2,
    "basis": "out"
   },
   {
@@ -2701,8 +2641,8 @@
    "industry": "Major Banks",
    "P": 0.988,
    "mom_rel": 27.8,
-   "tv_usd_m": 1051.5,
-   "tv_msek": 10333.4,
+   "tv_usd_m": 1052.0,
+   "tv_msek": 10326.1,
    "basis": "none"
   },
   {
@@ -2715,8 +2655,8 @@
    "industry": "Major Banks",
    "P": 0.955,
    "mom_rel": 17.9,
-   "tv_usd_m": 800.2,
-   "tv_msek": 7863.8,
+   "tv_usd_m": 800.7,
+   "tv_msek": 7859.1,
    "basis": "none"
   },
   {
@@ -2727,10 +2667,10 @@
    "ticker": "BMO",
    "full_name": "Bank of Montreal",
    "industry": "Major Banks",
-   "P": 0.865,
+   "P": 0.873,
    "mom_rel": 16.5,
-   "tv_usd_m": 370.8,
-   "tv_msek": 3644.3,
+   "tv_usd_m": 371.1,
+   "tv_msek": 3642.6,
    "basis": "none"
   },
   {
@@ -2744,7 +2684,7 @@
    "P": 0.996,
    "mom_rel": 94.3,
    "tv_usd_m": 28.3,
-   "tv_msek": 278.0,
+   "tv_msek": 277.9,
    "basis": "in"
   },
   {
@@ -2757,8 +2697,8 @@
    "industry": "Integrated Oil",
    "P": 0.947,
    "mom_rel": 46.8,
-   "tv_usd_m": 79.2,
-   "tv_msek": 778.2,
+   "tv_usd_m": 79.3,
+   "tv_msek": 778.3,
    "basis": "in"
   },
   {
@@ -2772,7 +2712,7 @@
    "P": 0.857,
    "mom_rel": 54.0,
    "tv_usd_m": 291.2,
-   "tv_msek": 2861.9,
+   "tv_msek": 2857.9,
    "basis": "in"
   },
   {
@@ -2786,7 +2726,7 @@
    "P": 0.102,
    "mom_rel": -58.0,
    "tv_usd_m": 29.6,
-   "tv_msek": 290.7,
+   "tv_msek": 290.3,
    "basis": "out"
   },
   {
@@ -2797,10 +2737,10 @@
    "ticker": "WSP",
    "full_name": "WSP Global Inc",
    "industry": "Engineering & Construction",
-   "P": 0.16,
+   "P": 0.168,
    "mom_rel": -54.9,
    "tv_usd_m": 66.5,
-   "tv_msek": 653.1,
+   "tv_msek": 652.8,
    "basis": "out"
   },
   {
@@ -2813,8 +2753,8 @@
    "industry": "Oil & Gas Pipelines",
    "P": 0.266,
    "mom_rel": -17.4,
-   "tv_usd_m": 431.1,
-   "tv_msek": 4236.0,
+   "tv_usd_m": 431.3,
+   "tv_msek": 4233.1,
    "basis": "out"
   },
   {
@@ -2827,8 +2767,8 @@
    "industry": "Other Metals/Minerals",
    "P": 0.93,
    "mom_rel": 33.9,
-   "tv_usd_m": 71.4,
-   "tv_msek": 702.1,
+   "tv_usd_m": 71.5,
+   "tv_msek": 701.9,
    "basis": "in"
   },
   {
@@ -2842,7 +2782,7 @@
    "P": 0.906,
    "mom_rel": 24.2,
    "tv_usd_m": 79.6,
-   "tv_msek": 782.0,
+   "tv_msek": 781.7,
    "basis": "in"
   },
   {
@@ -2855,8 +2795,8 @@
    "industry": "Precious Metals",
    "P": 0.84,
    "mom_rel": 10.5,
-   "tv_usd_m": 131.9,
-   "tv_msek": 1296.4,
+   "tv_usd_m": 132.1,
+   "tv_msek": 1296.2,
    "basis": "in"
   },
   {
@@ -2867,10 +2807,10 @@
    "ticker": "CNR",
    "full_name": "Canadian National Railway Company",
    "industry": "Railroads",
-   "P": 0.668,
+   "P": 0.66,
    "mom_rel": 11.5,
-   "tv_usd_m": 129.0,
-   "tv_msek": 1267.7,
+   "tv_usd_m": 128.7,
+   "tv_msek": 1262.8,
    "basis": "none"
   },
   {
@@ -2883,8 +2823,8 @@
    "industry": "Railroads",
    "P": 0.381,
    "mom_rel": -0.1,
-   "tv_usd_m": 94.7,
-   "tv_msek": 930.9,
+   "tv_usd_m": 94.6,
+   "tv_msek": 928.2,
    "basis": "none"
   },
   {
@@ -2898,7 +2838,7 @@
    "P": 0.463,
    "mom_rel": 18.2,
    "tv_usd_m": 49.9,
-   "tv_msek": 490.4,
+   "tv_msek": 490.0,
    "basis": "none"
   },
   {
@@ -2911,8 +2851,8 @@
    "industry": "Apparel/Footwear Retail",
    "P": 0.742,
    "mom_rel": 3.3,
-   "tv_usd_m": 88.9,
-   "tv_msek": 874.1,
+   "tv_usd_m": 89.0,
+   "tv_msek": 873.8,
    "basis": "none"
   },
   {
@@ -2926,7 +2866,7 @@
    "P": 0.43,
    "mom_rel": -16.9,
    "tv_usd_m": 83.9,
-   "tv_msek": 824.3,
+   "tv_msek": 823.9,
    "basis": "none"
   },
   {
@@ -2939,7 +2879,7 @@
    "industry": "Specialty Stores",
    "P": 0.406,
    "mom_rel": -8.2,
-   "tv_usd_m": 72.8,
+   "tv_usd_m": 72.9,
    "tv_msek": 715.2,
    "basis": "none"
   },
@@ -2953,8 +2893,8 @@
    "industry": "Internet Software/Services",
    "P": 0.119,
    "mom_rel": -54.0,
-   "tv_usd_m": 82.8,
-   "tv_msek": 813.8,
+   "tv_usd_m": 82.9,
+   "tv_msek": 813.5,
    "basis": "out"
   },
   {
@@ -2967,7 +2907,7 @@
    "industry": "Packaged Software",
    "P": 0.127,
    "mom_rel": -58.9,
-   "tv_usd_m": 22.4,
+   "tv_usd_m": 22.5,
    "tv_msek": 220.4,
    "basis": "out"
   },
@@ -2993,10 +2933,10 @@
    "ticker": "BBD.B",
    "full_name": "Bombardier Inc. Class B",
    "industry": "Aerospace & Defense",
-   "P": 0.873,
+   "P": 0.865,
    "mom_rel": 39.4,
-   "tv_usd_m": 46.0,
-   "tv_msek": 451.8,
+   "tv_usd_m": 46.1,
+   "tv_msek": 452.0,
    "basis": "in"
   },
   {
@@ -3007,10 +2947,10 @@
    "ticker": "MDA",
    "full_name": "MDA Space Ltd",
    "industry": "Electronic Production Equipment",
-   "P": 0.504,
+   "P": 0.496,
    "mom_rel": 3.7,
    "tv_usd_m": 40.5,
-   "tv_msek": 397.8,
+   "tv_msek": 397.6,
    "basis": "in"
   },
   {
@@ -3023,8 +2963,8 @@
    "industry": "Electronic Components",
    "P": 0.193,
    "mom_rel": -9.9,
-   "tv_usd_m": 154.6,
-   "tv_msek": 1519.0,
+   "tv_usd_m": 154.5,
+   "tv_msek": 1516.2,
    "basis": "in"
   },
   {
@@ -3038,7 +2978,7 @@
    "P": 0.898,
    "mom_rel": 56.8,
    "tv_usd_m": 12.9,
-   "tv_msek": 126.5,
+   "tv_msek": 126.7,
    "basis": "in"
   },
   {
@@ -3052,7 +2992,7 @@
    "P": 0.455,
    "mom_rel": 1.2,
    "tv_usd_m": 23.2,
-   "tv_msek": 228.1,
+   "tv_msek": 227.7,
    "basis": "in"
   },
   {
@@ -3065,8 +3005,8 @@
    "industry": "Chemicals: Agricultural",
    "P": 0.414,
    "mom_rel": 8.0,
-   "tv_usd_m": 124.0,
-   "tv_msek": 1219.0,
+   "tv_usd_m": 124.1,
+   "tv_msek": 1218.0,
    "basis": "in"
   },
   {
@@ -3079,8 +3019,8 @@
    "industry": "Electric Utilities",
    "P": 0.357,
    "mom_rel": -17.9,
-   "tv_usd_m": 117.1,
-   "tv_msek": 1150.7,
+   "tv_usd_m": 117.2,
+   "tv_msek": 1149.9,
    "basis": "none"
   },
   {
@@ -3094,7 +3034,7 @@
    "P": 0.553,
    "mom_rel": -11.6,
    "tv_usd_m": 91.3,
-   "tv_msek": 896.8,
+   "tv_msek": 896.2,
    "basis": "none"
   },
   {
@@ -3108,7 +3048,7 @@
    "P": 0.299,
    "mom_rel": -20.2,
    "tv_usd_m": 48.0,
-   "tv_msek": 471.7,
+   "tv_msek": 471.4,
    "basis": "none"
   },
   {
@@ -3121,8 +3061,8 @@
    "industry": "Wireless Telecommunications",
    "P": 0.02,
    "mom_rel": -60.9,
-   "tv_usd_m": 66.5,
-   "tv_msek": 653.9,
+   "tv_usd_m": 66.6,
+   "tv_msek": 653.4,
    "basis": "out"
   },
   {
@@ -3135,8 +3075,8 @@
    "industry": "Wireless Telecommunications",
    "P": 0.029,
    "mom_rel": -39.9,
-   "tv_usd_m": 90.1,
-   "tv_msek": 885.1,
+   "tv_usd_m": 90.2,
+   "tv_msek": 884.9,
    "basis": "out"
   },
   {
@@ -3149,8 +3089,8 @@
    "industry": "Major Telecommunications",
    "P": 0.258,
    "mom_rel": -30.6,
-   "tv_usd_m": 114.0,
-   "tv_msek": 1120.4,
+   "tv_usd_m": 114.1,
+   "tv_msek": 1119.9,
    "basis": "out"
   },
   {
@@ -3163,8 +3103,8 @@
    "industry": "Wholesale Distributors",
    "P": 0.684,
    "mom_rel": 24.0,
-   "tv_usd_m": 42.1,
-   "tv_msek": 414.2,
+   "tv_usd_m": 42.2,
+   "tv_msek": 414.4,
    "basis": "none"
   },
   {
@@ -3191,7 +3131,7 @@
    "industry": "Wholesale Distributors",
    "P": 0.004,
    "mom_rel": -48.2,
-   "tv_usd_m": 6.9,
+   "tv_usd_m": 7.0,
    "tv_msek": 68.3,
    "basis": "none"
   },
@@ -3205,7 +3145,7 @@
    "industry": "Apparel/Footwear",
    "P": 0.037,
    "mom_rel": -46.8,
-   "tv_usd_m": 27.8,
+   "tv_usd_m": 27.9,
    "tv_msek": 273.6,
    "basis": "out"
   },
@@ -3234,7 +3174,7 @@
    "P": 0.545,
    "mom_rel": 0.6,
    "tv_usd_m": 15.4,
-   "tv_msek": 151.6,
+   "tv_msek": 151.2,
    "basis": "out"
   }
  ],
@@ -3244,7 +3184,7 @@
    "with_bars": 68,
    "companies": 64,
    "with_year": 64,
-   "fx_to_usd": 0.14923101663589478,
+   "fx_to_usd": 0.14928670227527618,
    "median_12_1": 1.6,
    "last_bar": "2026-10-30",
    "errors": [
@@ -3257,27 +3197,26 @@
    "with_bars": 77,
    "companies": 73,
    "with_year": 70,
-   "fx_to_usd": 1.1155734062194824,
+   "fx_to_usd": 1.1153244972229004,
    "median_12_1": 2.4,
    "last_bar": "2026-10-30",
    "errors": [
     "OMXHEX:SENSO (SENSO.HE): only 16 bars",
     "OMXHEX:IQMX (IQMX.HE): only 86 bars",
-    "OMXHEX:STEADY (STEADY.HE): only 1 bars"
+    "OMXHEX:STEADY (STEADY.HE): only 21 bars"
    ]
   },
   "Germany": {
-   "universe": 110,
-   "with_bars": 107,
-   "companies": 107,
-   "with_year": 106,
-   "fx_to_usd": 1.1155734062194824,
+   "universe": 108,
+   "with_bars": 106,
+   "companies": 106,
+   "with_year": 105,
+   "fx_to_usd": 1.1153244972229004,
    "median_12_1": 1.4,
    "last_bar": "2026-10-30",
    "errors": [
     "XETR:CBK0 (CBK0.DE): only 1 bars",
-    "XETR:1COV (1COV.DE): only 10 bars",
-    "XETR:DHE1 (DHE1.DE): only 32 bars"
+    "XETR:1COV (1COV.DE): only 10 bars"
    ]
   },
   "Canada": {
@@ -3285,7 +3224,7 @@
    "with_bars": 129,
    "companies": 122,
    "with_year": 122,
-   "fx_to_usd": 0.7166712284088135,
+   "fx_to_usd": 0.7169486880302429,
    "median_12_1": 18.9,
    "last_bar": "2026-10-30",
    "errors": [
@@ -3300,5 +3239,5 @@
   }
  },
  "errors": [],
- "usdsek": 9.82721996307373
+ "usdsek": 9.815320014953613
 }
