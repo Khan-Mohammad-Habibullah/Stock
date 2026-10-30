@@ -181,12 +181,17 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .rules .lv { color: var(--color-fg-muted); margin-left: auto; padding-left: 8px; white-space: nowrap; }
   .ctl button { font: inherit; font-size: var(--cds-font-size-caption); padding: 6px 12px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-panel); color: var(--color-fg); cursor: pointer; }
   .ctl button:hover { background: color-mix(in srgb, var(--color-fg) 6%, var(--color-panel)); }
-  .lookup-box { position: relative; }
-  .lookup-box input[type="search"] { width: 100%; max-width: 28rem; }
-  .lookup-sugg { position: absolute; top: 100%; left: 0; right: 0; max-width: 28rem; z-index: 20; margin: 2px 0 0; padding: 4px; list-style: none; background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); max-height: 280px; overflow-y: auto; box-shadow: 0 8px 24px color-mix(in srgb, var(--color-fg) 14%, transparent); }
+  .lookup-box { align-items: flex-start; }
+  .lookup-combo { position: relative; display: flex; flex: 1 1 16rem; max-width: 28rem; min-width: 0; }
+  .lookup-combo input[type="search"] { flex: 1 1 auto; width: 100%; }
+  .lookup-box select { flex: 0 1 19rem; min-width: 0; max-width: 100%; }
+  .lookup-sugg { position: absolute; top: 100%; left: 0; right: 0; z-index: 20; margin: 2px 0 0; padding: 4px; list-style: none; background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); max-height: 320px; overflow-y: auto; box-shadow: 0 8px 24px color-mix(in srgb, var(--color-fg) 14%, transparent); }
+  .lookup-sugg[hidden] { display: none; }
   .lookup-sugg li { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
   .lookup-sugg li:hover, .lookup-sugg li.active { background: var(--color-panel); }
+  .lookup-sugg .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .lookup-sugg .tk { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); white-space: nowrap; }
+  .lookup-sugg .yours { margin-left: auto; flex: none; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 0 6px; }
   .scr-how summary { cursor: pointer; font-size: var(--cds-font-size-caption); }
   .scr-how ul { margin: 6px 0 0; padding-left: 1.2rem; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: grid; gap: 2px; }
   @media (max-width: 900px) { .sec { display: none; } }
@@ -447,10 +452,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-card" id="lookup">
     <h2>Look up any stock</h2>
-    <p class="hs-note">Type at least 2 letters of a company name or ticker &mdash; no exchange needed &mdash; and see it in the same table as "Every holding", live from TradingView. Not a recommendation.</p>
+    <p class="hs-note">Start typing a company name or ticker &mdash; suggestions appear from the first letter, no exchange needed &mdash; or pick a stock from the list beside the box. It shows in the same table as "Every holding", live from TradingView. Not a recommendation.</p>
     <div class="ctl lookup-box">
-      <input id="lookup-q" type="search" placeholder="e.g. Tesla, or TSLA" aria-label="Company name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false">
-      <ul id="lookup-sugg" class="lookup-sugg" role="listbox" hidden></ul>
+      <div class="lookup-combo">
+        <input id="lookup-q" type="search" placeholder="e.g. V, Volvo, Tesla or TSLA" aria-label="Company name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="lookup-sugg" aria-expanded="false">
+        <ul id="lookup-sugg" class="lookup-sugg" role="listbox" hidden></ul>
+      </div>
+      <select id="lookup-pick" aria-label="Pick a stock from a list"><option value="">Or pick from a list&hellip;</option></select>
     </div>
     <p class="hs-note" id="lookup-status" aria-live="polite"></p>
     <div class="tbl-wrap" id="lookup-result" hidden>
@@ -2049,7 +2057,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const num = (v) => (typeof v === 'number' && isFinite(v) ? v : null);
     const clip = (v, a, b) => Math.max(a, Math.min(b, v));
     const MARKET_OF_EXCH = { NASDAQ: 'US', NYSE: 'US', AMEX: 'US', OMXSTO: 'Sweden', OSL: 'Norway', TSX: 'Canada' };
-    const stripEm = (s) => (s || '').replace(/<\/?em>/g, '');
 
     function bucket5(v, hi, mid) {
       return v >= hi ? 'Positive' : v >= mid ? 'Leaning positive' : v > -mid ? 'Mixed' : v > -hi ? 'Leaning negative' : 'Negative';
@@ -2157,42 +2164,132 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       return parse(j.data[0]);
     }
 
-    async function searchSymbols(q) {
-      const url = 'https://symbol-search.tradingview.com/symbol_search/v3/?text=' + encodeURIComponent(q) + '&hl=1&exchange=&lang=en&search_type=&domain=production&sort_by_country=US';
-      const res = await fetch(url);
+    // ----- search: TradingView's scanner. (symbol-search.tradingview.com answers 403 to any site but tradingview.com.)
+    const SEARCH_COLS = ['name', 'description', 'exchange', 'type', 'market_cap_basic'];
+    const NORDIC = ['OMXSTO', 'OSL', 'OMXCOP', 'OMXHEX'];
+    const PICK_MARKETS = [
+      { k: 'USA', c: 'United States', ex: ['NASDAQ', 'NYSE', 'AMEX'] },
+      { k: 'Sweden', c: 'Sweden', ex: ['OMXSTO'] },
+      { k: 'Norway', c: 'Norway', ex: ['OSL'] },
+      { k: 'Denmark', c: 'Denmark', ex: ['OMXCOP'] },
+      { k: 'Finland', c: 'Finland', ex: ['OMXHEX'] },
+      { k: 'Germany', c: 'Germany', ex: ['XETR'] },
+      { k: 'Canada', c: 'Canada', ex: ['TSX'] },
+    ];
+    const DIRECT = /^[A-Za-z][A-Za-z0-9_]*:[A-Za-z0-9._-]+$/;
+
+    async function scan(body, signal) {
+      const res = await fetch('https://scanner.tradingview.com/global/scan', {
+        method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(body), signal,
+      });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const j = await res.json();
-      const list = j.symbols || j.symbols_remaining || (Array.isArray(j) ? j : []);
+      return (j.data || []).map((x) => ({ sym: x.s, tk: x.d[0], name: x.d[1] || x.d[0], exch: x.d[2], type: x.d[3], mcap: num(x.d[4]) }));
+    }
+    function rankOf(m, q) {
+      const Q = q.toUpperCase(), lq = q.toLowerCase();
+      const tk = String(m.tk || '').toUpperCase(), nm = String(m.name || '').toLowerCase();
+      if (tk === Q || tk.replace(/_/g, ' ') === Q) return 0;
+      if (tk.startsWith(Q) || nm.startsWith(lq)) return 1;
+      if (nm.split(/[\s.,&()\/-]+/).some((w) => w.startsWith(lq))) return 2;
+      return 3;
+    }
+    function sortMatches(list, q) {
+      return list.map((m, i) => ({ m, i, r: rankOf(m, q) + (m.type === 'fund' ? 0.5 : 0) }))
+        .sort((a, b) => a.r - b.r || (b.m.mcap || 0) - (a.m.mcap || 0) || a.i - b.i).map((x) => x.m);
+    }
+    async function searchMarket(q, signal) {
+      const base = [{ left: 'name,description', operation: 'match', right: q }];
+      const sort = { sortBy: 'market_cap_basic', sortOrder: 'desc' };
+      const [g, n] = await Promise.all([
+        scan({ filter: base.concat([{ left: 'is_primary', operation: 'equal', right: true }, { left: 'type', operation: 'in_range', right: ['stock', 'dr', 'fund'] }]), columns: SEARCH_COLS, sort, range: [0, 60] }, signal),
+        // Nordic B shares are not flagged "primary", so ask for those exchanges separately
+        scan({ filter: base.concat([{ left: 'exchange', operation: 'in_range', right: NORDIC }, { left: 'type', operation: 'in_range', right: ['stock', 'fund'] }]), columns: SEARCH_COLS, sort, range: [0, 30] }, signal).catch((e) => { if (e.name === 'AbortError') throw e; return []; }),
+      ]);
       const seen = new Set();
-      return list.filter((it) => it.type === 'stock' || it.type === 'dr').map((it) => ({
-        sym: it.exchange + ':' + stripEm(it.symbol), tk: stripEm(it.symbol), name: stripEm(it.description), exch: it.exchange,
-      })).filter((it) => (seen.has(it.sym) ? false : (seen.add(it.sym), true))).slice(0, 8);
+      return sortMatches(g.concat(n).filter((m) => (seen.has(m.sym) ? false : (seen.add(m.sym), true))), q);
+    }
+    const holdRows = () => { const h = dash.data('holdings'); return h.status === 'ok' ? h.data : []; };
+    const ownMatch = (r) => ({ sym: r.sym, tk: r.sym.split(':')[1] || r.sym, name: r.name, exch: r.sym.split(':')[0], own: true, mcap: r.value_sek });
+    function searchLocal(q) {
+      const lq = q.toLowerCase();
+      return sortMatches(holdRows().filter((r) => r.name.toLowerCase().includes(lq) || (r.sym.split(':')[1] || '').toLowerCase().includes(lq)).map(ownMatch), q);
+    }
+    function merge(local, market) {
+      const own = local.slice(0, 5);
+      const seen = new Set(own.map((m) => m.sym));
+      const ownSyms = new Set(holdRows().map((r) => r.sym));
+      const rest = market.filter((m) => !seen.has(m.sym)).map((m) => (ownSyms.has(m.sym) ? Object.assign({}, m, { own: true }) : m));
+      return own.concat(rest).slice(0, 12);
     }
 
     const $ = (id) => document.getElementById(id);
-    const input = $('lookup-q'), suggEl = $('lookup-sugg'), statusEl = $('lookup-status'), resultWrap = $('lookup-result'), noteEl = $('lookup-note');
+    const input = $('lookup-q'), suggEl = $('lookup-sugg'), pickEl = $('lookup-pick'), statusEl = $('lookup-status'), resultWrap = $('lookup-result'), noteEl = $('lookup-note');
     if (!input) return;
     const tbody = document.querySelector('#lookup-tbl tbody');
 
-    let token = 0, active = -1, curMatches = [], debounce = null;
+    let token = 0, active = -1, curMatches = [], debounce = null, ctrl = null, lastQ = '', lastMatches = [];
 
+    // ----- suggestion list under the box
     function closeSugg() { suggEl.replaceChildren(); suggEl.hidden = true; input.setAttribute('aria-expanded', 'false'); active = -1; curMatches = []; }
-    function setActive(i) { active = i; Array.from(suggEl.children).forEach((li, k) => li.classList.toggle('active', k === i)); }
+    function setActive(i) {
+      active = i;
+      Array.from(suggEl.children).forEach((li, k) => { li.classList.toggle('active', k === i); if (k === i) li.scrollIntoView({ block: 'nearest' }); });
+    }
     function showSugg(matches) {
       curMatches = matches; active = -1;
-      suggEl.replaceChildren();
-      if (!matches.length) { suggEl.hidden = true; input.setAttribute('aria-expanded', 'false'); return; }
-      matches.forEach((m, i) => {
-        const li = document.createElement('li'); li.setAttribute('role', 'option'); li.dataset.i = i;
-        const nm = document.createElement('span'); nm.textContent = m.name;
-        const tk = document.createElement('span'); tk.className = 'tk'; tk.textContent = m.tk + ' · ' + m.exch;
+      if (!matches.length) { closeSugg(); return; }
+      suggEl.replaceChildren(...matches.map((m) => {
+        const li = document.createElement('li'); li.setAttribute('role', 'option');
+        const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = m.name;
+        const tk = document.createElement('span'); tk.className = 'tk'; tk.textContent = m.tk + (m.exch ? ' · ' + m.exch : '');
         li.append(nm, tk);
+        if (m.own) { const y = document.createElement('span'); y.className = 'yours'; y.textContent = 'yours'; li.appendChild(y); }
         li.addEventListener('mousedown', (e) => { e.preventDefault(); choose(m); });
-        suggEl.appendChild(li);
-      });
+        return li;
+      }));
       suggEl.hidden = false; input.setAttribute('aria-expanded', 'true');
     }
 
+    // ----- pick-list beside the box
+    const pickMap = new Map();
+    let pickMarkets = [], pickLoaded = false;
+    function optgroup(label, list) {
+      const g = document.createElement('optgroup'); g.label = label;
+      list.forEach((m) => {
+        if (!pickMap.has(m.sym)) pickMap.set(m.sym, m);
+        const o = document.createElement('option'); o.value = m.sym; o.textContent = m.name + ' (' + m.tk + ')'; g.appendChild(o);
+      });
+      return g;
+    }
+    function drawPick() {
+      pickMap.clear();
+      const first = document.createElement('option'); first.value = '';
+      first.textContent = lastQ && lastMatches.length ? lastMatches.length + ' match' + (lastMatches.length === 1 ? '' : 'es') + ' for “' + lastQ + '” — or browse…' : 'Or pick from a list…';
+      const parts = [first];
+      if (lastQ && lastMatches.length) parts.push(optgroup('Matches for “' + lastQ + '”', lastMatches));
+      const own = holdRows().slice().sort((a, b) => a.name.localeCompare(b.name)).map(ownMatch);
+      if (own.length) parts.push(optgroup('Your holdings', own));
+      pickMarkets.forEach(([k, list]) => parts.push(optgroup('Largest in ' + k, list)));
+      if (!pickLoaded) { const o = document.createElement('option'); o.disabled = true; o.textContent = 'Loading the largest companies per market…'; parts.push(o); }
+      pickEl.replaceChildren(...parts);
+      pickEl.value = '';
+    }
+    async function loadPickMarkets() {
+      if (pickLoaded || loadPickMarkets.busy) return;
+      loadPickMarkets.busy = true;
+      const res = await Promise.all(PICK_MARKETS.map((m) => scan({
+        filter: [{ left: 'type', operation: 'in_range', right: ['stock'] }, { left: 'typespecs', operation: 'has', right: ['common'] },
+          { left: 'exchange', operation: 'in_range', right: m.ex }, { left: 'country', operation: 'equal', right: m.c }],
+        columns: SEARCH_COLS, sort: { sortBy: 'market_cap_basic', sortOrder: 'desc' }, range: [0, 25],
+      }).then((l) => [m.k, l.sort((a, b) => a.name.localeCompare(b.name))]).catch(() => null)));
+      loadPickMarkets.busy = false;
+      pickMarkets = res.filter((x) => x && x[1].length);
+      pickLoaded = pickMarkets.length > 0;
+      if (pickEl.value === '') drawPick();
+    }
+
+    // ----- result row
     function cellsFor(d) {
       const own = holdSet().get(d.sym);
       const flow = sectorFlow(d);
@@ -2221,24 +2318,63 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         td(d.rec == null ? null : (d.rec <= 1.5 ? 'Strong buy' : d.rec <= 2.5 ? 'Buy' : d.rec <= 3.5 ? 'Hold' : d.rec <= 4.5 ? 'Underperform' : 'Sell'), 'sec'),
       ];
     }
-
     function renderRow(d) {
       const tr = document.createElement('tr');
       tr.append(...cellsFor(d));
       tbody.replaceChildren(tr);
       resultWrap.hidden = false;
-      const parts = [];
-      if (d.oct_avail < 6) parts.push('this live view is missing the Alligator, candlestick-pattern, 55-day breakout and up/down-volume readings (they need bar history, not a single snapshot), so "October" here rests on ' + d.oct_avail + ' reading' + (d.oct_avail === 1 ? '' : 's') + ' only');
-      if (!sectorFlow(d)) parts.push('no sector money-flow data matched this stock’s market and sector, so its December view is less complete');
-      noteEl.textContent = parts.length ? 'Note: ' + parts.join('; ') + '. Treat the outlooks here as more approximate than your actual holdings.' : '';
+      let note = 'Alligator and Up/down vol need daily price history, which this board only keeps for your holdings, so they show “—” here. October, the outlooks and December are a simpler estimate from live TradingView readings, so treat them as more approximate than for your holdings.';
+      if (!sectorFlow(d)) note += ' No sector money-flow data matched this stock’s market and sector, so its December view leaves that part out.';
+      noteEl.textContent = note;
+    }
+    // a stock you already own: the exact "Every holding" row, with all its readings
+    function renderOwn(r, live) {
+      const td = (t, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = t == null ? '—' : t; return c; };
+      const chip = (label, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; const sp = document.createElement('span'); sp.className = 'chip ' + chipCls(label); sp.textContent = label == null ? '—' : label; c.appendChild(sp); return c; };
+      const hasLive = r.price_live != null;
+      const price = hasLive ? r.price_live : live && live.close != null ? live.close : r.price;
+      const chg = hasLive ? r.day_chg : live ? live.change : r.day_chg;
+      const tr = document.createElement('tr');
+      tr.append(
+        nameTd(r.name, r.sym, null, null),
+        td(fmtInt(r.value_sek), 'num'),
+        td(price == null ? null : plain(price, price < 10 ? 3 : 2) + ' ' + r.cur + (hasLive && r.session === 'pre' ? ' · pre' : ''), 'num'),
+        td(signed(chg, 2), 'num ' + tone(chg)),
+        td(signed(r.r1m), 'num ' + tone(r.r1m)),
+        chip(r.sflow),
+        td(plain(r.rsi, 0), 'num'),
+        td(r.macd, 'sec ' + (r.macd == null ? 'mut' : String(r.macd).startsWith('Bullish') ? 'pos' : 'neg')),
+        td(signed(r.vs50), 'num sec ' + tone(r.vs50)),
+        td(r.alligator, 'sec'),
+        td(r.cpr, 'sec ' + (r.cpr === 'Above' ? 'pos' : r.cpr === 'Below' ? 'neg' : 'mut')),
+        td(r.bollinger, 'sec'),
+        td(plain(r.udv, 2), 'num sec ' + (r.udv == null ? 'mut' : r.udv > 1.1 ? 'pos' : r.udv < 0.9 ? 'neg' : 'mut')),
+        chip(r.oct_signal), chip(r.o1y), chip(r.o3y, 'sec'), chip(r.o5y), chip(r.december),
+        td(signed(r.rev_g, 0), 'num sec ' + tone(r.rev_g)),
+        td(r.margin == null ? null : r.margin.toFixed(0) + '%', 'num sec ' + tone(r.margin)),
+        td(r.pe == null ? null : r.pe.toFixed(0), 'num sec'),
+        td(r.analysts, 'sec'),
+      );
+      tbody.replaceChildren(tr);
+      resultWrap.hidden = false;
+      noteEl.textContent = '';
     }
 
     async function choose(m) {
       closeSugg();
-      input.value = m.name;
-      statusEl.textContent = 'Loading ' + m.name + ' from TradingView…';
-      resultWrap.hidden = true;
+      if (debounce) { clearTimeout(debounce); debounce = null; }
+      if (ctrl) { ctrl.abort(); ctrl = null; }
       const my = ++token;
+      input.value = m.name;
+      const own = holdRows().find((r) => r.sym === m.sym);
+      if (own) {
+        renderOwn(own, null);
+        statusEl.textContent = 'One of your holdings — the same full row as in “Every holding”.';
+        if (own.price_live == null) { try { const d = await fetchOne(m.sym); if (my === token) renderOwn(own, d); } catch (e) { /* keep the baked row */ } }
+        return;
+      }
+      statusEl.textContent = 'Loading ' + m.name + ' from TradingView…';
+      resultWrap.hidden = true; noteEl.textContent = '';
       try {
         const d = await fetchOne(m.sym);
         if (my !== token) return;
@@ -2252,40 +2388,56 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
     input.addEventListener('input', () => {
       const q = input.value.trim();
-      resultWrap.hidden = true;
-      if (debounce) clearTimeout(debounce);
-      if (q.length < 2) { closeSugg(); statusEl.textContent = ''; return; }
+      if (debounce) { clearTimeout(debounce); debounce = null; }
+      if (ctrl) { ctrl.abort(); ctrl = null; }
+      const my = ++token;
+      lastQ = q;
+      if (!q) { lastMatches = []; closeSugg(); statusEl.textContent = ''; drawPick(); return; }
+      if (DIRECT.test(q)) {
+        const Q = q.toUpperCase();
+        lastMatches = [{ sym: Q, tk: Q.split(':')[1], name: Q, exch: Q.split(':')[0] }];
+        showSugg(lastMatches); drawPick(); statusEl.textContent = 'Press Enter to open ' + Q + '.';
+        return;
+      }
+      const local = searchLocal(q);
+      lastMatches = merge(local, []);
+      showSugg(lastMatches); drawPick();
+      statusEl.textContent = 'Searching all markets…';
       debounce = setTimeout(async () => {
-        const my = ++token;
-        if (/^[A-Za-z][A-Za-z0-9_]*:[A-Za-z0-9._-]+$/.test(q)) {
-          closeSugg();
-          statusEl.textContent = 'Loading ' + q + ' from TradingView…';
-          try {
-            const d = await fetchOne(q.toUpperCase());
-            if (my !== token) return;
-            statusEl.textContent = 'Live from TradingView (15 min delayed).';
-            renderRow(d);
-          } catch (e) { if (my === token) statusEl.textContent = 'Could not load ' + q + ' from TradingView.'; }
-          return;
-        }
-        statusEl.textContent = 'Searching…';
+        debounce = null;
+        ctrl = new AbortController();
         try {
-          const matches = await searchSymbols(q);
+          const market = await searchMarket(q, ctrl.signal);
           if (my !== token) return;
-          if (!matches.length) { closeSugg(); statusEl.textContent = 'No matching stock found.'; return; }
-          showSugg(matches);
-          statusEl.textContent = matches.length + ' match' + (matches.length === 1 ? '' : 'es') + ' — pick one, or keep typing.';
-        } catch (e) { if (my === token) { closeSugg(); statusEl.textContent = 'Could not search TradingView right now.'; } }
-      }, 300);
+          lastMatches = merge(local, market);
+          showSugg(lastMatches); drawPick();
+          statusEl.textContent = lastMatches.length ? 'Pick a suggestion, or use the list beside the box.' : 'No matching stock found.';
+        } catch (e) {
+          if (my !== token || e.name === 'AbortError') return;
+          statusEl.textContent = local.length ? 'Showing your holdings only — could not search TradingView right now.' : 'Could not search TradingView right now.';
+        }
+      }, 200);
     });
+    input.addEventListener('focus', () => { if (input.value.trim() && lastMatches.length && suggEl.hidden) showSugg(lastMatches); loadPickMarkets(); });
     input.addEventListener('keydown', (e) => {
-      if (suggEl.hidden) return;
-      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(Math.min(curMatches.length - 1, active + 1)); }
+      if (e.key === 'Escape') { closeSugg(); return; }
+      if (e.key === 'ArrowDown') { e.preventDefault(); if (suggEl.hidden && lastMatches.length) showSugg(lastMatches); setActive(Math.min(curMatches.length - 1, active + 1)); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(Math.max(0, active - 1)); }
-      else if (e.key === 'Enter') { e.preventDefault(); if (curMatches.length) choose(curMatches[active >= 0 ? active : 0]); }
-      else if (e.key === 'Escape') { closeSugg(); }
+      else if (e.key === 'Enter') {
+        e.preventDefault();
+        const list = curMatches.length ? curMatches : lastMatches;
+        if (list.length) choose(list[active >= 0 ? active : 0]);
+      }
     });
-    document.addEventListener('click', (e) => { if (!e.target.closest('#lookup')) closeSugg(); });
+    pickEl.addEventListener('focus', loadPickMarkets);
+    pickEl.addEventListener('change', () => { const m = pickMap.get(pickEl.value); if (m) choose(m); });
+    document.addEventListener('click', (e) => { if (!e.target.closest('.lookup-combo')) closeSugg(); });
+    drawPick();
+    // fetch the per-market lists once the section is actually on screen (hidden tabs never intersect)
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((ents) => { if (ents.some((x) => x.isIntersecting)) { io.disconnect(); loadPickMarkets(); } });
+      io.observe($('lookup'));
+    } else loadPickMarkets();
   })();
 
   // ---------- crypto: My crypto holdings and Crypto strategy ----------
