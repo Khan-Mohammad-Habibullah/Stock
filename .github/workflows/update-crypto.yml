@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: update-crypto
+  group: board-data   # shared with the stock rebuild: both write index.html
   cancel-in-progress: false
 
 jobs:

@@ -1,0 +1,58 @@
+name: Update stock board
+
+# Rebuilds every stock tab (holdings, former holdings, monthly ranges, money
+# flow in eight markets, ETFs, exposure) from TradingView's screener and Yahoo
+# Finance daily bars:
+#   * every weekday morning (05:40 UTC = 06:40 Stockholm in winter, 07:40 in
+#     summer; GitHub can start scheduled runs a little late)
+#   * whenever a holdings file lands in inbox/ (the board's "Update holdings"
+#     button, or Claude applying an export sent in chat), or data/portfolio.json
+#     is edited
+#   * on demand (Actions tab -> Update stock board -> Run workflow)
+on:
+  schedule:
+    - cron: "40 5 * * 1-5"
+  push:
+    branches: [main]
+    paths: [inbox/**, data/portfolio.json, data/etf_facts.json]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: board-data   # shared with the crypto update: both write index.html
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Apply new holdings files
+        run: python3 scripts/apply_inbox.py
+
+      - name: Rebuild the board
+        run: python3 scripts/update_board.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "stock-board-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A index.html data/portfolio.json inbox
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -q -m "Rebuild stock board ($(date -u +%F))"
+          for i in 1 2 3 4 5; do
+            git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0
+            sleep 10
+          done
+          exit 1

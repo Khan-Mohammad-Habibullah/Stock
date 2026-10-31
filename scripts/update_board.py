@@ -246,6 +246,7 @@ def main():
                   "vol_days", "structure", "patterns", "oct_score", "oct_signal", "oct_why"]:
             r[k] = T.get(k)
         r["price"] = round(T["price"], 4)
+        r["day_chg"] = L.r2((B[-1][4] / B[-2][4] - 1) * 100, 2)  # last close vs the one before (holdings get the live move on the page)
         # fundamentals (TradingView screener; money values come in USD)
         g = lambda k: F.get(k)
         rev, eps, mar, pe, de, roe, fcf, mcap = (g("total_revenue_yoy_growth_ttm"), g("earnings_per_share_diluted_yoy_growth_ttm"), g("net_margin_ttm"),
@@ -472,7 +473,7 @@ def main():
     # ------------------------------------------------ 6. bake into the page
     s = page
     for k, v in out.items():
-        enc = json.dumps(v, ensure_ascii=False, separators=(",", ":"))
+        enc = json.dumps(v, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")  # never close the script tag
         i = s.find('"%s":[' % k)
         if i >= 0:
             j = json.JSONDecoder().raw_decode(s, i + len('"%s":' % k))[1]
