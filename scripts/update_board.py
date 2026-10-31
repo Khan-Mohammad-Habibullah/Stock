@@ -458,7 +458,7 @@ def main():
         r.pop("_date", None)
     status = dict(built=t0.strftime("%Y-%m-%dT%H:%MZ"), data_date=data_date, holdings_updated=PF.get("updated"), holdings_source=PF.get("source"),
                   positions=len(H), former=len(FR), markets=mstat, symbols_with_bars=len(bars), errors=errors[:60], fetch_failures=len(berr),
-                  inbox=PF.get("last_inbox"))
+                  inbox=PF.get("last_inbox"), names=PF["names"], usd_per={k: round(v, 6) for k, v in rates.items()})
     out = dict(holdings=H, former=FR, monthly=M, flows=flows, flow_picks=picks, etfs=ETF, exposure=EXP, board_status=[status])
 
     if args.dry:

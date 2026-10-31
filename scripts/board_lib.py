@@ -323,7 +323,7 @@ def analyse(B):
     m = [e12[i] - e26[i] for i in range(len(e12))]
     sg = ema(m, 9)
     hist = [m[i] - sg[i] for i in range(len(m))]
-    mUp = m[n] > sg[n]; rising = hist[n] > hist[n - 1]
+    mUp = m[n] > sg[n]; rising = hist[n] > hist[n - 2]
     R["macd"] = ("Bullish, rising" if rising else "Bullish, fading") if mUp else ("Bearish, improving" if rising else "Bearish, falling")
     s20, s50 = sma(c, 20, n), sma(c, 50, n)
     s200 = sma(c, 200, n) if n >= 199 else None
@@ -349,7 +349,7 @@ def analyse(B):
     bw = [4 * sd(k) / sma(c, 20, k) for k in range(max(20, n - 125), n + 1)]
     rank = len([x for x in bw if x <= bw[-1]]) / len(bw)
     squeeze = rank <= 0.2
-    R["bollinger"] = ("Above upper band" if c[n] > up_b else "Below lower band" if c[n] < lo_b else "Squeeze" if squeeze else
+    R["bollinger"] = ("Squeeze" if squeeze else "Above upper band" if c[n] > up_b else "Below lower band" if c[n] < lo_b else
                       "Near upper band" if R["pctb"] >= 0.8 else "Near lower band" if R["pctb"] <= 0.2 else "Mid band")
     med = [(h[i] + l[i]) / 2 for i in range(n + 1)]
     jaw, teeth, lips = wilder(med, 13), wilder(med, 8), wilder(med, 5)
@@ -357,7 +357,7 @@ def analyse(B):
     if (max(J, Tt, Lp) - min(J, Tt, Lp)) / c[n] < 0.01:
         R["alligator"] = "Sleeping"           # lines tangled within 1% of the price
     else:
-        R["alligator"] = "Bullish" if Lp > Tt > J else "Bearish" if Lp < Tt < J else "Waking/mixed"
+        R["alligator"] = "Bullish" if (Lp > Tt > J and c[n] > Lp) else "Bearish" if (Lp < Tt < J and c[n] < Lp) else "Waking/mixed"
     # this month's CPR from last month's high, low and close
     d = datetime.datetime.utcfromtimestamp(t[n])
     pm_y, pm_m = (d.year - 1, 12) if d.month == 1 else (d.year, d.month - 1)
@@ -394,7 +394,7 @@ def analyse(B):
     obv = [0.0]
     for i in range(1, n + 1):
         obv.append(obv[-1] + (v[i] if c[i] > c[i - 1] else (-v[i] if c[i] < c[i - 1] else 0)))
-    R["obv"] = "Up" if obv[n] > sma(obv, 50, n) else "Down"
+    R["obv"] = "Up" if obv[n] > sma(obv, 20, n) else "Down"
     tr, pdm, ndm = [0.0], [0.0], [0.0]
     for i in range(1, n + 1):
         tr.append(max(h[i] - l[i], abs(h[i] - c[i - 1]), abs(l[i] - c[i - 1])))
@@ -432,9 +432,10 @@ def analyse(B):
     R["vol_days"] = len(lr)
     # swing structure (3-bar fractals)
     sh, sl = [], []
-    for i in range(3, n - 2):
-        if h[i] == max(h[i - 3:min(n + 1, i + 4)]): sh.append((i, h[i]))
-        if l[i] == min(l[i - 3:min(n + 1, i + 4)]): sl.append((i, l[i]))
+    FW = 5   # swing high/low = highest/lowest of the 5 bars either side
+    for i in range(FW, n - FW + 1):
+        if h[i] == max(h[i - FW:i + FW + 1]): sh.append((i, h[i]))
+        if l[i] == min(l[i - FW:i + FW + 1]): sl.append((i, l[i]))
     s1, s2 = sh[-2:], sl[-2:]
     hh = len(s1) == 2 and s1[1][1] > s1[0][1]
     hl = len(s2) == 2 and s2[1][1] > s2[0][1]
