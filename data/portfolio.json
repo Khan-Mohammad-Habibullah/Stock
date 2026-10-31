@@ -1,0 +1,1071 @@
+{
+ "updated": "2026-10-28 14:41",
+ "source": "Nordnet export 28 Oct 2026",
+ "positions": [
+  {
+   "sym": "NYSE:BMNR",
+   "name": "BitMine Immersion",
+   "qty": 135,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:HEM",
+   "name": "Hemnet Group",
+   "qty": 329,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:UBER",
+   "name": "Uber Technologies",
+   "qty": 34,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:ZS",
+   "name": "Zscaler",
+   "qty": 7,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:V",
+   "name": "Visa",
+   "qty": 4,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:CIFR",
+   "name": "Cipher Digital",
+   "qty": 178,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:CRDO",
+   "name": "Credo Technology",
+   "qty": 9,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:VICR",
+   "name": "Vicor",
+   "qty": 7,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:SRTS",
+   "name": "Sensus Healthcare",
+   "qty": 538,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:VVSM",
+   "name": "VanEck Semiconductor ETF (UCITS)",
+   "qty": 14,
+   "market": "US ETF",
+   "cur": "EUR"
+  },
+  {
+   "sym": "NASDAQ:INOD",
+   "name": "Innodata",
+   "qty": 30,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:CLBT",
+   "name": "Cellebrite",
+   "qty": 112,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OSL:KCC",
+   "name": "Klaveness Combination Carriers",
+   "qty": 100,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "NASDAQ:INTC",
+   "name": "Intel",
+   "qty": 13,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:MRVL",
+   "name": "Marvell Technology",
+   "qty": 5,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:EVLV",
+   "name": "Evolv Technologies A",
+   "qty": 260,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:RDW",
+   "name": "Redwire",
+   "qty": 130,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:QDVE",
+   "name": "iShares S&P 500 IT UCITS",
+   "qty": 21,
+   "market": "US ETF",
+   "cur": "EUR"
+  },
+  {
+   "sym": "NYSE:MTZ",
+   "name": "MasTec",
+   "qty": 6,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:ESIT",
+   "name": "iShares MSCI Europe IT UCITS",
+   "qty": 79,
+   "market": "Europe ETF",
+   "cur": "EUR"
+  },
+  {
+   "sym": "NASDAQ:XNDU",
+   "name": "Xanadu Quantum Technologies",
+   "qty": 346,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:AZN",
+   "name": "AstraZeneca",
+   "qty": 6,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:CIBUS",
+   "name": "Cibus Real Estate",
+   "qty": 77,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:TMDX",
+   "name": "TransMedics Group",
+   "qty": 14,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:SMCI",
+   "name": "Super Micro Computer",
+   "qty": 27,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:PRCT",
+   "name": "Procept BioRobotics",
+   "qty": 49,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:LULU",
+   "name": "Lululemon Athletica",
+   "qty": 9,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:EXV8",
+   "name": "iShares STOXX Europe 600 Construction UCITS",
+   "qty": 10,
+   "market": "Europe ETF",
+   "cur": "EUR"
+  },
+  {
+   "sym": "NASDAQ:LTRX",
+   "name": "Lantronix",
+   "qty": 143,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:W1TB",
+   "name": "WisdomTree Cybersecurity UCITS",
+   "qty": 17,
+   "market": "Europe ETF",
+   "cur": "EUR"
+  },
+  {
+   "sym": "NASDAQ:AMKR",
+   "name": "Amkor Technology",
+   "qty": 21,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:CRWV",
+   "name": "CoreWeave",
+   "qty": 14,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:OCTV",
+   "name": "Octave Intelligence SDB",
+   "qty": 38,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:GLXY",
+   "name": "Galaxy Digital",
+   "qty": 43,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:BIOG_B",
+   "name": "BioGaia B",
+   "qty": 60,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OSL:VAR",
+   "name": "Var Energi",
+   "qty": 114,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "NYSE:CRM",
+   "name": "Salesforce",
+   "qty": 3,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:ASWE",
+   "name": "HANetf Saturna Al-Kawthar UCITS",
+   "qty": 59,
+   "market": "Europe ETF",
+   "cur": "EUR"
+  },
+  {
+   "sym": "OMXSTO:CLAS_B",
+   "name": "Clas Ohlson B",
+   "qty": 14,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:ALB",
+   "name": "Albemarle",
+   "qty": 7,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:HEXA_B",
+   "name": "Hexagon B",
+   "qty": 60,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OSL:MPCC",
+   "name": "MPC Container Ships",
+   "qty": 201,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "OMXSTO:BILI_A",
+   "name": "Bilia A",
+   "qty": 43,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:PWR",
+   "name": "Quanta Services",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:RAY_B",
+   "name": "RaySearch Laboratories B",
+   "qty": 30,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:HIMS",
+   "name": "Hims & Hers Health A",
+   "qty": 21,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:BKR",
+   "name": "Baker Hughes A",
+   "qty": 10,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:FRACTL",
+   "name": "Fractal Gaming Group",
+   "qty": 422,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:TTD",
+   "name": "The Trade Desk A",
+   "qty": 45,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:MDT",
+   "name": "Medtronic",
+   "qty": 6,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:EWRK",
+   "name": "Ework Group",
+   "qty": 109,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:SECT_B",
+   "name": "Sectra B",
+   "qty": 16,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:KEBNI_B",
+   "name": "KebNi B",
+   "qty": 8548,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OSL:ODFB",
+   "name": "Odfjell B",
+   "qty": 40,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "OMXSTO:INDT",
+   "name": "Indutrade",
+   "qty": 20,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:SYM",
+   "name": "Symbotic",
+   "qty": 13,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:AEIS",
+   "name": "Advanced Energy Industries",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:ATCO_B",
+   "name": "Atlas Copco B",
+   "qty": 29,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:IESC",
+   "name": "IES",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:SAP",
+   "name": "SAP",
+   "qty": 2,
+   "market": "Germany",
+   "cur": "EUR"
+  },
+  {
+   "sym": "OMXSTO:AAK",
+   "name": "AAK",
+   "qty": 26,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OSL:WAWI",
+   "name": "Wallenius Wilhelmsen",
+   "qty": 24,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "NYSE:SPGI",
+   "name": "S&P Global",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:MCAP",
+   "name": "MedCap",
+   "qty": 8,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:NVDA",
+   "name": "NVIDIA",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:BOOZT",
+   "name": "Boozt",
+   "qty": 26,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:BEIJ_B",
+   "name": "Beijer Ref B",
+   "qty": 26,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:ETN",
+   "name": "Eaton",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:CDMIL",
+   "name": "CodeMill",
+   "qty": 280,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:BONEX",
+   "name": "BONESUPPORT",
+   "qty": 12,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:XVIVO",
+   "name": "Xvivo Perfusion",
+   "qty": 19,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:SOBI",
+   "name": "Swedish Orphan Biovitrum",
+   "qty": 8,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:QCOM",
+   "name": "QUALCOMM",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXHEX:VAIAS",
+   "name": "Vaisala",
+   "qty": 5,
+   "market": "Finland",
+   "cur": "EUR"
+  },
+  {
+   "sym": "OMXSTO:NIBE_B",
+   "name": "Nibe Industrier B",
+   "qty": 77,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:AVGO",
+   "name": "Broadcom",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "TSX:WCP",
+   "name": "Whitecap Resources",
+   "qty": 24,
+   "market": "Canada",
+   "cur": "CAD"
+  },
+  {
+   "sym": "NASDAQ:POWL",
+   "name": "Powell Industries",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:LEN",
+   "name": "Lennar A",
+   "qty": 4,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:CAMX",
+   "name": "Camurus",
+   "qty": 5,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:MLI",
+   "name": "Mueller Industries",
+   "qty": 6,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXCOP:AMBU_B",
+   "name": "Ambu",
+   "qty": 26,
+   "market": "Denmark",
+   "cur": "DKK"
+  },
+  {
+   "sym": "OMXSTO:AQ",
+   "name": "AQ Group",
+   "qty": 13,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:INWI",
+   "name": "Inwido",
+   "qty": 15,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:MOD",
+   "name": "Modine Manufacturing",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "XETR:SPYH",
+   "name": "SPDR MSCI Europe Health Care UCITS",
+   "qty": 1,
+   "market": "Europe ETF",
+   "cur": "EUR"
+  },
+  {
+   "sym": "OSL:BWE",
+   "name": "BW Energy Limited",
+   "qty": 41,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "OMXSTO:PREV_B",
+   "name": "Prevas B",
+   "qty": 38,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:OXY",
+   "name": "Occidental Petroleum",
+   "qty": 4,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:ADBE",
+   "name": "Adobe",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:PHM",
+   "name": "PulteGroup",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:UROY",
+   "name": "Uranium Royalty",
+   "qty": 60,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NASDAQ:APPF",
+   "name": "AppFolio A",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXCOP:NTG",
+   "name": "NTG Nordic Transport Group",
+   "qty": 4,
+   "market": "Denmark",
+   "cur": "DKK"
+  },
+  {
+   "sym": "OMXSTO:MCOV_B",
+   "name": "Medicover B",
+   "qty": 7,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:TROAX",
+   "name": "Troax Group",
+   "qty": 13,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NASDAQ:TSCO",
+   "name": "Tractor Supply",
+   "qty": 6,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXCOP:BAVA",
+   "name": "Bavarian Nordic",
+   "qty": 5,
+   "market": "Denmark",
+   "cur": "DKK"
+  },
+  {
+   "sym": "NYSE:DT",
+   "name": "Dynatrace",
+   "qty": 3,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:XOM",
+   "name": "Exxon Mobil",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:CHPT",
+   "name": "ChargePoint",
+   "qty": 20,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:NEWA_B",
+   "name": "New Wave B",
+   "qty": 17,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "NYSE:APH",
+   "name": "Amphenol",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:J",
+   "name": "Jacobs Engineering",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXHEX:PUUILO",
+   "name": "Puuilo",
+   "qty": 7,
+   "market": "Finland",
+   "cur": "EUR"
+  },
+  {
+   "sym": "NASDAQ:CPRT",
+   "name": "Copart",
+   "qty": 5,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OSL:SUBC",
+   "name": "Subsea 7",
+   "qty": 4,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "OSL:MEDI",
+   "name": "Medistim",
+   "qty": 4,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "XETR:FPE",
+   "name": "Fuchs",
+   "qty": 3,
+   "market": "Germany",
+   "cur": "EUR"
+  },
+  {
+   "sym": "NASDAQ:VRA",
+   "name": "Vera Bradley",
+   "qty": 21,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:PATH",
+   "name": "UiPath A",
+   "qty": 9,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "NYSE:ACM",
+   "name": "AECOM",
+   "qty": 2,
+   "market": "US",
+   "cur": "USD"
+  },
+  {
+   "sym": "OMXSTO:DEDI",
+   "name": "Dedicare B",
+   "qty": 19,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:BYGGP",
+   "name": "ByggPartner Gruppen",
+   "qty": 30,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OMXSTO:GETI_B",
+   "name": "Getinge B",
+   "qty": 4,
+   "market": "Sweden",
+   "cur": "SEK"
+  },
+  {
+   "sym": "OSL:AKSO",
+   "name": "Aker Solutions",
+   "qty": 27,
+   "market": "Norway",
+   "cur": "NOK"
+  },
+  {
+   "sym": "NYSE:MBGL",
+   "name": "Mobility Global",
+   "qty": 1,
+   "market": "US",
+   "cur": "USD"
+  }
+ ],
+ "former": [
+  {
+   "sym": "NASDAQ:DXCM",
+   "name": "DexCom",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-10-16",
+   "last_qty": null,
+   "note": null
+  },
+  {
+   "sym": "NASDAQ:XEL",
+   "name": "Xcel Energy",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-10-16",
+   "last_qty": null,
+   "note": null
+  },
+  {
+   "sym": "NYSE:HD",
+   "name": "Home Depot",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-10-16",
+   "last_qty": null,
+   "note": null
+  },
+  {
+   "sym": "NYSE:VMC",
+   "name": "Vulcan Materials",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-10-16",
+   "last_qty": null,
+   "note": null
+  },
+  {
+   "sym": "NYSE:WCN",
+   "name": "Waste Connections",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-10-16",
+   "last_qty": null,
+   "note": null
+  },
+  {
+   "sym": "OMXSTO:ALLEI",
+   "name": "Alleima",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-10-16",
+   "last_qty": 12,
+   "note": null
+  },
+  {
+   "sym": "OMXSTO:SAND",
+   "name": "Sandvik",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-10-16",
+   "last_qty": null,
+   "note": null
+  },
+  {
+   "sym": "NASDAQ:EXE",
+   "name": "Expand Energy",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-10-28",
+   "last_qty": 7,
+   "note": null
+  },
+  {
+   "sym": "NYSE:NOW",
+   "name": "ServiceNow",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-10-28",
+   "last_qty": 2,
+   "note": null
+  },
+  {
+   "sym": "OMXSTO:ANOD_B",
+   "name": "Addnode Group B",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-10-28",
+   "last_qty": 86,
+   "note": null
+  },
+  {
+   "sym": "OMXSTO:XBRANE",
+   "name": "Xbrane Biopharma",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-10-28",
+   "last_qty": 500,
+   "note": null
+  },
+  {
+   "sym": "OMXSTO:YUBICO",
+   "name": "Yubico",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-10-28",
+   "last_qty": 28,
+   "note": null
+  },
+  {
+   "sym": "OSL:2020",
+   "name": "2020 Bulkers",
+   "market": "Norway",
+   "cur": "NOK",
+   "gone_by": "2026-10-28",
+   "last_qty": 901,
+   "note": "Sold its whole fleet and paid out most of its value as a special dividend in April 2026. What trades now is a small remainder, so the long-term chart is not comparable."
+  }
+ ],
+ "names": {
+  "2020 Bulkers": "OSL:2020",
+  "AAK": "OMXSTO:AAK",
+  "AECOM": "NYSE:ACM",
+  "AQ Group": "OMXSTO:AQ",
+  "Addnode Group B": "OMXSTO:ANOD_B",
+  "Adobe": "NASDAQ:ADBE",
+  "Advanced Energy Industries": "NASDAQ:AEIS",
+  "Aker Solutions": "OSL:AKSO",
+  "Albemarle": "NYSE:ALB",
+  "Alleima": "OMXSTO:ALLEI",
+  "Ambu": "OMXCOP:AMBU_B",
+  "Amkor Technology": "NASDAQ:AMKR",
+  "Amphenol": "NYSE:APH",
+  "AppFolio A": "NASDAQ:APPF",
+  "AstraZeneca": "OMXSTO:AZN",
+  "Atlas Copco B": "OMXSTO:ATCO_B",
+  "BONESUPPORT": "OMXSTO:BONEX",
+  "BW Energy Limited": "OSL:BWE",
+  "Baker Hughes A": "NASDAQ:BKR",
+  "Bavarian Nordic": "OMXCOP:BAVA",
+  "Beijer Ref B": "OMXSTO:BEIJ_B",
+  "Bilia A": "OMXSTO:BILI_A",
+  "BioGaia B": "OMXSTO:BIOG_B",
+  "BitMine Immersion Technologies, Inc.": "NYSE:BMNR",
+  "Boozt": "OMXSTO:BOOZT",
+  "Broadcom": "NASDAQ:AVGO",
+  "ByggPartner Gruppen": "OMXSTO:BYGGP",
+  "Camurus": "OMXSTO:CAMX",
+  "Cellebrite": "NASDAQ:CLBT",
+  "ChargePoint": "NYSE:CHPT",
+  "Cibus Real Estate": "OMXSTO:CIBUS",
+  "Cipher Digital": "NASDAQ:CIFR",
+  "Clas Ohlson B": "OMXSTO:CLAS_B",
+  "CodeMill": "OMXSTO:CDMIL",
+  "Copart": "NASDAQ:CPRT",
+  "CoreWeave": "NASDAQ:CRWV",
+  "Credo Technology": "NASDAQ:CRDO",
+  "Dedicare B": "OMXSTO:DEDI",
+  "Dynatrace": "NYSE:DT",
+  "Eaton": "NYSE:ETN",
+  "Evolv Technologies A": "NASDAQ:EVLV",
+  "Ework Group": "OMXSTO:EWRK",
+  "Expand Energy": "NASDAQ:EXE",
+  "Exxon Mobil": "NYSE:XOM",
+  "Fractal Gaming Group": "OMXSTO:FRACTL",
+  "Fuchs": "XETR:FPE",
+  "Galaxy Digital": "NASDAQ:GLXY",
+  "Getinge B": "OMXSTO:GETI_B",
+  "HANetf Saturna Al-Kawthar Global Focused Equity UCITS E…": "XETR:ASWE",
+  "Hemnet Group": "OMXSTO:HEM",
+  "Hexagon B": "OMXSTO:HEXA_B",
+  "Hims & Hers Health A": "NYSE:HIMS",
+  "IES": "NASDAQ:IESC",
+  "Indutrade": "OMXSTO:INDT",
+  "Innodata": "NASDAQ:INOD",
+  "Intel": "NASDAQ:INTC",
+  "Inwido": "OMXSTO:INWI",
+  "Jacobs Engineering Group": "NYSE:J",
+  "KebNi B": "OMXSTO:KEBNI_B",
+  "Klaveness Combination Carriers": "OSL:KCC",
+  "Lantronix": "NASDAQ:LTRX",
+  "Lennar A": "NYSE:LEN",
+  "Lululemon Athletica": "NASDAQ:LULU",
+  "MPC Container Ships": "OSL:MPCC",
+  "Marvell Technology": "NASDAQ:MRVL",
+  "MasTec": "NYSE:MTZ",
+  "MedCap": "OMXSTO:MCAP",
+  "Medicover B": "OMXSTO:MCOV_B",
+  "Medistim": "OSL:MEDI",
+  "Medtronic": "NYSE:MDT",
+  "Mobility Global": "NYSE:MBGL",
+  "Modine Manufacturing": "NYSE:MOD",
+  "Mueller Industries": "NYSE:MLI",
+  "NTG Nordic Transport Group": "OMXCOP:NTG",
+  "NVIDIA": "NASDAQ:NVDA",
+  "New Wave B": "OMXSTO:NEWA_B",
+  "Nibe Industrier B": "OMXSTO:NIBE_B",
+  "Occidental Petroleum": "NYSE:OXY",
+  "Octave Intelligence": "NASDAQ:OCTV",
+  "Octave Intelligence SDB": "NASDAQ:OCTV",
+  "Odfjell B": "OSL:ODFB",
+  "Powell Industries": "NASDAQ:POWL",
+  "Prevas B": "OMXSTO:PREV_B",
+  "Procept BioRobotics": "NASDAQ:PRCT",
+  "PulteGroup": "NYSE:PHM",
+  "Puuilo": "OMXHEX:PUUILO",
+  "QUALCOMM": "NASDAQ:QCOM",
+  "Quanta Services": "NYSE:PWR",
+  "RaySearch Laboratories B": "OMXSTO:RAY_B",
+  "Redwire": "NYSE:RDW",
+  "S&P Global": "NYSE:SPGI",
+  "SPDR MSCI Europe Health Care UCITS ETF": "XETR:SPYH",
+  "Salesforce": "NYSE:CRM",
+  "Sap SE": "XETR:SAP",
+  "Sectra B": "OMXSTO:SECT_B",
+  "Sensus Healthcare": "NASDAQ:SRTS",
+  "ServiceNow": "NYSE:NOW",
+  "Subsea 7": "OSL:SUBC",
+  "Super Micro Computer": "NASDAQ:SMCI",
+  "Swedish Orphan Biovitrum": "OMXSTO:SOBI",
+  "Symbotic": "NASDAQ:SYM",
+  "The Trade Desk A": "NASDAQ:TTD",
+  "Tractor Supply": "NASDAQ:TSCO",
+  "TransMedics Group": "NASDAQ:TMDX",
+  "Troax Group": "OMXSTO:TROAX",
+  "Uber Technologies": "NYSE:UBER",
+  "UiPath A": "NYSE:PATH",
+  "Uranium Royalty": "NASDAQ:UROY",
+  "Vaisala A": "OMXHEX:VAIAS",
+  "VanEck Semiconductor ETF": "XETR:VVSM",
+  "Vera Bradley": "NASDAQ:VRA",
+  "Vicor": "NASDAQ:VICR",
+  "Visa": "NYSE:V",
+  "Vår Energi": "OSL:VAR",
+  "Wallenius Wilhelmsen": "OSL:WAWI",
+  "Whitecap Resources Inc": "TSX:WCP",
+  "WisdomTree Cybersecurity UCITS ETF - USD Acc": "XETR:W1TB",
+  "Xanadu Quantum Technologies Ltd.": "NASDAQ:XNDU",
+  "Xbrane Biopharma": "OMXSTO:XBRANE",
+  "Xvivo Perfusion": "OMXSTO:XVIVO",
+  "Yubico": "OMXSTO:YUBICO",
+  "Zscaler": "NASDAQ:ZS",
+  "iShares MSCI Europe Information Technology Sector UCITS…": "XETR:ESIT",
+  "iShares S&P 500 Information Technology Sector UCITS ETF…": "XETR:QDVE",
+  "iShares STOXX Europe 600 Construction & Materials UCITS…": "XETR:EXV8"
+ }
+}

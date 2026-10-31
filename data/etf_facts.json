@@ -1,0 +1,482 @@
+{
+ "facts": {
+  "XETR:VVSM": {
+   "sym": "XETR:VVSM",
+   "name": "VanEck Semiconductor ETF (UCITS)",
+   "isin": "IE00BMC38736",
+   "tracks": "MarketVector US Listed Semiconductor 10% Capped index: the 25 biggest chip companies listed in the US",
+   "style": "Index fund",
+   "ter": 0.35,
+   "size": "$9.6 bn",
+   "n_hold": 25,
+   "top10": 82.6,
+   "top": "AMD 11.0%, TSMC 10.0%, Micron 9.9%, NVIDIA 9.7%, Broadcom 9.2%, SK hynix 8.8%, ASML 8.4%, Intel 6.7%",
+   "mix": "US 71.7%, Taiwan 10.0%, Netherlands 8.9%; all semiconductors",
+   "payout": "Accumulating",
+   "since": "Dec 2020",
+   "long_run": null,
+   "src": "VanEck fact sheet, 30 Sep 2026",
+   "overlap": "NVIDIA 9.7% of the fund; Broadcom 9.2% of the fund (you also own Broadcom directly); Intel 6.7% of the fund (you also own Intel directly); 6 of its top 10 are also in iShares S&P 500 IT's top 10 (AMD, Broadcom, Intel, Lam Research, Micron, NVIDIA); 3 of its top 10 are also in Saturna Al-Kawthar's top 10 (AMD, ASML, TSMC)",
+   "flags": "concentrated: top 10 holdings are 83% of the fund"
+  },
+  "XETR:QDVE": {
+   "sym": "XETR:QDVE",
+   "name": "iShares S&P 500 IT UCITS",
+   "isin": "IE00B3WJKG14",
+   "tracks": "S&P 500 Capped 35/20 Information Technology index: the tech stocks in the S&P 500",
+   "style": "Index fund",
+   "ter": 0.15,
+   "size": null,
+   "n_hold": 79,
+   "top10": 74.8,
+   "top": "NVIDIA 19.2%, Apple 18.3%, Microsoft 15.5%, Broadcom 7.2%, Micron 4.3%, AMD 3.2%, Intel 1.9%",
+   "mix": "US 100%; information technology",
+   "payout": "Accumulating",
+   "since": "2015",
+   "long_run": "about 32% a year over 3 years and 23% over 5 (from etf.capital's cumulative figures, to 14 Oct 2026)",
+   "src": "etf.capital, 14 Oct 2026",
+   "overlap": "NVIDIA 19.2% of the fund; Broadcom 7.2% of the fund (you also own Broadcom directly); Intel 1.9% of the fund (you also own Intel directly); 6 of its top 10 are also in VanEck Semiconductor's top 10 (AMD, Broadcom, Intel, Lam Research, Micron, NVIDIA); 3 of its top 10 are also in Saturna Al-Kawthar's top 10 (AMD, Cisco, Microsoft)",
+   "flags": null
+  },
+  "XETR:ESIT": {
+   "sym": "XETR:ESIT",
+   "name": "iShares MSCI Europe IT UCITS",
+   "isin": "IE00BMW42413",
+   "tracks": "MSCI Europe Information Technology 20/35 Capped index: European tech",
+   "style": "Index fund",
+   "ter": 0.18,
+   "size": "€274 m",
+   "n_hold": 17,
+   "top10": 89.4,
+   "top": "ASML 32.3%, SAP 17.4%, Infineon 10.6%, Nokia 6.2%, Nebius 5.7%, ASM International 5.7%, STMicro 4.0%",
+   "mix": "Mostly chip makers and chip equipment (ASML, Infineon, ASM, STMicro about 53%), then software (SAP)",
+   "payout": "Accumulating",
+   "since": "Nov 2020",
+   "long_run": "26.4% a year over 3 years, 11.8% over 5 (iShares, to 30 Sep 2026)",
+   "src": "iShares fact sheet, 30 Sep 2026",
+   "overlap": "Hexagon B 2.5% of the fund (you also own Hexagon B directly)",
+   "flags": "concentrated: top 10 holdings are 89% of the fund"
+  },
+  "XETR:SPYH": {
+   "sym": "XETR:SPYH",
+   "name": "SPDR MSCI Europe Health Care UCITS",
+   "isin": "IE00BKWQ0H23",
+   "tracks": "MSCI Europe Health Care 35/20 Capped index: European health care",
+   "style": "Index fund",
+   "ter": 0.18,
+   "size": "€587 m",
+   "n_hold": 38,
+   "top10": 76.0,
+   "top": "Roche 17.8%, Novartis 15.3%, AstraZeneca 14.0%, Novo Nordisk 7.0%, GSK 5.5%, Sanofi 5.0%",
+   "mix": "Pharmaceuticals 79%, medical equipment 10%, biotech 5%, lab tools 5%",
+   "payout": "Accumulating",
+   "since": "Dec 2014",
+   "long_run": "3.1% a year over 3 years, 4.4% over 5 (SSGA, to 30 Sep 2026)",
+   "src": "State Street, 14 Oct 2026",
+   "overlap": "AstraZeneca 14.0% of the fund (you also own AstraZeneca directly)",
+   "flags": null
+  },
+  "XETR:EXV8": {
+   "sym": "XETR:EXV8",
+   "name": "iShares STOXX Europe 600 Construction UCITS",
+   "isin": "DE000A0H08F7",
+   "tracks": "STOXX Europe 600 Construction & Materials index: European builders and building materials",
+   "style": "Index fund",
+   "ter": 0.46,
+   "size": "€753 m",
+   "n_hold": 31,
+   "top10": 72.3,
+   "top": "Vinci 14.8%, Holcim 9.4%, Saint-Gobain 8.6%, Assa Abloy 7.9%, Sika 7.8%, Ferrovial 5.8%, Geberit 4.9%",
+   "mix": "Contractors, cement and building products across Europe",
+   "payout": "Distributing (up to 4 times a year)",
+   "since": "Jul 2002",
+   "long_run": "12.7% a year over 3 years, 8.3% over 5 (iShares, to 30 Sep 2026)",
+   "src": "iShares fact sheet, 30 Sep 2026",
+   "overlap": null,
+   "flags": "costs 0.46% a year, among the dearer of your ETFs; pays out dividends, so it is the only one of your ETFs that does not reinvest"
+  },
+  "XETR:W1TB": {
+   "sym": "XETR:W1TB",
+   "name": "WisdomTree Cybersecurity UCITS",
+   "isin": "IE00BLPK3577",
+   "tracks": "WisdomTree Team8 Cybersecurity index: listed cybersecurity companies",
+   "style": "Index fund",
+   "ter": 0.45,
+   "size": "$723 m",
+   "n_hold": 25,
+   "top10": 59.7,
+   "top": "CrowdStrike 7.9%, Okta 7.2%, SentinelOne 6.2%, Palo Alto 6.0%, Fortinet 5.7%, Datadog 5.7%, Zscaler 5.0%",
+   "mix": "US 91.9%, Japan 5.5%, Israel 2.2%; all information technology",
+   "payout": "Accumulating",
+   "since": "Jan 2021",
+   "long_run": null,
+   "src": "WisdomTree, 13 Oct 2026; Trackinsight",
+   "overlap": "Zscaler 5.0% of the fund (you also own Zscaler directly)",
+   "flags": "costs 0.45% a year, among the dearer of your ETFs"
+  },
+  "XETR:ASWE": {
+   "sym": "XETR:ASWE",
+   "name": "HANetf Saturna Al-Kawthar UCITS",
+   "isin": "IE00BMYMHS24",
+   "tracks": "No index: actively managed global fund that only buys Shariah-compliant companies, with an ESG screen (Saturna Capital)",
+   "style": "Active fund",
+   "ter": 0.75,
+   "size": "€19 m",
+   "n_hold": 42,
+   "top10": 42.5,
+   "top": "Roughly TSMC, Microsoft, Alphabet, ASML, AMD, Cisco, Fujikura, Prysmian, Sandoz, Trane (3–7% each)",
+   "mix": "US 47.6%, UK 10.5%, Switzerland 7.1%, Taiwan 6.6%, Japan 6.5%; semiconductors 19.6%, pharma 12.8%, software 12.5%",
+   "payout": "Accumulating",
+   "since": "Sep 2020",
+   "long_run": "16.5% a year over 3 years, 8.3% over 5 (finanzfluss, EUR, to 9 Oct 2026)",
+   "src": "finanzfluss; Halal Terminal (holdings, approximate)",
+   "overlap": "3 of its top 10 are also in VanEck Semiconductor's top 10 (AMD, ASML, TSMC); 3 of its top 10 are also in iShares S&P 500 IT's top 10 (AMD, Cisco, Microsoft)",
+   "flags": "costs 0.75% a year, among the dearer of your ETFs; very small fund (about €19 m), so there is a real risk it is closed or merged"
+  }
+ },
+ "top": {
+  "XETR:VVSM": [
+   {
+    "sym": "NASDAQ:AMD",
+    "w": 11.0
+   },
+   {
+    "sym": "NYSE:TSM",
+    "w": 10.0
+   },
+   {
+    "sym": "NASDAQ:MU",
+    "w": 9.9
+   },
+   {
+    "sym": "NASDAQ:NVDA",
+    "w": 9.7
+   },
+   {
+    "sym": "NASDAQ:AVGO",
+    "w": 9.2
+   },
+   {
+    "sym": "EURONEXT:ASML",
+    "w": 8.4
+   },
+   {
+    "sym": "NASDAQ:INTC",
+    "w": 6.7
+   }
+  ],
+  "XETR:QDVE": [
+   {
+    "sym": "NASDAQ:NVDA",
+    "w": 19.2
+   },
+   {
+    "sym": "NASDAQ:AAPL",
+    "w": 18.3
+   },
+   {
+    "sym": "NASDAQ:MSFT",
+    "w": 15.5
+   },
+   {
+    "sym": "NASDAQ:AVGO",
+    "w": 7.2
+   },
+   {
+    "sym": "NASDAQ:MU",
+    "w": 4.3
+   },
+   {
+    "sym": "NASDAQ:AMD",
+    "w": 3.2
+   },
+   {
+    "sym": "NASDAQ:INTC",
+    "w": 1.9
+   }
+  ],
+  "XETR:ESIT": [
+   {
+    "sym": "EURONEXT:ASML",
+    "w": 32.3
+   },
+   {
+    "sym": "XETR:SAP",
+    "w": 17.4
+   },
+   {
+    "sym": "XETR:IFX",
+    "w": 10.6
+   },
+   {
+    "sym": "OMXHEX:NOKIA",
+    "w": 6.2
+   },
+   {
+    "sym": "NASDAQ:NBIS",
+    "w": 5.7
+   },
+   {
+    "sym": "EURONEXT:ASM",
+    "w": 5.7
+   },
+   {
+    "sym": "EURONEXT:STMPA",
+    "w": 4.0
+   }
+  ],
+  "XETR:SPYH": [
+   {
+    "sym": "SIX:ROG",
+    "w": 17.8
+   },
+   {
+    "sym": "SIX:NOVN",
+    "w": 15.3
+   },
+   {
+    "sym": "LSE:AZN",
+    "w": 14.0
+   },
+   {
+    "sym": "OMXCOP:NOVO_B",
+    "w": 7.0
+   },
+   {
+    "sym": "LSE:GSK",
+    "w": 5.5
+   },
+   {
+    "sym": "EURONEXT:SAN",
+    "w": 5.0
+   }
+  ],
+  "XETR:EXV8": [
+   {
+    "sym": "EURONEXT:DG",
+    "w": 14.8
+   },
+   {
+    "sym": "SIX:HOLN",
+    "w": 9.4
+   },
+   {
+    "sym": "EURONEXT:SGO",
+    "w": 8.6
+   },
+   {
+    "sym": "OMXSTO:ASSA_B",
+    "w": 7.9
+   },
+   {
+    "sym": "SIX:SIKA",
+    "w": 7.8
+   },
+   {
+    "sym": "EURONEXT:FER",
+    "w": 5.8
+   },
+   {
+    "sym": "SIX:GEBN",
+    "w": 4.9
+   }
+  ],
+  "XETR:W1TB": [
+   {
+    "sym": "NASDAQ:CRWD",
+    "w": 7.9
+   },
+   {
+    "sym": "NASDAQ:OKTA",
+    "w": 7.2
+   },
+   {
+    "sym": "NYSE:S",
+    "w": 6.2
+   },
+   {
+    "sym": "NASDAQ:PANW",
+    "w": 6.0
+   },
+   {
+    "sym": "NASDAQ:FTNT",
+    "w": 5.7
+   },
+   {
+    "sym": "NASDAQ:DDOG",
+    "w": 5.7
+   },
+   {
+    "sym": "NASDAQ:ZS",
+    "w": 5.0
+   }
+  ],
+  "XETR:ASWE": [
+   {
+    "sym": "NYSE:TSM",
+    "w": 5
+   },
+   {
+    "sym": "NASDAQ:MSFT",
+    "w": 5
+   },
+   {
+    "sym": "NASDAQ:GOOGL",
+    "w": 5
+   },
+   {
+    "sym": "EURONEXT:ASML",
+    "w": 5
+   },
+   {
+    "sym": "NASDAQ:AMD",
+    "w": 5
+   },
+   {
+    "sym": "NASDAQ:CSCO",
+    "w": 5
+   },
+   {
+    "sym": "MIL:PRY",
+    "w": 5
+   },
+   {
+    "sym": "SIX:SDZ",
+    "w": 5
+   },
+   {
+    "sym": "NYSE:TT",
+    "w": 5
+   }
+  ]
+ },
+ "exposure": [
+  {
+   "company": "NVIDIA",
+   "direct": [
+    "NASDAQ:NVDA"
+   ],
+   "via": [
+    {
+     "label": "VanEck Semiconductor",
+     "fund": "XETR:VVSM",
+     "share": 0.09723
+    },
+    {
+     "label": "iShares S&P 500 IT",
+     "fund": "XETR:QDVE",
+     "share": 0.19191
+    }
+   ]
+  },
+  {
+   "company": "Broadcom",
+   "direct": [
+    "NASDAQ:AVGO"
+   ],
+   "via": [
+    {
+     "label": "VanEck Semiconductor",
+     "fund": "XETR:VVSM",
+     "share": 0.09179
+    },
+    {
+     "label": "iShares S&P 500 IT",
+     "fund": "XETR:QDVE",
+     "share": 0.07241
+    }
+   ]
+  },
+  {
+   "company": "Intel",
+   "direct": [
+    "NASDAQ:INTC"
+   ],
+   "via": [
+    {
+     "label": "VanEck Semiconductor",
+     "fund": "XETR:VVSM",
+     "share": 0.06743
+    },
+    {
+     "label": "iShares S&P 500 IT",
+     "fund": "XETR:QDVE",
+     "share": 0.01876
+    }
+   ]
+  },
+  {
+   "company": "AstraZeneca",
+   "direct": [
+    "OMXSTO:AZN"
+   ],
+   "via": [
+    {
+     "label": "SPDR MSCI Europe Health Care UCITS",
+     "fund": "XETR:SPYH",
+     "share": 0.14002
+    }
+   ]
+  },
+  {
+   "company": "Hexagon B",
+   "direct": [
+    "OMXSTO:HEXA_B"
+   ],
+   "via": [
+    {
+     "label": "iShares Europe IT",
+     "fund": "XETR:ESIT",
+     "share": 0.02465
+    }
+   ]
+  },
+  {
+   "company": "Zscaler",
+   "direct": [
+    "NASDAQ:ZS"
+   ],
+   "via": [
+    {
+     "label": "WisdomTree Cybersecurity UCITS",
+     "fund": "XETR:W1TB",
+     "share": 0.04957
+    }
+   ]
+  },
+  {
+   "company": "Semiconductors (theme, at least)",
+   "direct": [
+    "NASDAQ:AVGO",
+    "NASDAQ:NVDA",
+    "NASDAQ:INTC",
+    "NASDAQ:AMKR",
+    "NASDAQ:QCOM",
+    "NASDAQ:MRVL",
+    "NASDAQ:AEIS"
+   ],
+   "via": [
+    {
+     "label": "VanEck Semiconductor",
+     "fund": "XETR:VVSM",
+     "share": 1.0
+    },
+    {
+     "label": "iShares S&P 500 IT",
+     "fund": "XETR:QDVE",
+     "share": 0.37508
+    },
+    {
+     "label": "iShares Europe IT",
+     "fund": "XETR:ESIT",
+     "share": 0.52605
+    },
+    {
+     "label": "Saturna Al-Kawthar",
+     "fund": "XETR:ASWE",
+     "share": 0.1958
+    }
+   ]
+  }
+ ]
+}

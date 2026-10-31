@@ -1,0 +1,40 @@
+name: Board dry run
+
+# Temporary: runs the full rebuild without touching index.html and saves the
+# results (and a check against the board's original readings) to the
+# board-preview branch for review. Removed once the daily rebuild is live.
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/board-dry-run.yml, scripts/board_lib.py, scripts/update_board.py, scripts/check_fidelity.py]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: board-data
+  cancel-in-progress: false
+
+jobs:
+  dry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild (dry)
+        run: python3 scripts/update_board.py --dry 2>&1 | tee data/preview_log.txt || true
+      - name: Check against the original readings
+        run: python3 scripts/check_fidelity.py 2>&1 | tee -a data/preview_log.txt || true
+      - name: Save to the board-preview branch
+        run: |
+          mkdir -p /tmp/out && cp -r data/preview /tmp/out/ 2>/dev/null; cp data/preview_log.txt /tmp/out/
+          git config user.name "board-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --orphan board-preview
+          git rm -rq --cached . && rm -rf ./* .github 2>/dev/null; cp -r /tmp/out/* .
+          git add -A && git commit -qm "Board dry run $(date -u +%FT%TZ)"
+          git push -f origin board-preview
