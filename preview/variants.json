@@ -1,0 +1,46 @@
+{
+ "rows": 99,
+ "score": {
+  "macd": {
+   "histogram vs 1 day": 80,
+   "histogram vs 2 days": 91,
+   "MACD line vs 1 day": 83,
+   "TradingView EMA seed, histogram": 80,
+   "TradingView EMA seed, line": 83
+  },
+  "alligator": {
+   "order, sleep<1%": 66,
+   "order, sleep<0.5%": 63,
+   "order, sleep<2%": 55,
+   "order + price beyond lips": 95,
+   "order held 3 bars": 69,
+   "order + widening": 65,
+   "unshifted order": 57,
+   "order + price, sleep<2%": 82,
+   "order held 5 bars + price": 87
+  },
+  "structure": {
+   "fractal 2": 42,
+   "fractal 3": 53,
+   "fractal 5": 97,
+   "fractal 3 no break-first": 27,
+   "fractal 5 no break-first": 59,
+   "fractal 10": 42,
+   "fractal 2 unconfirmed": 20
+  },
+  "obv": {
+   "vs 50-day avg": 77,
+   "vs 20-day avg": 92,
+   "vs 10-day avg": 82,
+   "vs 20 days ago": 72,
+   "vs 50 days ago": 67
+  },
+  "bollinger": {
+   "rank<=20% of 126": 94,
+   "rank<=20% of 252": 88,
+   "rank<=25% of 126": 92,
+   "squeeze first, 126": 97,
+   "squeeze first, 252": 90
+  }
+ }
+}

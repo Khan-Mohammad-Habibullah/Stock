@@ -1,0 +1,39 @@
+bars 1620 failed 9
+US {'companies': 636, 'with_year': 630, 'sectors': 19, 'industries': 34, 'last_bar': '2026-10-30'}
+Sweden {'companies': 171, 'with_year': 169, 'sectors': 16, 'industries': 12, 'last_bar': '2026-10-30'}
+Norway {'companies': 116, 'with_year': 114, 'sectors': 12, 'industries': 10, 'last_bar': '2026-10-30'}
+Europe {'companies': 275, 'with_year': 275, 'sectors': 16, 'industries': 18, 'last_bar': '2026-10-30'}
+Denmark {'companies': 64, 'with_year': 64, 'sectors': 10, 'industries': 3, 'last_bar': '2026-10-30'}
+Finland {'companies': 72, 'with_year': 69, 'sectors': 11, 'industries': 2, 'last_bar': '2026-10-30'}
+Germany {'companies': 106, 'with_year': 105, 'sectors': 13, 'industries': 9, 'last_bar': '2026-10-30'}
+Canada {'companies': 123, 'with_year': 123, 'sectors': 13, 'industries': 10, 'last_bar': '2026-10-30'}
+/home/runner/work/Stock/Stock/scripts/update_board.py:125: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+  bars_fresh = lambda sym: sym in bars and len(bars[sym][0]) >= 70 and (today - datetime.datetime.utcfromtimestamp(bars[sym][0][-1][0]).date()).days <= 10
+dry run written to data/preview/
+best cut 2026-10-13
+{
+ "macd": "93/102",
+ "cpr": "102/102",
+ "alligator": "98/102",
+ "bollinger": "99/102",
+ "structure": "100/102",
+ "oct_signal": "94/102",
+ "obv": "95/102",
+ "rsi": "101/102",
+ "vs20": "101/102",
+ "vs50": "101/102",
+ "vs200": "98/99",
+ "vs40w": "98/99",
+ "w_rsi": "99/100",
+ "off_high": "100/102",
+ "vol": "100/102",
+ "oct_score": "66/102",
+ "cmf": "101/102",
+ "adx": "101/102"
+}
+rows 99
+macd [('histogram vs 2 days', 91), ('MACD line vs 1 day', 83), ('TradingView EMA seed, line', 83), ('histogram vs 1 day', 80), ('TradingView EMA seed, histogram', 80)]
+alligator [('order + price beyond lips', 95), ('order held 5 bars + price', 87), ('order + price, sleep<2%', 82), ('order held 3 bars', 69), ('order, sleep<1%', 66), ('order + widening', 65), ('order, sleep<0.5%', 63), ('unshifted order', 57), ('order, sleep<2%', 55)]
+structure [('fractal 5', 97), ('fractal 5 no break-first', 59), ('fractal 3', 53), ('fractal 2', 42), ('fractal 10', 42), ('fractal 3 no break-first', 27), ('fractal 2 unconfirmed', 20)]
+obv [('vs 20-day avg', 92), ('vs 10-day avg', 82), ('vs 50-day avg', 77), ('vs 20 days ago', 72), ('vs 50 days ago', 67)]
+bollinger [('squeeze first, 126', 97), ('rank<=20% of 126', 94), ('rank<=25% of 126', 92), ('squeeze first, 252', 90), ('rank<=20% of 252', 88)]

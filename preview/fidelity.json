@@ -1,0 +1,430 @@
+{
+ "best_cut": "2026-10-13",
+ "report": {
+  "2026-10-13": {
+   "agree": {
+    "macd": "93/102",
+    "cpr": "102/102",
+    "alligator": "98/102",
+    "bollinger": "99/102",
+    "structure": "100/102",
+    "oct_signal": "94/102",
+    "obv": "95/102",
+    "rsi": "101/102",
+    "vs20": "101/102",
+    "vs50": "101/102",
+    "vs200": "98/99",
+    "vs40w": "98/99",
+    "w_rsi": "99/100",
+    "off_high": "100/102",
+    "vol": "100/102",
+    "oct_score": "66/102",
+    "cmf": "101/102",
+    "adx": "101/102"
+   },
+   "misses": {
+    "oct_score": [
+     "NASDAQ:CIFR: board -7.5 / rebuild -6.5",
+     "NASDAQ:SRTS: board -5.5 / rebuild -7.5",
+     "NASDAQ:INOD: board -3.5 / rebuild -4.5",
+     "OSL:KCC: board 7.0 / rebuild 5.5",
+     "NASDAQ:EVLV: board -7.5 / rebuild -9.0",
+     "NYSE:RDW: board -7.5 / rebuild -6.0"
+    ],
+    "macd": [
+     "NASDAQ:SRTS: board Bearish, improving / rebuild Bearish, falling",
+     "NASDAQ:OCTV: board Bullish, rising / rebuild Bullish, fading",
+     "OMXSTO:FRACTL: board Bearish, improving / rebuild Bearish, falling",
+     "OMXSTO:KEBNI_B: board Bearish, improving / rebuild Bearish, falling",
+     "OSL:ODFB: board Bearish, falling / rebuild Bearish, improving",
+     "OMXSTO:INDT: board Bullish, rising / rebuild Bullish, fading"
+    ],
+    "bollinger": [
+     "NASDAQ:INOD: board Mid band / rebuild Near lower band",
+     "OMXSTO:NIBE_B: board Squeeze / rebuild Mid band",
+     "NYSE:MOD: board Squeeze / rebuild Near lower band"
+    ],
+    "oct_signal": [
+     "NASDAQ:INOD: board Mildly bearish / rebuild Bearish",
+     "NASDAQ:SMCI: board Neutral / rebuild Mildly bearish",
+     "XETR:ASWE: board Bullish / rebuild Mildly bullish",
+     "NASDAQ:TTD: board Bearish / rebuild Mildly bearish",
+     "OMXSTO:SECT_B: board Bullish / rebuild Mildly bullish",
+     "OSL:ODFB: board Neutral / rebuild Mildly bullish"
+    ],
+    "obv": [
+     "OSL:KCC: board Down / rebuild Up",
+     "NASDAQ:SMCI: board Up / rebuild Down",
+     "NYSE:PWR: board Down / rebuild Up",
+     "OMXSTO:ATCO_B: board Up / rebuild Down",
+     "OMXSTO:MCAP: board Up / rebuild Down",
+     "NYSE:ACM: board Down / rebuild Up"
+    ],
+    "w_rsi": [
+     "NASDAQ:XNDU: board 32.6 / rebuild 39.5"
+    ],
+    "vol": [
+     "NASDAQ:XNDU: board 157.8 / rebuild 208.4",
+     "NASDAQ:OCTV: board 79.7 / rebuild 85.4"
+    ],
+    "alligator": [
+     "OMXSTO:AZN: board Bearish / rebuild Sleeping",
+     "OSL:VAR: board Bullish / rebuild Sleeping",
+     "NYSE:MOD: board Waking/mixed / rebuild Bearish",
+     "OMXSTO:NEWA_B: board Bullish / rebuild Sleeping"
+    ],
+    "off_high": [
+     "NASDAQ:OCTV: board -26.8 / rebuild -33.1",
+     "NYSE:MOD: board -42.0 / rebuild -46.6"
+    ],
+    "structure": [
+     "OMXSTO:CDMIL: board Higher highs, lower lows (broadening) / rebuild Higher highs & higher lows",
+     "NYSE:MOD: board Higher highs, lower lows (broadening) / rebuild Broke below last swing low"
+    ],
+    "cmf": [
+     "OMXSTO:CDMIL: board -0.38 / rebuild -0.44"
+    ],
+    "adx": [
+     "OMXSTO:CDMIL: board 20.6 / rebuild 25.5"
+    ],
+    "rsi": [
+     "NYSE:MOD: board 45.9 / rebuild 40.2"
+    ],
+    "vs20": [
+     "NYSE:MOD: board -2.5 / rebuild -7.2"
+    ],
+    "vs50": [
+     "NYSE:MOD: board -2.3 / rebuild -8.8"
+    ],
+    "vs200": [
+     "NYSE:MOD: board -13.2 / rebuild -19.9"
+    ],
+    "vs40w": [
+     "NYSE:MOD: board -15.1 / rebuild -21.4"
+    ]
+   }
+  },
+  "2026-10-14": {
+   "agree": {
+    "macd": "72/102",
+    "cpr": "79/102",
+    "alligator": "79/102",
+    "bollinger": "75/102",
+    "structure": "83/102",
+    "oct_signal": "56/102",
+    "obv": "85/102",
+    "rsi": "38/102",
+    "vs20": "43/102",
+    "vs50": "45/102",
+    "vs200": "49/99",
+    "vs40w": "49/99",
+    "w_rsi": "86/100",
+    "off_high": "59/102",
+    "vol": "100/102",
+    "oct_score": "29/102",
+    "cmf": "75/102",
+    "adx": "101/102"
+   },
+   "misses": {
+    "bollinger": [
+     "NYSE:BMNR: board Near lower band / rebuild Below lower band",
+     "NASDAQ:ZS: board Near upper band / rebuild Mid band",
+     "NYSE:V: board Above upper band / rebuild Near upper band",
+     "NASDAQ:CRDO: board Mid band / rebuild Squeeze",
+     "NASDAQ:INOD: board Mid band / rebuild Below lower band",
+     "OSL:KCC: board Near upper band / rebuild Mid band"
+    ],
+    "rsi": [
+     "NYSE:BMNR: board 42.1 / rebuild 37.1",
+     "NYSE:UBER: board 52.1 / rebuild 44.0",
+     "NASDAQ:ZS: board 67.3 / rebuild 60.9",
+     "NYSE:V: board 74.0 / rebuild 67.5",
+     "NASDAQ:CIFR: board 27.0 / rebuild 23.5",
+     "NASDAQ:CRDO: board 48.1 / rebuild 40.5"
+    ],
+    "vs20": [
+     "NYSE:BMNR: board -9.4 / rebuild -14.1",
+     "NYSE:UBER: board 2.3 / rebuild -0.5",
+     "NASDAQ:ZS: board 10.2 / rebuild 5.6",
+     "NASDAQ:CIFR: board -29.4 / rebuild -36.8",
+     "NASDAQ:CRDO: board -0.2 / rebuild -10.2",
+     "NASDAQ:VICR: board -0.7 / rebuild -9.8"
+    ],
+    "vs50": [
+     "NYSE:BMNR: board -0.3 / rebuild -5.9",
+     "NYSE:UBER: board -2.4 / rebuild -5.1",
+     "NASDAQ:ZS: board 21.1 / rebuild 16.3",
+     "NASDAQ:CIFR: board -31.2 / rebuild -38.9",
+     "NASDAQ:CRDO: board -5.3 / rebuild -13.9",
+     "NASDAQ:VICR: board 16.2 / rebuild 6.5"
+    ],
+    "vs200": [
+     "NYSE:BMNR: board 9.4 / rebuild 3.7",
+     "NYSE:UBER: board -4.1 / rebuild -6.8",
+     "NASDAQ:ZS: board 37.7 / rebuild 33.0",
+     "NASDAQ:CIFR: board -37.9 / rebuild -45.5",
+     "NASDAQ:CRDO: board 10.3 / rebuild -0.4",
+     "NASDAQ:VICR: board 20.1 / rebuild 9.9"
+    ],
+    "vs40w": [
+     "NYSE:BMNR: board 12.8 / rebuild 7.0",
+     "NYSE:UBER: board -3.2 / rebuild -5.9",
+     "NASDAQ:ZS: board 40.1 / rebuild 35.4",
+     "NASDAQ:CIFR: board -37.4 / rebuild -45.0",
+     "NASDAQ:CRDO: board 8.7 / rebuild -1.5",
+     "NASDAQ:VICR: board 18.0 / rebuild 8.6"
+    ],
+    "oct_score": [
+     "OMXSTO:HEM: board -1.5 / rebuild -2.5",
+     "NYSE:UBER: board 1.0 / rebuild -4.0",
+     "NASDAQ:ZS: board 7.0 / rebuild 6.0",
+     "NYSE:V: board 6.0 / rebuild 5.0",
+     "NASDAQ:CIFR: board -7.5 / rebuild -6.5",
+     "NASDAQ:CRDO: board 1.0 / rebuild -3.5"
+    ],
+    "macd": [
+     "NYSE:UBER: board Bullish, rising / rebuild Bullish, fading",
+     "NASDAQ:ZS: board Bullish, rising / rebuild Bullish, fading",
+     "NASDAQ:CRDO: board Bullish, fading / rebuild Bearish, falling",
+     "NASDAQ:SRTS: board Bearish, improving / rebuild Bearish, falling",
+     "NASDAQ:CLBT: board Bullish, rising / rebuild Bullish, fading",
+     "OSL:KCC: board Bullish, rising / rebuild Bullish, fading"
+    ],
+    "cpr": [
+     "NYSE:UBER: board Inside / rebuild Below",
+     "NASDAQ:CRDO: board Above / rebuild Below",
+     "NASDAQ:CLBT: board Above / rebuild Below",
+     "NASDAQ:MRVL: board Above / rebuild Inside",
+     "OMXSTO:AZN: board Below / rebuild Above",
+     "OMXSTO:CIBUS: board Below / rebuild Inside"
+    ],
+    "alligator": [
+     "NYSE:UBER: board Waking/mixed / rebuild Bearish",
+     "NYSE:V: board Sleeping / rebuild Waking/mixed",
+     "NASDAQ:CLBT: board Waking/mixed / rebuild Bearish",
+     "OMXSTO:AZN: board Bearish / rebuild Sleeping",
+     "OMXSTO:CIBUS: board Bearish / rebuild Waking/mixed",
+     "NASDAQ:PRCT: board Waking/mixed / rebuild Bearish"
+    ],
+    "oct_signal": [
+     "NYSE:UBER: board Neutral / rebuild Bearish",
+     "NASDAQ:CRDO: board Neutral / rebuild Mildly bearish",
+     "NASDAQ:INOD: board Mildly bearish / rebuild Bearish",
+     "NASDAQ:CLBT: board Neutral / rebuild Bearish",
+     "OSL:KCC: board Bullish / rebuild Mildly bullish",
+     "NASDAQ:MRVL: board Bullish / rebuild Neutral"
+    ],
+    "off_high": [
+     "NYSE:UBER: board -28.9 / rebuild -31.0",
+     "NASDAQ:ZS: board -32.1 / rebuild -34.5",
+     "NASDAQ:CIFR: board -62.4 / rebuild -67.0",
+     "NASDAQ:CRDO: board -35.8 / rebuild -41.9",
+     "NASDAQ:VICR: board -30.2 / rebuild -35.9",
+     "NASDAQ:INOD: board -53.3 / rebuild -57.5"
+    ],
+    "cmf": [
+     "NASDAQ:CIFR: board -0.16 / rebuild -0.24",
+     "NASDAQ:CRDO: board 0.31 / rebuild 0.22",
+     "XETR:VVSM: board 0.01 / rebuild -0.09",
+     "NASDAQ:INOD: board 0.05 / rebuild -0.01",
+     "OSL:KCC: board 0.11 / rebuild 0.03",
+     "NASDAQ:MRVL: board 0.18 / rebuild 0.1"
+    ],
+    "structure": [
+     "NASDAQ:CRDO: board Higher lows, lower highs (squeeze) / rebuild Broke below last swing low",
+     "NYSE:MTZ: board Lower highs & lower lows / rebuild Broke below last swing low",
+     "NASDAQ:AMKR: board Higher highs & higher lows / rebuild Broke below last swing low",
+     "NASDAQ:OCTV: board Broke above last swing high / rebuild Higher lows, lower highs (squeeze)",
+     "XETR:ASWE: board Broke above last swing high / rebuild Higher highs, lower lows (broadening)",
+     "OSL:MPCC: board Broke above last swing high / rebuild Higher highs & higher lows"
+    ],
+    "obv": [
+     "NASDAQ:VICR: board Up / rebuild Down",
+     "OSL:KCC: board Down / rebuild Up",
+     "XETR:QDVE: board Up / rebuild Down",
+     "NASDAQ:SMCI: board Up / rebuild Down",
+     "NASDAQ:PRCT: board Up / rebuild Down",
+     "NASDAQ:LTRX: board Up / rebuild Down"
+    ],
+    "w_rsi": [
+     "OSL:KCC: board 62.5 / rebuild 58.3",
+     "NASDAQ:MRVL: board 64.9 / rebuild 57.7",
+     "NASDAQ:XNDU: board 32.6 / rebuild 39.3",
+     "OMXSTO:AZN: board 44.9 / rebuild 49.1",
+     "NASDAQ:SMCI: board 54.1 / rebuild 50.0",
+     "XETR:W1TB: board 70.8 / rebuild 66.4"
+    ],
+    "vol": [
+     "NASDAQ:XNDU: board 157.8 / rebuild 207.7",
+     "NASDAQ:OCTV: board 79.7 / rebuild 84.9"
+    ],
+    "adx": [
+     "NYSE:MOD: board 11.9 / rebuild 16.5"
+    ]
+   }
+  },
+  "2026-10-15": {
+   "agree": {
+    "macd": "58/102",
+    "cpr": "69/102",
+    "alligator": "71/102",
+    "bollinger": "60/102",
+    "structure": "70/102",
+    "oct_signal": "47/102",
+    "obv": "78/102",
+    "rsi": "31/102",
+    "vs20": "35/102",
+    "vs50": "32/102",
+    "vs200": "38/99",
+    "vs40w": "40/99",
+    "w_rsi": "74/100",
+    "off_high": "49/102",
+    "vol": "100/102",
+    "oct_score": "22/102",
+    "cmf": "58/102",
+    "adx": "98/102"
+   },
+   "misses": {
+    "oct_signal": [
+     "NYSE:BMNR: board Bearish / rebuild Mildly bearish",
+     "OMXSTO:HEM: board Mildly bearish / rebuild Mildly bullish",
+     "NASDAQ:CRDO: board Neutral / rebuild Mildly bearish",
+     "NASDAQ:VICR: board Neutral / rebuild Mildly bearish",
+     "XETR:VVSM: board Mildly bearish / rebuild Bearish",
+     "OSL:KCC: board Bullish / rebuild Neutral"
+    ],
+    "oct_score": [
+     "NYSE:BMNR: board -6.0 / rebuild -3.5",
+     "OMXSTO:HEM: board -1.5 / rebuild 1.5",
+     "NASDAQ:ZS: board 7.0 / rebuild 6.0",
+     "NYSE:V: board 6.0 / rebuild 7.0",
+     "NASDAQ:CIFR: board -7.5 / rebuild -5.5",
+     "NASDAQ:CRDO: board 1.0 / rebuild -3.0"
+    ],
+    "cpr": [
+     "OMXSTO:HEM: board Below / rebuild Inside",
+     "NASDAQ:CRDO: board Above / rebuild Below",
+     "NASDAQ:VICR: board Inside / rebuild Below",
+     "XETR:VVSM: board Inside / rebuild Below",
+     "NASDAQ:MRVL: board Above / rebuild Inside",
+     "XETR:QDVE: board Above / rebuild Inside"
+    ],
+    "structure": [
+     "OMXSTO:HEM: board Lower highs & lower lows / rebuild Higher lows, lower highs (squeeze)",
+     "NASDAQ:CRDO: board Higher lows, lower highs (squeeze) / rebuild Broke below last swing low",
+     "OSL:KCC: board Broke above last swing high / rebuild Higher lows, lower highs (squeeze)",
+     "NYSE:MTZ: board Lower highs & lower lows / rebuild Broke below last swing low",
+     "NASDAQ:SMCI: board Higher highs, lower lows (broadening) / rebuild Broke below last swing low",
+     "NASDAQ:LULU: board Broke below last swing low / rebuild Lower highs & lower lows"
+    ],
+    "rsi": [
+     "OMXSTO:HEM: board 43.8 / rebuild 50.1",
+     "NASDAQ:ZS: board 67.3 / rebuild 60.6",
+     "NASDAQ:CRDO: board 48.1 / rebuild 40.3",
+     "NASDAQ:VICR: board 53.9 / rebuild 38.5",
+     "NASDAQ:SRTS: board 39.8 / rebuild 33.1",
+     "XETR:VVSM: board 43.5 / rebuild 36.2"
+    ],
+    "vs20": [
+     "OMXSTO:HEM: board 1.0 / rebuild 5.8",
+     "NASDAQ:ZS: board 10.2 / rebuild 4.9",
+     "NASDAQ:CIFR: board -29.4 / rebuild -34.7",
+     "NASDAQ:CRDO: board -0.2 / rebuild -10.8",
+     "NASDAQ:VICR: board -0.7 / rebuild -19.2",
+     "NASDAQ:SRTS: board -3.4 / rebuild -6.6"
+    ],
+    "vs50": [
+     "OMXSTO:HEM: board -15.2 / rebuild -11.3",
+     "NASDAQ:ZS: board 21.1 / rebuild 15.4",
+     "NASDAQ:CIFR: board -31.2 / rebuild -37.6",
+     "NASDAQ:CRDO: board -5.3 / rebuild -13.9",
+     "NASDAQ:VICR: board 16.2 / rebuild -4.6",
+     "NASDAQ:SRTS: board -6.8 / rebuild -10.5"
+    ],
+    "vs200": [
+     "OMXSTO:HEM: board -32.9 / rebuild -29.5",
+     "NASDAQ:ZS: board 37.7 / rebuild 32.8",
+     "NASDAQ:CIFR: board -37.9 / rebuild -44.9",
+     "NASDAQ:CRDO: board 10.3 / rebuild -0.9",
+     "NASDAQ:VICR: board 20.1 / rebuild -1.7",
+     "NASDAQ:SRTS: board -20.5 / rebuild -23.6"
+    ],
+    "vs40w": [
+     "OMXSTO:HEM: board -30.6 / rebuild -27.9",
+     "NASDAQ:ZS: board 40.1 / rebuild 35.2",
+     "NASDAQ:CIFR: board -37.4 / rebuild -44.4",
+     "NASDAQ:CRDO: board 8.7 / rebuild -1.9",
+     "NASDAQ:VICR: board 18.0 / rebuild -2.4",
+     "NASDAQ:SRTS: board -18.8 / rebuild -22.1"
+    ],
+    "macd": [
+     "NYSE:UBER: board Bullish, rising / rebuild Bullish, fading",
+     "NASDAQ:ZS: board Bullish, rising / rebuild Bullish, fading",
+     "NASDAQ:CRDO: board Bullish, fading / rebuild Bearish, falling",
+     "NASDAQ:SRTS: board Bearish, improving / rebuild Bearish, falling",
+     "NASDAQ:CLBT: board Bullish, rising / rebuild Bullish, fading",
+     "OSL:KCC: board Bullish, rising / rebuild Bullish, fading"
+    ],
+    "bollinger": [
+     "NASDAQ:ZS: board Near upper band / rebuild Mid band",
+     "NASDAQ:CIFR: board Below lower band / rebuild Near lower band",
+     "NASDAQ:CRDO: board Mid band / rebuild Squeeze",
+     "NASDAQ:VICR: board Mid band / rebuild Near lower band",
+     "NASDAQ:SRTS: board Squeeze / rebuild Below lower band",
+     "XETR:VVSM: board Mid band / rebuild Below lower band"
+    ],
+    "off_high": [
+     "NASDAQ:ZS: board -32.1 / rebuild -34.6",
+     "NASDAQ:CIFR: board -62.4 / rebuild -66.7",
+     "NASDAQ:CRDO: board -35.8 / rebuild -42.2",
+     "NASDAQ:VICR: board -30.2 / rebuild -42.5",
+     "NASDAQ:SRTS: board -47.4 / rebuild -49.5",
+     "XETR:VVSM: board -14.0 / rebuild -17.7"
+    ],
+    "cmf": [
+     "NASDAQ:ZS: board 0.14 / rebuild 0.09",
+     "NASDAQ:CRDO: board 0.31 / rebuild 0.23",
+     "NASDAQ:VICR: board 0.23 / rebuild 0.17",
+     "OSL:KCC: board 0.11 / rebuild -0.05",
+     "XETR:QDVE: board 0.1 / rebuild 0.01",
+     "NYSE:MTZ: board -0.13 / rebuild 0.01"
+    ],
+    "alligator": [
+     "NYSE:V: board Sleeping / rebuild Bullish",
+     "OSL:KCC: board Bullish / rebuild Waking/mixed",
+     "OMXSTO:AZN: board Bearish / rebuild Sleeping",
+     "OMXSTO:CIBUS: board Bearish / rebuild Waking/mixed",
+     "NASDAQ:PRCT: board Waking/mixed / rebuild Bearish",
+     "NASDAQ:LULU: board Bearish / rebuild Waking/mixed"
+    ],
+    "adx": [
+     "NASDAQ:CIFR: board 17.3 / rebuild 22.1",
+     "NYSE:RDW: board 21.1 / rebuild 25.3",
+     "NASDAQ:CRWV: board 11.9 / rebuild 16.3",
+     "NYSE:MOD: board 11.9 / rebuild 18.6"
+    ],
+    "obv": [
+     "NASDAQ:VICR: board Up / rebuild Down",
+     "OSL:KCC: board Down / rebuild Up",
+     "NASDAQ:MRVL: board Up / rebuild Down",
+     "XETR:QDVE: board Up / rebuild Down",
+     "OMXSTO:AZN: board Down / rebuild Up",
+     "OMXSTO:CIBUS: board Down / rebuild Up"
+    ],
+    "w_rsi": [
+     "NASDAQ:VICR: board 55.7 / rebuild 48.3",
+     "XETR:VVSM: board 56.1 / rebuild 51.8",
+     "OSL:KCC: board 62.5 / rebuild 55.7",
+     "NASDAQ:MRVL: board 64.9 / rebuild 56.6",
+     "XETR:QDVE: board 67.3 / rebuild 60.9",
+     "NASDAQ:XNDU: board 32.6 / rebuild 39.5"
+    ],
+    "vol": [
+     "NASDAQ:XNDU: board 157.8 / rebuild 207.1",
+     "NASDAQ:OCTV: board 79.7 / rebuild 84.8"
+    ]
+   }
+  }
+ },
+ "fetch_errors": {}
+}

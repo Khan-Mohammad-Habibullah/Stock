@@ -1,0 +1,13 @@
+{
+"fetch_errors": {
+"NYSE:VYLR": "only 22 bars",
+"OMXSTO:PUBLIO": "HTTP Error 404: Not Found",
+"OSL:OUTLT": "only 27 bars",
+"SSE:688235": "no Yahoo ticker for SSE:688235",
+"GPW:ALE": "no Yahoo ticker for GPW:ALE",
+"XETR:1COV": "only 10 bars",
+"OMXHEX:SENSO": "only 16 bars",
+"OMXHEX:STEADY": "only 21 bars",
+"XETR:CBK0": "only 1 bars"
+}
+}
