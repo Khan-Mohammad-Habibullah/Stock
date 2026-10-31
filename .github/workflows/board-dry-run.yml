@@ -6,7 +6,7 @@ name: Board dry run
 on:
   push:
     branches: [main]
-    paths: [.github/workflows/board-dry-run.yml, scripts/board_lib.py, scripts/update_board.py, scripts/check_fidelity.py]
+    paths: [.github/workflows/board-dry-run.yml, scripts/board_lib.py, scripts/update_board.py, scripts/check_fidelity.py, scripts/check_variants.py]
   workflow_dispatch: {}
 
 permissions:
@@ -29,6 +29,8 @@ jobs:
         run: python3 scripts/update_board.py --dry 2>&1 | tee data/preview_log.txt || true
       - name: Check against the original readings
         run: python3 scripts/check_fidelity.py 2>&1 | tee -a data/preview_log.txt || true
+      - name: Score indicator variants against the original readings
+        run: python3 scripts/check_variants.py 2>&1 | tee -a data/preview_log.txt || true
       - name: Save to the board-preview branch
         run: |
           mkdir -p /tmp/out && cp -r data/preview /tmp/out/ 2>/dev/null; cp data/preview_log.txt /tmp/out/

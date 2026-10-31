@@ -100,7 +100,7 @@ EURONEXT = {"France": ".PA", "Netherlands": ".AS", "Belgium": ".BR", "Portugal":
 
 def yahoo_candidates(sym, country=None):
     ex, tk = sym.split(":", 1)
-    base = tk.replace("_", "-").replace(".", "-").replace("/", "-")
+    base = tk.rstrip(".").replace("_", "-").replace(".", "-").replace("/", "-")  # LSE "BP." -> BP.L
     if ex == "EURONEXT":
         first = EURONEXT.get(country)
         sufs = ([first] if first else []) + [s for s in (".PA", ".AS", ".BR", ".LS", ".IR") if s != first]
