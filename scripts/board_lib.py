@@ -368,6 +368,14 @@ def analyse(B):
     # enough that at its pace over the last 5 sessions it would touch within APPROACH_DAYS sessions. Below and rising -> buy side (+1),
     # above and falling -> sell side (-1). An alert is kept for ALERT_HOLD sessions after the last bar that met the test unless an
     # opposite cross has happened since.
+    # the last daily candle against the 50- and 200-day averages: +1 = it came up from below and its high reached the average ("touched upwards"),
+    # -1 = it came down from above and its low reached it ("touched downwards"), 0 = no touch; "came from" = the previous close's side
+    def touch(m):
+        if not m or n < 1:
+            return None
+        return 1 if (c[n - 1] < m and h[n] >= m) else -1 if (c[n - 1] > m and l[n] <= m) else 0
+    R["touch50"], R["touch200"] = touch(s50), touch(s200)
+    R["bar_date"] = datetime.datetime.utcfromtimestamp(t[n]).strftime("%Y-%m-%d")
     R["ma_gap"] = R["ma_alert"] = R["ma_alert_ago"] = R["ma_eta"] = None
     if s200 and n >= 207:
         gap = {i: (sma(c, 50, i) - sma(c, 200, i)) / sma(c, 200, i) * 100 for i in range(n - 8, n + 1)}

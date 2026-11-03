@@ -256,6 +256,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .ctl .dim { opacity: .45; }
   td.sigc { white-space: nowrap; }
   .sig-alert { font-weight: 700; }
+  .tch { display: block; }
+  .tch.buy { color: var(--series-0); }
+  .tch.sell { color: var(--series-1); }
+  .tch.big { font-weight: 700; }
   .sig-note { display: block; font-size: 11px; font-weight: 400; color: var(--color-fg-muted); }
 </style>
 
@@ -386,6 +390,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <option value="">All signals</option>
         <option>Alert buy</option><option>Strong buy</option><option>Buy</option><option>Hold</option><option>Sell</option><option>Strong sell</option><option>Alert sell</option>
       </select>
+      <select id="f-tch" aria-label="Candle touch">
+        <option value="">All candle touches</option>
+        <option value="buy">Candle touch: Alert buy</option><option value="sell">Candle touch: Alert sell</option><option value="none">Candle touch: none</option>
+      </select>
       <select id="f-mkt" aria-label="Market">
         <option value="">All markets</option>
         <option>US</option><option>US ETF</option><option>Sweden</option><option>Norway</option><option>Europe ETF</option>
@@ -393,6 +401,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <span class="count" id="shown"></span>
     </div>
     <p class="hs-note" id="sig-note"><b>Signal.</b> <b class="pos">Alert buy</b> appears when the 50-day average is about to touch the 200-day from below, and <b class="neg">Alert sell</b> when it is about to touch it from above. "About to touch" means within 2% of the 200-day and closing in so that, at its pace over the last 5 sessions, it would meet it within 10 trading days. An alert stays for 3 trading days after the last session that met this (so it also covers the touch itself) unless the averages cross the other way. The rest of the time the column shows the strategy view behind the December column: Strong buy (consider adding), Buy (hold, add on dips), Hold, Sell (consider trimming) and Strong sell (consider selling). Not advice on what to buy or sell.</p>
+    <p class="hs-note" id="tch-note"><b>Candle touch.</b> <b style="color:var(--series-0)">Alert buy</b> in blue when the latest daily candle touches the 200-day average upwards (bold) or the 50-day average upwards, <b style="color:var(--series-1)">Alert sell</b> in orange when it touches the 200-day (bold) or the 50-day average downwards; a dash when it touches neither. "Upwards" means the candle came up from below the average and its high reached it, "downwards" that it came down from above and its low reached it (judged against the previous close). The latest candle is today's while the live prices are on, otherwise the last daily bar.</p>
     <p class="hs-note stale" id="stale-tbl" hidden></p>
     <div class="tbl-wrap">
       <table class="hold" id="tbl" data-source="holdings" data-row-key="sym">
@@ -400,6 +409,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           <th data-field="name"><button data-k="name">Holding</button></th>
           <th class="num" data-field="value_sek"><button data-k="value_sek">Value SEK</button></th>
           <th data-field="signal"><button data-k="signal_rank">Signal</button></th>
+          <th data-field="touch"><button data-k="touch_rank">Candle touch</button></th>
           <th class="num" data-field="price_live">Price now</th>
           <th class="num" data-field="day_chg"><button data-k="day_chg">Today</button></th>
           <th class="num" data-field="r1m"><button data-k="r1m">1 month</button></th>
@@ -594,6 +604,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           <th data-field="name"><button data-k="name">Holding</button></th>
           <th class="num" data-field="value_sek"><button data-k="gone_by">Value SEK</button></th>
           <th data-field="signal"><button data-k="signal_rank">Signal</button></th>
+          <th data-field="touch"><button data-k="touch_rank">Candle touch</button></th>
           <th class="num" data-field="price">Price now</th>
           <th class="num" data-field="r1m_day">Today</th>
           <th class="num" data-field="r1m"><button data-k="r1m">1 month</button></th>
@@ -757,6 +768,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <p><b>Monthly likely low and high.</b> For each month-end from October 2026 to October 2027, the likely low and likely high are the 25th and 75th percentile prices: half of outcomes fall between them, a quarter below and a quarter above. The gap widens with the square root of time, so a holding with a 40% yearly swing sits within roughly ±14% after three months and ±27% after a year. Real prices jump around earnings and news, so actual paths are lumpier than these smooth bands.</p>
       <p><b>Most likely price and the bold side.</b> The most likely price is the middle of the range after a modest tilt: today's price grown at 5% a year (roughly stocks' long-run average) plus 1.5 percentage points for each point of the holding's 1-year outlook score, capped at ±10, so between −5% and +15% a year. With that tilt, the chance of ending at or above the likely high and at or below the likely low are no longer equal; the larger one is in bold. The tilt is a judgment: trends and fundamentals have only a weak record of predicting one-year returns, so it is kept small, and for very volatile holdings the two chances stay close to 25% each.</p>
       <p><b>Automatic updates and former holdings.</b> Every weekday morning, and whenever you update your holdings, the board is rebuilt from scratch on GitHub: about 1,600 companies' daily bars from Yahoo Finance and their sector, fundamentals and analyst data from TradingView's screener, for your holdings, the stocks you used to own and the eight markets' money flow. The technical readings follow the rules above; checked against the board's original readings for 102 holdings, the rebuild gives the same October signal for 94, the same MACD, Alligator, Bollinger and price-structure reading for 93 to 100, and RSI and moving-average distances within a point or two for all but one or two. The 1-, 3- and 5-year outlooks use weights recovered from the original scores (same group for 83 to 85% of holdings, never more than one group apart), so treat them as approximate. The detail panel's notes on news stay as written. Former holdings are every stock that was on the board and is not any more, dated by the first Nordnet export it was missing from.</p>
+      <p><b>Candle touch column.</b> Alert buy in blue means the latest daily candle touched the 200-day moving average upwards (bold) or the 50-day one upwards; Alert sell in orange means it touched the 200-day (bold) or the 50-day downwards. A touch upwards is a candle that came up from below the average, judged by the previous close, and whose high reached it; a touch downwards is one that came down from above and whose low reached it. If both averages are touched the same day, both are shown. The candle is today's while TradingView's live prices are on (every minute) and the last daily bar otherwise, so an alert disappears when a later candle does not touch the average.</p>
       <p><b>Signal column.</b> Alert buy means the 50-day moving average is about to touch the 200-day from below (a golden cross is near) and Alert sell that it is about to touch it from above (a death cross is near). The test: the gap between them is under 2% of the 200-day, the 50-day has been on the same side for 6 sessions, and it has been closing in fast enough that, at its pace over the last 5 sessions, it would touch within 10 trading days. The alert is kept for 3 trading days after the last session that met the test, which also covers the cross itself, unless the averages cross the other way. The live prices are checked every minute, so an alert can appear before the daily rebuild. Otherwise the column translates the strategy view in the December column: Consider adding is Strong buy, Hold with adding on dips is Buy, Hold stays Hold, Consider trimming is Sell and Consider selling is Strong sell. A moving-average approach often fizzles out (the averages can turn away before touching), and a cross is a slow signal that comes after much of the move.</p>
       <p><b>Limits.</b> Indicators describe the trend and momentum so far; they do not predict prices, and a two-week window is mostly noise. Analyst targets can lag sharp falls, so a large upside to target often means the target has not been cut yet. Earnings reports in late October and early November can override any of these readings. The money-flow readings tilt the odds rather than confirm what institutions did: even the best method tested was right only 53% to 57% of the time, and reported holdings arrive months later in quarterly filings.</p>
     </div>
@@ -1004,6 +1016,35 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       c.append(sp, n);
     } else { sp.className = 'chip ' + (SIG_CLS[sg.label] || 'n'); sp.textContent = sg.label; c.appendChild(sp); }
     c.title = sg.alert ? sg.label + ': ' + sg.note + '. Strategy view: ' + sg.rating : 'Strategy view (the 50-day average is not about to touch the 200-day)';
+    return c;
+  }
+  // ---------- Candle touch column: the latest daily candle against the 200- and 50-day averages ----------
+  // up = came up from below (previous close under the average) and the high reached it; down = came down from above and the low reached it
+  function touchOf(r) {
+    let t200 = r.touch200, t50 = r.touch50, when = r.bar_date ? new Date(r.bar_date + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' candle' : 'last daily candle';
+    const hi = Number(r.live_high), lo = Number(r.live_low), px = Number(r.price_live), chg = Number(r.day_chg), a = Number(r.live_sma50), b = Number(r.live_sma200);
+    if (r.session !== 'pre' && r.live_high != null && r.live_low != null && r.price_live != null && r.day_chg != null && r.live_sma50 != null && r.live_sma200 != null &&
+        [hi, lo, px, chg, a, b].every(isFinite) && chg > -100) {
+      const prev = px / (1 + chg / 100);
+      const f = (m) => (m > 0 ? (prev < m && hi >= m ? 1 : prev > m && lo <= m ? -1 : 0) : 0);
+      t200 = f(b); t50 = f(a); when = 'today\u2019s candle';
+    }
+    const items = [];
+    if (t200) items.push({ ma: 200, dir: t200 });
+    if (t50) items.push({ ma: 50, dir: t50 });
+    const rank = items.length ? (items[0].ma === 200 ? 4 : 3) * items[0].dir : 0;
+    return { items, when, rank, known: t200 != null || t50 != null };
+  }
+  function touchCell(tc) {
+    const c = document.createElement('td'); c.className = 'sigc';
+    if (!tc.items.length) { c.textContent = '\u2014'; c.classList.add('mut'); c.title = tc.known ? 'The latest candle touched neither average' : 'Needs 200 days of history'; return c; }
+    tc.items.forEach((it) => {
+      const sp = document.createElement('span'); sp.className = 'tch ' + (it.dir > 0 ? 'buy' : 'sell') + (it.ma === 200 ? ' big' : '');
+      sp.textContent = it.dir > 0 ? 'Alert buy' : 'Alert sell';
+      const n = document.createElement('span'); n.className = 'sig-note'; n.textContent = it.ma + '-day ' + (it.dir > 0 ? 'upwards' : 'downwards') + ' \u00b7 ' + tc.when;
+      c.append(sp, n);
+    });
+    c.title = tc.items.map((it) => 'Candle touched the ' + it.ma + '-day average ' + (it.dir > 0 ? 'upwards' : 'downwards') + ' (' + tc.when + ')').join('; ');
     return c;
   }
   const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
@@ -1329,7 +1370,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   }
 
   // ---------- state ----------
-  const state = { sort: 'value_sek', dir: -1, q: '', oct: '', lt: '', ltH: 'o1y', qH: 'o1y', mkt: '', dec: '', sflow: '', sig: '', sel: null };
+  const state = { sort: 'value_sek', dir: -1, q: '', oct: '', lt: '', ltH: 'o1y', qH: 'o1y', mkt: '', dec: '', sflow: '', sig: '', tch: '', sel: null };
   const HZ = [['o1y', '1 year'], ['o3y', '3 years'], ['o5y', '5 years']];
   const hzName = (k) => HZ.find((h) => h[0] === k)[1];
   const tbody = document.querySelector('#tbl tbody');
@@ -1351,6 +1392,9 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   fSflow.addEventListener('change', () => { state.sflow = fSflow.value; drawTable(); });
   const fSig = document.getElementById('f-sig');
   fSig.addEventListener('change', () => { state.sig = fSig.value; drawTable(); });
+  const fTch = document.getElementById('f-tch');
+  fTch.addEventListener('change', () => { state.tch = fTch.value; drawTable(); });
+  const tchOk = (r) => !state.tch || (state.tch === 'none' ? r._tch.items.length === 0 : r._tch.items.some((i) => i.dir === (state.tch === 'buy' ? 1 : -1)));
   document.querySelectorAll('#tbl th button').forEach((b) => {
     b.addEventListener('click', () => {
       const k = b.dataset.k;
@@ -1370,9 +1414,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   function drawTable() {
     const all = rowsAll();
-    all.forEach((r) => { r._sig = signalOf(r); r.signal_rank = r._sig.rank; });
+    all.forEach((r) => { r._sig = signalOf(r); r.signal_rank = r._sig.rank; r._tch = touchOf(r); r.touch_rank = r._tch.rank; });
     let rows = all.filter((r) =>
       (!state.sig || r._sig.label === state.sig) &&
+      tchOk(r) &&
       (!state.q || (r.name + ' ' + r.sym).toLowerCase().includes(state.q)) &&
       (!state.oct || r.oct_signal === state.oct) &&
       (!state.lt || r[state.ltH] === state.lt) &&
@@ -1403,6 +1448,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         nameTd(r.name, r.sym, null, () => select(r.sym, 'monthly')),
         td(fmtInt(r.value_sek), 'num'),
         sigCell(r._sig),
+        touchCell(r._tch),
         td(r.price_live == null ? '—' : plain(r.price_live, r.price_live < 10 ? 3 : 2) + ' ' + r.cur + (r.session === 'pre' ? ' · pre' : ''), 'num'),
         td(signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
         td(signed(r.r1m), 'num ' + tone(r.r1m)),
@@ -1431,6 +1477,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   // ---------- detail ----------
   function hiddenByTableFilters(r) {
     return !((!state.sig || (r._sig && r._sig.label === state.sig)) &&
+      (!r._tch || tchOk(r)) &&
       (!state.q || (r.name + ' ' + r.sym).toLowerCase().includes(state.q)) &&
       (!state.oct || r.oct_signal === state.oct) &&
       (!state.lt || r[state.ltH] === state.lt) &&
@@ -1964,7 +2011,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   refreshMonth();
   // ---------- live prices straight from TradingView ----------
   const LIVE = { paused: false, last: null, ok: false, busy: false, timer: null };
-  const LIVE_COLS = ['close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA20', 'SMA50', 'SMA200', 'update_mode', 'premarket_close', 'premarket_change', 'premarket_volume', 'current_session'];
+  const LIVE_COLS = ['close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA20', 'SMA50', 'SMA200', 'update_mode', 'premarket_close', 'premarket_change', 'premarket_volume', 'current_session', 'high', 'low'];
   const liveEl = document.getElementById('live');
   const liveMsg = document.getElementById('live-msg');
   const livePv = document.getElementById('live-pv');
@@ -1985,7 +2032,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       if (isPre) pre += 1;
       r.session = isPre ? 'pre' : null;
       r.price_live = isPre ? d[10] : d[0]; r.day_chg = isPre && d[11] != null ? d[11] : d[1]; r.live_vol = isPre ? d[12] : d[2]; r.live_rsi = d[3];
-      r.live_macd = d[4]; r.live_macd_sig = d[5]; r.live_sma20 = d[6]; r.live_sma50 = d[7]; r.live_sma200 = d[8];
+      r.live_macd = d[4]; r.live_macd_sig = d[5]; r.live_sma20 = d[6]; r.live_sma50 = d[7]; r.live_sma200 = d[8]; r.live_high = d[14]; r.live_low = d[15];
       if (r.__p0 > 0) r.value_sek = Math.round(r.__v0 * (r.price_live / r.__p0));
     });
     const v0 = d3.sum(rows, (r) => r.__v0), v1 = d3.sum(rows, (r) => r.value_sek);
@@ -2893,11 +2940,11 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tbody.replaceChildren();
       const rows = d.status === 'ok' ? d.data.slice() : [];
       if (!rows.length) {
-        const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 23; c.className = 'mut';
+        const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 24; c.className = 'mut';
         c.textContent = d.status === 'ok' ? 'No former holdings yet.' : 'Former holdings appear after the next rebuild.';
         tr.appendChild(c); tbody.appendChild(tr); return;
       }
-      rows.forEach((r) => { r._sig = signalOf(r); r.signal_rank = r._sig.rank; });
+      rows.forEach((r) => { r._sig = signalOf(r); r.signal_rank = r._sig.rank; r._tch = touchOf(r); r.touch_rank = r._tch.rank; });
       const k = st.sort;
       rows.sort((a, b) => { const x = a[k], y = b[k]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * st.dir; });
       const td = (text, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = text == null ? '—' : text; return c; };
@@ -2908,6 +2955,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           nameTd(r.name, r.sym, null, null),
           td(fmtGone(r.gone_by), 'num gone'),
           sigCell(r._sig),
+          touchCell(r._tch),
           td(r.price == null ? null : plain(r.price, r.price < 10 ? 3 : 2) + ' ' + r.cur, 'num'),
           td(r.day_chg == null ? null : signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
           td(signed(r.r1m), 'num ' + tone(r.r1m)),
