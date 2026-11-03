@@ -23,6 +23,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import board_lib as L
+import classify as CL
 
 PAGE = "index.html"
 EUROPE = ["United Kingdom", "Germany", "France", "Netherlands", "Switzerland", "Spain", "Italy", "Belgium", "Ireland", "Austria",
@@ -241,6 +242,13 @@ def main():
         is_etf = (p.get("market") or "").endswith("ETF") or F.get("type") == "fund"
         r = {}
         r.update(sym=sym, name=p["name"], market=p.get("market"), cur=cur)
+        # standard classification for the portfolio breakdown pies (GICS names, country, size, stock/ETF)
+        cls = CL.classify(sym, F, is_etf, p.get("market"))
+        if cls["gics_sector"] == CL.UNKNOWN and old and old.get("gics_sector") not in (None, CL.UNKNOWN):
+            cls = {k: old.get(k) for k in cls}  # screener gave nothing today: keep the last classification
+        elif not is_etf and CL.unmapped(sym, F):
+            errors.append("%s: TradingView industry %r not in the GICS table, filed under %s" % (sym, F.get("industry"), cls["gics_industry"]))
+        r.update(cls)
         for k in ["price", "r1m", "r3m", "r12m", "rsi", "macd", "vs20", "vs50", "vs200", "ma_cross", "pctb", "bollinger", "alligator", "cpr", "cpr_tc",
                   "cpr_bc", "cpr_r1", "cpr_s1", "cmf", "cmf60", "udv", "udv50", "obv", "adx", "candles", "candles_w", "w_rsi", "vs40w", "off_high", "vol",
                   "vol_days", "structure", "patterns", "oct_score", "oct_signal", "oct_why"]:
