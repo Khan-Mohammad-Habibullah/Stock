@@ -568,6 +568,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <thead><tr>
           <th>Holding</th>
           <th class="num">Value SEK</th>
+          <th data-field="signal">Signal</th>
+          <th data-field="touch">Candle touch</th>
           <th class="num">Price now</th>
           <th class="num">Today</th>
           <th class="num">1 month</th>
@@ -976,10 +978,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   // w: the gap (50-day minus 200-day, % of the 200-day) over 6 bars, oldest first -> { dir: 1 (below, rising) | -1 (above, falling), gap, eta } or null
   function approachOf(w) {
     const now = w[w.length - 1];
-    if (w.length < 6 || w.some((x) => x == null || !isFinite(x)) || now === 0 || w.some((x) => (x > 0) !== (now > 0))) return null;
+    if (w.length < 3 || w.some((x) => x == null || !isFinite(x)) || now === 0 || w.some((x) => (x > 0) !== (now > 0))) return null;
     const closing = Math.abs(w[0]) - Math.abs(now);
     if (closing <= 0 || Math.abs(now) > APPROACH_PCT) return null;
-    const eta = Math.abs(now) / (closing / 5);
+    const eta = Math.abs(now) / (closing / (w.length - 1));
     return eta > APPROACH_DAYS ? null : { dir: now < 0 ? 1 : -1, gap: now, eta };
   }
   const gapTxt = (g) => Math.abs(g).toFixed(1) + '% ' + (g < 0 ? 'below' : 'above');
@@ -989,7 +991,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     let dir = 0, note = '';
     // live: the live averages (TradingView) appended to the last 5 daily gaps
     const a = Number(r.live_sma50), b = Number(r.live_sma200);
-    if (Array.isArray(r.ma_gap) && r.ma_gap.length === 5 && r.live_sma50 != null && r.live_sma200 != null && isFinite(a) && isFinite(b) && b > 0) {
+    if (Array.isArray(r.ma_gap) && r.ma_gap.length >= 2 && r.live_sma50 != null && r.live_sma200 != null && isFinite(a) && isFinite(b) && b > 0) {
       const ap = approachOf(r.ma_gap.concat([(a - b) / b * 100]));
       if (ap) { dir = ap.dir; note = '50-day ' + gapTxt(ap.gap) + ' the 200-day, ' + etaTxt(ap.eta); }
     }
@@ -1035,7 +1037,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     let ev = Array.isArray(r.tch) && r.tch.length ? r.tch : null, ago = ev ? Number(r.tch_ago) || 0 : null, when = '';
     const day = r.bar_date ? new Date(r.bar_date + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
     const hi = Number(r.live_high), lo = Number(r.live_low), px = Number(r.price_live), chg = Number(r.day_chg), a = Number(r.live_sma50), b = Number(r.live_sma200);
-    const known = r.tch !== undefined && (r.tch !== null || r.bar_date != null);
+    const known = r.tch !== undefined && (r.tch !== null || r.bar_date != null || r.tch_known);
     let live = false;
     if (r.session !== 'pre' && r.live_high != null && r.live_low != null && r.price_live != null && r.day_chg != null && r.live_sma50 != null && r.live_sma200 != null &&
         [hi, lo, px, chg, a, b].every(isFinite) && chg > -100 && a > 0 && b > 0) {
@@ -1053,7 +1055,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       }
     }
     if (ev && ago > TOUCH_HOLD) ev = null;
-    if (ev && !when) when = ago === 0 ? (day ? day + ' candle' : 'last daily candle') : ago + (ago === 1 ? ' session' : ' sessions') + ' ago · kept (' + ago + ' of ' + TOUCH_HOLD + ')';
+    if (ev && !when) when = ago === 0 ? (day ? day + ' candle' : 'latest daily candle') : ago + (ago === 1 ? ' session' : ' sessions') + ' ago · kept (' + ago + ' of ' + TOUCH_HOLD + ')';
     else if (ev && ago === 0 && live === false && !day) when = 'last daily candle';
     const items = ev ? ev.map((k) => TCH_INFO[k]).filter(Boolean).sort((x, y) => y.ma - x.ma) : [];
     const rank = items.length ? (items[0].ma === 200 ? 4 : 3) * items[0].dir : 0;
@@ -2559,7 +2561,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       'Pivot.M.Classic.Middle', 'Pivot.M.Classic.R1', 'Pivot.M.Classic.S1',
       'ChaikinMoneyFlow', 'ADX', 'ADX+DI', 'ADX-DI',
       'market_cap_basic', 'total_revenue_yoy_growth_ttm', 'net_margin_ttm', 'price_earnings_ttm',
-      'recommendation_mark', 'price_target_average'];
+      'recommendation_mark', 'price_target_average',
+      'high', 'low', 'close[1]', 'close[2]', 'high[1]', 'low[1]', 'high[2]', 'low[2]', 'SMA50[1]', 'SMA50[2]', 'SMA200[1]', 'SMA200[2]'];
     const X = {}; COLS.forEach((c, i) => { X[c] = i; });
     const num = (v) => (typeof v === 'number' && isFinite(v) ? v : null);
     const clip = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -2583,6 +2586,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         mcap: num(g('market_cap_basic')), revg: num(g('total_revenue_yoy_growth_ttm')), margin: num(g('net_margin_ttm')),
         pe: num(g('price_earnings_ttm')), rec: num(g('recommendation_mark')), target: num(g('price_target_average')),
       };
+      // the latest bar and the two before it (index 0 = latest) for the Signal and Candle touch columns
+      d.hist = [0, 1, 2].map((k) => { const f = (n) => num(g(k ? n + '[' + k + ']' : n)); return { c: f('close'), h: f('high'), l: f('low'), m50: f('SMA50'), m200: f('SMA200') }; });
       d.vs50 = d.close != null && d.sma50 ? (d.close / d.sma50 - 1) * 100 : null;
       d.vs200 = d.close != null && d.sma200 ? (d.close / d.sma200 - 1) * 100 : null;
       // the screener gives analyst targets in USD for every market; convert with the rebuild's exchange rates
@@ -2801,6 +2806,41 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       if (pickEl.value === '') drawPick();
     }
 
+    // ----- Signal and Candle touch for a stock with no stored bars: the scanner's latest bar and the two before it
+    const SIG_RULES = ['Signal rules (this lookup)',
+      'Alert buy / Alert sell: the 50-day MA is about to touch the 200-day MA from below / above (within 2% and closing in, so it would touch within 10 sessions), or crossed it in the last 2 sessions. A lookup only has 3 daily readings, so the pace is taken over 2 sessions, not 5.',
+      'Otherwise the strategy view as Strong buy, Buy, Hold, Sell or Strong sell, from the December column.'].join('\n');
+    function lookupRow(d, december) {
+      const H = d.hist || [], ok = (v) => v != null && isFinite(v);
+      const r = { rating: december ? RATING_OF[december] : null, live_sma50: d.sma50, live_sma200: d.sma200 };
+      const gap = H.map((x) => (ok(x.m50) && ok(x.m200) && x.m200 > 0 ? (x.m50 - x.m200) / x.m200 * 100 : null));   // [latest, 1 ago, 2 ago]
+      if (gap.every((x) => x != null)) {
+        r.ma_gap = [gap[2], gap[1]];
+        for (let k = 0; k <= 1; k++) {   // a cross in the last 2 sessions: the sign of the gap changed
+          if ((gap[k] > 0) !== (gap[k + 1] > 0) && gap[k] !== 0) { r.ma_alert = gap[k] > 0 ? 1 : -1; r.ma_alert_ago = k + 1; r.ma_ago = k; r.ma_cross = (gap[k] > 0 ? 'golden' : 'death') + ' cross'; break; }
+        }
+      }
+      // candle events: bar k against the close before it (close[k+1]); only the latest two bars have that
+      const ev = (k) => {
+        const b = H[k], pc = H[k + 1] && H[k + 1].c;
+        if (!b || ![b.c, b.h, b.l, b.m50, b.m200, pc].every(ok)) return null;
+        const e = [];
+        if (pc < b.m200 && b.m200 <= b.h) e.push('buy200');
+        if (pc > b.m200 && b.m200 >= b.l) e.push('sell200');
+        if (b.m50 > b.m200 && pc > b.m50 && b.m50 >= b.l && b.c > b.m50) e.push('buy50');
+        if (b.m50 < b.m200 && pc < b.m50 && b.m50 <= b.h && b.c < b.m50) e.push('sell50');
+        return e;
+      };
+      const e0 = ev(0), e1 = ev(1);
+      if (e0 != null && e1 != null) {
+        r.tch_known = true; r.tch = null; r.tch_ago = null;
+        if (e0.length) { r.tch = e0; r.tch_ago = 0; } else if (e1.length) { r.tch = e1; r.tch_ago = 1; }
+      }
+      return r;
+    }
+    document.querySelectorAll('#lookup-tbl th[data-field]').forEach((th) => { th.title = th.dataset.field === 'touch' ? TCH_RULES : SIG_RULES; th.style.cursor = 'help'; });
+    const lookupSig = (r) => { const sg = signalOf(r); if (!sg.alert && !r.rating) { const c = document.createElement('td'); c.textContent = '\u2014'; c.className = 'mut'; return c; } return sigCell(sg); };
+
     // ----- result row
     function cellsFor(d) {
       const own = holdSet().get(d.sym);
@@ -2809,9 +2849,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const td = (t, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = t == null ? '—' : t; return c; };
       const chip = (label) => { const c = document.createElement('td'); const sp = document.createElement('span'); sp.className = 'chip ' + chipCls(label); sp.textContent = label == null ? '—' : label; c.appendChild(sp); return c; };
       const macdOk = d.macd != null && d.macds != null;
+      const lr = lookupRow(d, december);
       return [
         nameTd(d.name, d.sym, null, null),
         td(own ? fmtInt(own.value_sek) : null, 'num'),
+        lookupSig(lr),
+        touchCell(touchOf(lr)),
         td(d.close == null ? null : plain(d.close, d.close < 10 ? 3 : 2) + ' ' + d.cur, 'num'),
         td(signed(d.change, 2), 'num ' + tone(d.change)),
         td(signed(d.perf1m), 'num ' + tone(d.perf1m)),
@@ -2836,6 +2879,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tbody.replaceChildren(tr);
       resultWrap.hidden = false;
       let note = 'Alligator and Up/down vol need daily price history, which this board only keeps for your holdings, so they show “—” here. October, the outlooks and December are a simpler estimate from live TradingView readings, so treat them as more approximate than for your holdings.';
+      note += ' Signal and Candle touch use the latest daily candle and the two before it, which is all a live lookup gives: the \u201cabout to touch\u201d test looks at 3 daily gaps instead of 6, and a candle touch is kept for the latest and the previous session instead of 3, so they can miss alerts that \u201cEvery holding\u201d would show.';
       if (!sectorFlow(d)) note += ' No sector money-flow data matched this stock’s market and sector, so its December view leaves that part out.';
       noteEl.textContent = note;
     }
@@ -2850,6 +2894,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tr.append(
         nameTd(r.name, r.sym, null, null),
         td(fmtInt(r.value_sek), 'num'),
+        sigCell(signalOf(r)),
+        touchCell(touchOf(r)),
         td(price == null ? null : plain(price, price < 10 ? 3 : 2) + ' ' + r.cur + (hasLive && r.session === 'pre' ? ' · pre' : ''), 'num'),
         td(signed(chg, 2), 'num ' + tone(chg)),
         td(signed(r.r1m), 'num ' + tone(r.r1m)),
