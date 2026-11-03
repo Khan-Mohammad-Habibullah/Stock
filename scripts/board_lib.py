@@ -227,6 +227,7 @@ def rsi_arr(c, n=14):
 
 APPROACH_PCT = 2.0    # the 50-day average counts as "about to touch" the 200-day when within this % of it ...
 APPROACH_DAYS = 10    # ... and closing in so that it would touch within this many sessions at its pace of the last 5
+TOUCH_HOLD = 3        # sessions a candle-touch event is kept after the candle that touched
 ALERT_HOLD = 3        # sessions an alert is kept after the last bar that met the test
 
 
@@ -368,13 +369,29 @@ def analyse(B):
     # enough that at its pace over the last 5 sessions it would touch within APPROACH_DAYS sessions. Below and rising -> buy side (+1),
     # above and falling -> sell side (-1). An alert is kept for ALERT_HOLD sessions after the last bar that met the test unless an
     # opposite cross has happened since.
-    # the last daily candle against the 50- and 200-day averages: +1 = it came up from below and its high reached the average ("touched upwards"),
-    # -1 = it came down from above and its low reached it ("touched downwards"), 0 = no touch; "came from" = the previous close's side
-    def touch(m):
-        if not m or n < 1:
-            return None
-        return 1 if (c[n - 1] < m and h[n] >= m) else -1 if (c[n - 1] > m and l[n] <= m) else 0
-    R["touch50"], R["touch200"] = touch(s50), touch(s200)
+    # Candle touch events on a bar j (see the page's "Candle touch" column). A candle "touches" an average when the previous close was on one
+    # side of it and the candle's high (coming from below) or low (coming from above) reached it:
+    #   buy200  came up from below and touched the 200-day            sell200  came down from above and touched the 200-day
+    #   buy50   touched the 50-day downwards, closed above it, and the 50-day is above the 200-day (a dip in an uptrend)
+    #   sell50  touched the 50-day upwards, closed below it, and the 50-day is below the 200-day (a rally in a downtrend)
+    def tch_events(j):
+        if j < 200:
+            return []
+        m50, m200, pc = sma(c, 50, j), sma(c, 200, j), c[j - 1]
+        ev = []
+        if pc < m200 <= h[j]: ev.append("buy200")
+        if pc > m200 >= l[j]: ev.append("sell200")
+        if m50 > m200 and pc > m50 >= l[j] and c[j] > m50: ev.append("buy50")
+        if m50 < m200 and pc < m50 <= h[j] and c[j] < m50: ev.append("sell50")
+        return ev
+    R["tch"] = R["tch_ago"] = None   # the events of the newest bar (of the last TOUCH_HOLD + 1) that had any, and how many sessions ago that was
+    if s200 and n >= 203:
+        for ago in range(0, TOUCH_HOLD + 1):
+            ev = tch_events(n - ago)
+            if ev:
+                R["tch"], R["tch_ago"] = ev, ago
+                break
+    R["prev_close"] = c[n - 1] if n >= 1 else None
     R["bar_date"] = datetime.datetime.utcfromtimestamp(t[n]).strftime("%Y-%m-%d")
     R["ma_gap"] = R["ma_alert"] = R["ma_alert_ago"] = R["ma_eta"] = None
     if s200 and n >= 207:

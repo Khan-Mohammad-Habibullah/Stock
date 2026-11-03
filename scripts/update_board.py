@@ -250,7 +250,7 @@ def main():
         elif not is_etf and CL.unmapped(sym, F):
             errors.append("%s: TradingView industry %r not in the GICS table, filed under %s" % (sym, F.get("industry"), cls["gics_industry"]))
         r.update(cls)
-        for k in ["price", "r1m", "r3m", "r12m", "rsi", "macd", "vs20", "vs50", "vs200", "ma_cross", "sma50", "sma200", "ma_state", "ma_ago", "ma_gap", "ma_alert", "ma_alert_ago", "ma_eta", "touch50", "touch200", "bar_date", "pctb", "bollinger", "alligator", "cpr", "cpr_tc",
+        for k in ["price", "r1m", "r3m", "r12m", "rsi", "macd", "vs20", "vs50", "vs200", "ma_cross", "sma50", "sma200", "ma_state", "ma_ago", "ma_gap", "ma_alert", "ma_alert_ago", "ma_eta", "tch", "tch_ago", "prev_close", "bar_date", "pctb", "bollinger", "alligator", "cpr", "cpr_tc",
                   "cpr_bc", "cpr_r1", "cpr_s1", "cmf", "cmf60", "udv", "udv50", "obv", "adx", "candles", "candles_w", "w_rsi", "vs40w", "off_high", "vol",
                   "vol_days", "structure", "patterns", "oct_score", "oct_signal", "oct_why"]:
             r[k] = T.get(k)
