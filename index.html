@@ -409,7 +409,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           <th data-field="name"><button data-k="name">Holding</button></th>
           <th class="num" data-field="value_sek"><button data-k="value_sek">Value SEK</button></th>
           <th data-field="signal"><button data-k="signal_rank">Signal</button></th>
-          <th data-field="touch"><button data-k="touch_rank">Candle touch</button></th>
+          <th data-field="touch" title="Candle touch rules (hover a cell for its own alert)"><button data-k="touch_rank" data-rules="1">Candle touch</button></th>
           <th class="num" data-field="price_live">Price now</th>
           <th class="num" data-field="day_chg"><button data-k="day_chg">Today</button></th>
           <th class="num" data-field="r1m"><button data-k="r1m">1 month</button></th>
@@ -604,7 +604,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
           <th data-field="name"><button data-k="name">Holding</button></th>
           <th class="num" data-field="value_sek"><button data-k="gone_by">Value SEK</button></th>
           <th data-field="signal"><button data-k="signal_rank">Signal</button></th>
-          <th data-field="touch"><button data-k="touch_rank">Candle touch</button></th>
+          <th data-field="touch" title="Candle touch rules (hover a cell for its own alert)"><button data-k="touch_rank" data-rules="1">Candle touch</button></th>
           <th class="num" data-field="price">Price now</th>
           <th class="num" data-field="r1m_day">Today</th>
           <th class="num" data-field="r1m"><button data-k="r1m">1 month</button></th>
@@ -1022,6 +1022,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   // buy200 = came up from below and the high reached the 200-day; sell200 = came down from above and the low reached it;
   // buy50 = touched the 50-day downwards, closed above it, 50-day over the 200-day; sell50 = touched it upwards, closed below it, 50-day under the 200-day
   const TOUCH_HOLD = 3;   // same number as scripts/board_lib.py
+  const TCH_RULES = ['Candle touch rules',
+    'Alert buy (bold blue): the daily candle touches the 200-day MA upwards (comes up from below, its high reaches it).',
+    'Alert buy (blue): the candle touches the 50-day MA downwards (comes down from above, its low reaches it), finishes the day above the 50-day MA, and the 50-day MA is above the 200-day MA.',
+    'Alert sell (bold orange): the candle touches the 200-day MA downwards (comes down from above, its low reaches it).',
+    'Alert sell (orange): the candle touches the 50-day MA upwards (comes up from below, its high reaches it), finishes the day below the 50-day MA, and the 50-day MA is below the 200-day MA.',
+    'Each alert is kept for ' + TOUCH_HOLD + ' sessions after its candle unless a newer one appears. Otherwise a dash.'].join('\n');
+  document.querySelectorAll('button[data-rules]').forEach((b) => { b.title = TCH_RULES; });
   const TCH_INFO = { buy200: { ma: 200, dir: 1, txt: '200-day upwards' }, sell200: { ma: 200, dir: -1, txt: '200-day downwards' },
                      buy50: { ma: 50, dir: 1, txt: '50-day downwards, closed above' }, sell50: { ma: 50, dir: -1, txt: '50-day upwards, closed below' } };
   function touchOf(r) {
@@ -1054,14 +1061,14 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   }
   function touchCell(tc) {
     const c = document.createElement('td'); c.className = 'sigc';
-    if (!tc.items.length) { c.textContent = '—'; c.classList.add('mut'); c.title = tc.known ? 'No candle touch in the last ' + (TOUCH_HOLD + 1) + ' sessions' : 'Needs 200 days of history'; return c; }
+    if (!tc.items.length) { c.textContent = '—'; c.classList.add('mut'); c.title = (tc.known ? 'No candle touch in the last ' + (TOUCH_HOLD + 1) + ' sessions' : 'Needs 200 days of history') + '\n\n' + TCH_RULES; return c; }
     tc.items.forEach((it) => {
       const sp = document.createElement('span'); sp.className = 'tch ' + (it.dir > 0 ? 'buy' : 'sell') + (it.ma === 200 ? ' big' : '');
       sp.textContent = it.dir > 0 ? 'Alert buy' : 'Alert sell';
       const n = document.createElement('span'); n.className = 'sig-note'; n.textContent = it.txt + ' · ' + tc.when;
       c.append(sp, n);
     });
-    c.title = tc.items.map((it) => 'Candle touched the ' + it.txt + ' (' + tc.when + ')').join('; ');
+    c.title = tc.items.map((it) => 'Candle touched the ' + it.txt + ' (' + tc.when + ')').join('; ') + '\n\n' + TCH_RULES;
     return c;
   }
   const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
