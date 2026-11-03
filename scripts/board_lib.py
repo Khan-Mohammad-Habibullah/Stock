@@ -225,6 +225,26 @@ def rsi_arr(c, n=14):
     return o
 
 
+APPROACH_PCT = 2.0    # the 50-day average counts as "about to touch" the 200-day when within this % of it ...
+APPROACH_DAYS = 10    # ... and closing in so that it would touch within this many sessions at its pace of the last 5
+ALERT_HOLD = 3        # sessions an alert is kept after the last bar that met the test
+
+
+def approach(w):
+    """w: the gap (50-day minus 200-day, as % of the 200-day) over 6 consecutive bars, oldest first.
+    Returns (+1 | -1 | 0, sessions to touch): +1 = below and rising (buy side), -1 = above and falling (sell side)."""
+    now = w[-1]
+    if now == 0 or any((x > 0) != (now > 0) for x in w):
+        return 0, None
+    closing = abs(w[0]) - abs(now)
+    if closing <= 0 or abs(now) > APPROACH_PCT:
+        return 0, None
+    eta = abs(now) / (closing / 5)
+    if eta > APPROACH_DAYS:
+        return 0, None
+    return (1 if now < 0 else -1), eta
+
+
 def r2(x, d=1):
     if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):
         return None
@@ -344,6 +364,22 @@ def analyse(B):
     R["sma200"] = r2(s200, 4) if s200 else None
     R["ma_state"] = (1 if s50 > s200 else -1) if s200 else None
     R["ma_ago"] = (n - cross_i) if cross_i is not None else None
+    # "about to touch": the 50-day average is within APPROACH_PCT of the 200-day, on the same side for the last 6 bars, and closing in fast
+    # enough that at its pace over the last 5 sessions it would touch within APPROACH_DAYS sessions. Below and rising -> buy side (+1),
+    # above and falling -> sell side (-1). An alert is kept for ALERT_HOLD sessions after the last bar that met the test unless an
+    # opposite cross has happened since.
+    R["ma_gap"] = R["ma_alert"] = R["ma_alert_ago"] = R["ma_eta"] = None
+    if s200 and n >= 207:
+        gap = {i: (sma(c, 50, i) - sma(c, 200, i)) / sma(c, 200, i) * 100 for i in range(n - 8, n + 1)}
+        R["ma_gap"] = [r2(gap[i], 3) for i in range(n - 4, n + 1)]
+        for ago in range(0, ALERT_HOLD + 1):
+            d, eta = approach([gap[k] for k in range(n - ago - 5, n - ago + 1)])
+            if not d:
+                continue
+            if cross_i is not None and cross_i > n - ago and (1 if cross.startswith("golden") else -1) != d:
+                break  # crossed the other way since: the direction changed
+            R["ma_alert"], R["ma_alert_ago"], R["ma_eta"] = d, ago, r2(eta, 1)
+            break
 
     def sd(k):
         mm = sma(c, 20, k)
