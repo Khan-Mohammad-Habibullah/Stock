@@ -26,6 +26,7 @@ import board_lib as L
 import classify as CL
 
 PAGE = "index.html"
+RATING = {"Consider adding": "Strong buy", "Hold, add on dips": "Buy", "Hold": "Hold", "Consider trimming": "Sell", "Consider selling by December": "Strong sell"}
 EUROPE = ["United Kingdom", "Germany", "France", "Netherlands", "Switzerland", "Spain", "Italy", "Belgium", "Ireland", "Austria",
           "Portugal", "Luxembourg", "Denmark", "Finland"]
 MARKETS = [
@@ -249,7 +250,7 @@ def main():
         elif not is_etf and CL.unmapped(sym, F):
             errors.append("%s: TradingView industry %r not in the GICS table, filed under %s" % (sym, F.get("industry"), cls["gics_industry"]))
         r.update(cls)
-        for k in ["price", "r1m", "r3m", "r12m", "rsi", "macd", "vs20", "vs50", "vs200", "ma_cross", "pctb", "bollinger", "alligator", "cpr", "cpr_tc",
+        for k in ["price", "r1m", "r3m", "r12m", "rsi", "macd", "vs20", "vs50", "vs200", "ma_cross", "sma50", "sma200", "ma_state", "ma_ago", "pctb", "bollinger", "alligator", "cpr", "cpr_tc",
                   "cpr_bc", "cpr_r1", "cpr_s1", "cmf", "cmf60", "udv", "udv50", "obv", "adx", "candles", "candles_w", "w_rsi", "vs40w", "off_high", "vol",
                   "vol_days", "structure", "patterns", "oct_score", "oct_signal", "oct_why"]:
             r[k] = T.get(k)
@@ -381,6 +382,7 @@ def main():
         elif dsc >= 2: dl = "Hold, add on dips"
         else: dl = "Hold"
         r["dec_score"], r["december"] = dsc, dl
+        r["rating"] = RATING[dl]  # the strategy rating behind the Signal column (the 50/200-day alerts are added on the page)
         r["dec_why"] = "%s: %s; money in the stock itself: %s; %s signal %s; 1-year outlook %s" % (
             "money in its top 10 holdings" if is_etf else "money in its sector", (r["flow"] or "no sector data").lower(), r["sflow"].lower(),
             datetime.date.fromisoformat(T["_date"]).strftime("%B"), r["oct_signal"].lower(), r["o1y"].lower())

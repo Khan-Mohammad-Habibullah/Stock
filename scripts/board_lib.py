@@ -330,15 +330,20 @@ def analyse(B):
     R["vs20"] = r2((c[n] / s20 - 1) * 100)
     R["vs50"] = r2((c[n] / s50 - 1) * 100)
     R["vs200"] = r2((c[n] / s200 - 1) * 100) if s200 else None
-    cross = None
+    cross, cross_i = None, None
     if n >= 201:
         for i in range(n, 200, -1):
             a = sma(c, 50, i) - sma(c, 200, i); b = sma(c, 50, i - 1) - sma(c, 200, i - 1)
             if a > 0 and b <= 0:
-                cross = "golden " + datetime.datetime.utcfromtimestamp(t[i]).strftime("%Y-%m-%d"); break
+                cross = "golden " + datetime.datetime.utcfromtimestamp(t[i]).strftime("%Y-%m-%d"); cross_i = i; break
             if a < 0 and b >= 0:
-                cross = "death " + datetime.datetime.utcfromtimestamp(t[i]).strftime("%Y-%m-%d"); break
+                cross = "death " + datetime.datetime.utcfromtimestamp(t[i]).strftime("%Y-%m-%d"); cross_i = i; break
     R["ma_cross"] = cross
+    # for the Signal column: where the two averages stand at the last bar, and how many sessions ago they last crossed (0 = on the last bar)
+    R["sma50"] = r2(s50, 4)
+    R["sma200"] = r2(s200, 4) if s200 else None
+    R["ma_state"] = (1 if s50 > s200 else -1) if s200 else None
+    R["ma_ago"] = (n - cross_i) if cross_i is not None else None
 
     def sd(k):
         mm = sma(c, 20, k)
