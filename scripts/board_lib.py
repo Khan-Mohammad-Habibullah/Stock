@@ -228,7 +228,7 @@ def rsi_arr(c, n=14):
 APPROACH_PCT = 1.0    # the 50-day average counts as "about to touch" the 200-day when within this % of it ...
 APPROACH_DAYS = 10    # ... and closing in so that it would touch within this many sessions at its pace of the last 5
 TOUCH_HOLD = 3        # sessions a candle-touch event is kept after the candle that touched
-ALERT_HOLD = 3        # sessions an alert is kept after the last bar that met the test
+ALERT_HOLD = 7        # sessions an alert is kept after the last bar that met the test
 
 
 def approach(w):
@@ -394,8 +394,8 @@ def analyse(B):
     R["prev_close"] = c[n - 1] if n >= 1 else None
     R["bar_date"] = datetime.datetime.utcfromtimestamp(t[n]).strftime("%Y-%m-%d")
     R["ma_gap"] = R["ma_alert"] = R["ma_alert_ago"] = R["ma_eta"] = None
-    if s200 and n >= 207:
-        gap = {i: (sma(c, 50, i) - sma(c, 200, i)) / sma(c, 200, i) * 100 for i in range(n - 8, n + 1)}
+    if s200 and n >= 204 + ALERT_HOLD:
+        gap = {i: (sma(c, 50, i) - sma(c, 200, i)) / sma(c, 200, i) * 100 for i in range(n - ALERT_HOLD - 5, n + 1)}
         R["ma_gap"] = [r2(gap[i], 3) for i in range(n - 4, n + 1)]
         for ago in range(0, ALERT_HOLD + 1):
             d, eta = approach([gap[k] for k in range(n - ago - 5, n - ago + 1)])
