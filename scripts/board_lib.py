@@ -225,7 +225,7 @@ def rsi_arr(c, n=14):
     return o
 
 
-APPROACH_PCT = 2.0    # the 50-day average counts as "about to touch" the 200-day when within this % of it ...
+APPROACH_PCT = 0.5    # the 50-day average counts as "about to touch" the 200-day when within this % of it ...
 APPROACH_DAYS = 10    # ... and closing in so that it would touch within this many sessions at its pace of the last 5
 TOUCH_HOLD = 3        # sessions a candle-touch event is kept after the candle that touched
 ALERT_HOLD = 3        # sessions an alert is kept after the last bar that met the test
