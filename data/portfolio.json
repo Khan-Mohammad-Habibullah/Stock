@@ -1,825 +1,818 @@
 {
- "updated": "2026-10-28 14:41",
- "source": "Nordnet export 28 Oct 2026",
+ "updated": "2026-11-05 14:22",
+ "source": "Nordnet export of 2026-11-05 14:22",
  "positions": [
   {
    "sym": "NYSE:BMNR",
-   "name": "BitMine Immersion",
    "qty": 135,
+   "name": "BitMine Immersion",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:HEM",
-   "name": "Hemnet Group",
    "qty": 329,
+   "name": "Hemnet Group",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:UBER",
-   "name": "Uber Technologies",
    "qty": 34,
+   "name": "Uber Technologies",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:ZS",
-   "name": "Zscaler",
    "qty": 7,
+   "name": "Zscaler",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:V",
-   "name": "Visa",
    "qty": 4,
+   "name": "Visa",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:CIFR",
+   "qty": 226,
    "name": "Cipher Digital",
-   "qty": 178,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:CRDO",
-   "name": "Credo Technology",
    "qty": 9,
+   "name": "Credo Technology",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:VICR",
-   "name": "Vicor",
    "qty": 7,
+   "name": "Vicor",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:SRTS",
+   "qty": 288,
    "name": "Sensus Healthcare",
-   "qty": 538,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:VVSM",
+   "qty": 17,
    "name": "VanEck Semiconductor ETF (UCITS)",
-   "qty": 14,
    "market": "US ETF",
    "cur": "EUR"
   },
   {
    "sym": "NASDAQ:INOD",
-   "name": "Innodata",
    "qty": 30,
+   "name": "Innodata",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:CLBT",
-   "name": "Cellebrite",
    "qty": 112,
+   "name": "Cellebrite",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OSL:KCC",
-   "name": "Klaveness Combination Carriers",
    "qty": 100,
+   "name": "Klaveness Combination Carriers",
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "NASDAQ:INTC",
+   "qty": 22,
    "name": "Intel",
-   "qty": 13,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:MRVL",
+   "qty": 8,
    "name": "Marvell Technology",
-   "qty": 5,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:EVLV",
-   "name": "Evolv Technologies A",
    "qty": 260,
+   "name": "Evolv Technologies A",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:RDW",
-   "name": "Redwire",
    "qty": 130,
+   "name": "Redwire",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:QDVE",
-   "name": "iShares S&P 500 IT UCITS",
    "qty": 21,
+   "name": "iShares S&P 500 IT UCITS",
    "market": "US ETF",
    "cur": "EUR"
   },
   {
    "sym": "NYSE:MTZ",
-   "name": "MasTec",
    "qty": 6,
+   "name": "MasTec",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:ESIT",
-   "name": "iShares MSCI Europe IT UCITS",
    "qty": 79,
+   "name": "iShares MSCI Europe IT UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
   },
   {
    "sym": "NASDAQ:XNDU",
+   "qty": 362,
    "name": "Xanadu Quantum Technologies",
-   "qty": 346,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:AZN",
-   "name": "AstraZeneca",
    "qty": 6,
+   "name": "AstraZeneca",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:CIBUS",
-   "name": "Cibus Real Estate",
    "qty": 77,
+   "name": "Cibus Real Estate",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NASDAQ:TMDX",
-   "name": "TransMedics Group",
    "qty": 14,
+   "name": "TransMedics Group",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:SMCI",
-   "name": "Super Micro Computer",
    "qty": 27,
+   "name": "Super Micro Computer",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:PRCT",
-   "name": "Procept BioRobotics",
    "qty": 49,
+   "name": "Procept BioRobotics",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:LULU",
-   "name": "Lululemon Athletica",
    "qty": 9,
+   "name": "Lululemon Athletica",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:EXV8",
-   "name": "iShares STOXX Europe 600 Construction UCITS",
    "qty": 10,
+   "name": "iShares STOXX Europe 600 Construction UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
   },
   {
    "sym": "NASDAQ:LTRX",
+   "qty": 73,
    "name": "Lantronix",
-   "qty": 143,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:W1TB",
-   "name": "WisdomTree Cybersecurity UCITS",
    "qty": 17,
+   "name": "WisdomTree Cybersecurity UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
   },
   {
    "sym": "NASDAQ:AMKR",
-   "name": "Amkor Technology",
    "qty": 21,
+   "name": "Amkor Technology",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:CRWV",
-   "name": "CoreWeave",
    "qty": 14,
+   "name": "CoreWeave",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:OCTV",
-   "name": "Octave Intelligence SDB",
    "qty": 38,
+   "name": "Octave Intelligence SDB",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:GLXY",
-   "name": "Galaxy Digital",
    "qty": 43,
+   "name": "Galaxy Digital",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:BIOG_B",
-   "name": "BioGaia B",
    "qty": 60,
+   "name": "BioGaia B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OSL:VAR",
-   "name": "Var Energi",
    "qty": 114,
+   "name": "Var Energi",
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "NYSE:CRM",
-   "name": "Salesforce",
    "qty": 3,
+   "name": "Salesforce",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:ASWE",
-   "name": "HANetf Saturna Al-Kawthar UCITS",
    "qty": 59,
+   "name": "HANetf Saturna Al-Kawthar UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
   },
   {
    "sym": "OMXSTO:CLAS_B",
-   "name": "Clas Ohlson B",
    "qty": 14,
+   "name": "Clas Ohlson B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:ALB",
-   "name": "Albemarle",
    "qty": 7,
+   "name": "Albemarle",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:HEXA_B",
+   "qty": 30,
    "name": "Hexagon B",
-   "qty": 60,
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OSL:MPCC",
+   "qty": 101,
    "name": "MPC Container Ships",
-   "qty": 201,
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "OMXSTO:BILI_A",
-   "name": "Bilia A",
    "qty": 43,
+   "name": "Bilia A",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:PWR",
-   "name": "Quanta Services",
    "qty": 1,
+   "name": "Quanta Services",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:RAY_B",
+   "qty": 35,
    "name": "RaySearch Laboratories B",
-   "qty": 30,
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:HIMS",
-   "name": "Hims & Hers Health A",
    "qty": 21,
+   "name": "Hims & Hers Health A",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:BKR",
-   "name": "Baker Hughes A",
    "qty": 10,
+   "name": "Baker Hughes A",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:FRACTL",
-   "name": "Fractal Gaming Group",
    "qty": 422,
+   "name": "Fractal Gaming Group",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NASDAQ:TTD",
-   "name": "The Trade Desk A",
    "qty": 45,
+   "name": "The Trade Desk A",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:MDT",
-   "name": "Medtronic",
    "qty": 6,
+   "name": "Medtronic",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:EWRK",
-   "name": "Ework Group",
    "qty": 109,
+   "name": "Ework Group",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:SECT_B",
-   "name": "Sectra B",
    "qty": 16,
+   "name": "Sectra B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:KEBNI_B",
-   "name": "KebNi B",
    "qty": 8548,
+   "name": "KebNi B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OSL:ODFB",
+   "qty": 20,
    "name": "Odfjell B",
-   "qty": 40,
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "OMXSTO:INDT",
-   "name": "Indutrade",
    "qty": 20,
+   "name": "Indutrade",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NASDAQ:SYM",
-   "name": "Symbotic",
    "qty": 13,
+   "name": "Symbotic",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:AEIS",
-   "name": "Advanced Energy Industries",
    "qty": 2,
+   "name": "Advanced Energy Industries",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:ATCO_B",
-   "name": "Atlas Copco B",
    "qty": 29,
+   "name": "Atlas Copco B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NASDAQ:IESC",
-   "name": "IES",
    "qty": 2,
+   "name": "IES",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:SAP",
-   "name": "SAP",
    "qty": 2,
+   "name": "SAP",
    "market": "Germany",
    "cur": "EUR"
   },
   {
    "sym": "OMXSTO:AAK",
-   "name": "AAK",
    "qty": 26,
+   "name": "AAK",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OSL:WAWI",
-   "name": "Wallenius Wilhelmsen",
    "qty": 24,
+   "name": "Wallenius Wilhelmsen",
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "NYSE:SPGI",
-   "name": "S&P Global",
    "qty": 1,
+   "name": "S&P Global",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:MCAP",
-   "name": "MedCap",
    "qty": 8,
+   "name": "MedCap",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NASDAQ:NVDA",
+   "qty": 3,
    "name": "NVIDIA",
-   "qty": 2,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:BOOZT",
-   "name": "Boozt",
    "qty": 26,
+   "name": "Boozt",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:BEIJ_B",
+   "qty": 48,
    "name": "Beijer Ref B",
-   "qty": 26,
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:ETN",
-   "name": "Eaton",
    "qty": 1,
+   "name": "Eaton",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:CDMIL",
-   "name": "CodeMill",
    "qty": 280,
+   "name": "CodeMill",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:BONEX",
-   "name": "BONESUPPORT",
    "qty": 12,
+   "name": "BONESUPPORT",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:XVIVO",
-   "name": "Xvivo Perfusion",
    "qty": 19,
+   "name": "Xvivo Perfusion",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:SOBI",
-   "name": "Swedish Orphan Biovitrum",
    "qty": 8,
+   "name": "Swedish Orphan Biovitrum",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NASDAQ:QCOM",
-   "name": "QUALCOMM",
    "qty": 2,
+   "name": "QUALCOMM",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXHEX:VAIAS",
-   "name": "Vaisala",
    "qty": 5,
+   "name": "Vaisala",
    "market": "Finland",
    "cur": "EUR"
   },
   {
    "sym": "OMXSTO:NIBE_B",
-   "name": "Nibe Industrier B",
    "qty": 77,
+   "name": "Nibe Industrier B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NASDAQ:AVGO",
-   "name": "Broadcom",
    "qty": 1,
+   "name": "Broadcom",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "TSX:WCP",
+   "qty": 34,
    "name": "Whitecap Resources",
-   "qty": 24,
    "market": "Canada",
    "cur": "CAD"
   },
   {
    "sym": "NASDAQ:POWL",
-   "name": "Powell Industries",
    "qty": 2,
+   "name": "Powell Industries",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:LEN",
-   "name": "Lennar A",
    "qty": 4,
+   "name": "Lennar A",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:CAMX",
-   "name": "Camurus",
    "qty": 5,
+   "name": "Camurus",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:MLI",
-   "name": "Mueller Industries",
    "qty": 6,
+   "name": "Mueller Industries",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXCOP:AMBU_B",
-   "name": "Ambu",
    "qty": 26,
+   "name": "Ambu",
    "market": "Denmark",
    "cur": "DKK"
   },
   {
    "sym": "OMXSTO:AQ",
-   "name": "AQ Group",
    "qty": 13,
+   "name": "AQ Group",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:INWI",
-   "name": "Inwido",
    "qty": 15,
+   "name": "Inwido",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:MOD",
-   "name": "Modine Manufacturing",
    "qty": 2,
+   "name": "Modine Manufacturing",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "XETR:SPYH",
-   "name": "SPDR MSCI Europe Health Care UCITS",
    "qty": 1,
+   "name": "SPDR MSCI Europe Health Care UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
   },
   {
    "sym": "OSL:BWE",
-   "name": "BW Energy Limited",
    "qty": 41,
+   "name": "BW Energy Limited",
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "OMXSTO:PREV_B",
-   "name": "Prevas B",
    "qty": 38,
+   "name": "Prevas B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:OXY",
-   "name": "Occidental Petroleum",
    "qty": 4,
+   "name": "Occidental Petroleum",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:ADBE",
-   "name": "Adobe",
    "qty": 1,
+   "name": "Adobe",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:PHM",
-   "name": "PulteGroup",
    "qty": 2,
+   "name": "PulteGroup",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:UROY",
-   "name": "Uranium Royalty",
    "qty": 60,
+   "name": "Uranium Royalty",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:APPF",
-   "name": "AppFolio A",
    "qty": 1,
+   "name": "AppFolio A",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXCOP:NTG",
+   "qty": 8,
    "name": "NTG Nordic Transport Group",
-   "qty": 4,
    "market": "Denmark",
    "cur": "DKK"
   },
   {
    "sym": "OMXSTO:MCOV_B",
-   "name": "Medicover B",
    "qty": 7,
+   "name": "Medicover B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:TROAX",
-   "name": "Troax Group",
    "qty": 13,
+   "name": "Troax Group",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
-   "sym": "NASDAQ:TSCO",
-   "name": "Tractor Supply",
-   "qty": 6,
-   "market": "US",
-   "cur": "USD"
-  },
-  {
    "sym": "OMXCOP:BAVA",
-   "name": "Bavarian Nordic",
    "qty": 5,
+   "name": "Bavarian Nordic",
    "market": "Denmark",
    "cur": "DKK"
   },
   {
    "sym": "NYSE:DT",
+   "qty": 7,
    "name": "Dynatrace",
-   "qty": 3,
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:XOM",
-   "name": "Exxon Mobil",
    "qty": 1,
-   "market": "US",
-   "cur": "USD"
-  },
-  {
-   "sym": "NYSE:CHPT",
-   "name": "ChargePoint",
-   "qty": 20,
+   "name": "Exxon Mobil",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:NEWA_B",
-   "name": "New Wave B",
    "qty": 17,
+   "name": "New Wave B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "NYSE:APH",
-   "name": "Amphenol",
    "qty": 2,
+   "name": "Amphenol",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:J",
-   "name": "Jacobs Engineering",
    "qty": 1,
+   "name": "Jacobs Engineering",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXHEX:PUUILO",
-   "name": "Puuilo",
    "qty": 7,
+   "name": "Puuilo",
    "market": "Finland",
    "cur": "EUR"
   },
   {
    "sym": "NASDAQ:CPRT",
-   "name": "Copart",
    "qty": 5,
+   "name": "Copart",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OSL:SUBC",
-   "name": "Subsea 7",
    "qty": 4,
+   "name": "Subsea 7",
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "OSL:MEDI",
-   "name": "Medistim",
    "qty": 4,
+   "name": "Medistim",
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "XETR:FPE",
+   "qty": 9,
    "name": "Fuchs",
-   "qty": 3,
    "market": "Germany",
    "cur": "EUR"
   },
   {
-   "sym": "NASDAQ:VRA",
-   "name": "Vera Bradley",
-   "qty": 21,
-   "market": "US",
-   "cur": "USD"
-  },
-  {
    "sym": "NYSE:PATH",
-   "name": "UiPath A",
    "qty": 9,
+   "name": "UiPath A",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:ACM",
-   "name": "AECOM",
    "qty": 2,
+   "name": "AECOM",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "OMXSTO:DEDI",
-   "name": "Dedicare B",
    "qty": 19,
+   "name": "Dedicare B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:BYGGP",
-   "name": "ByggPartner Gruppen",
    "qty": 30,
+   "name": "ByggPartner Gruppen",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OMXSTO:GETI_B",
-   "name": "Getinge B",
    "qty": 4,
+   "name": "Getinge B",
    "market": "Sweden",
    "cur": "SEK"
   },
   {
    "sym": "OSL:AKSO",
-   "name": "Aker Solutions",
    "qty": 27,
+   "name": "Aker Solutions",
    "market": "Norway",
    "cur": "NOK"
   },
   {
    "sym": "NYSE:MBGL",
-   "name": "Mobility Global",
    "qty": 1,
+   "name": "Mobility Global",
    "market": "US",
    "cur": "USD"
+  },
+  {
+   "sym": "XETR:ZAL",
+   "qty": 8,
+   "name": "Zalando SE",
+   "market": "Germany",
+   "cur": "EUR"
+  },
+  {
+   "sym": "XETR:LAR0",
+   "qty": 1,
+   "name": "Lam Research",
+   "market": "Germany",
+   "cur": "EUR"
   }
  ],
  "former": [
@@ -939,6 +932,30 @@
    "gone_by": "2026-10-28",
    "last_qty": 901,
    "note": "Sold its whole fleet and paid out most of its value as a special dividend in April 2026. What trades now is a small remainder, so the long-term chart is not comparable."
+  },
+  {
+   "sym": "NASDAQ:TSCO",
+   "name": "Tractor Supply",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-05",
+   "last_qty": 6
+  },
+  {
+   "sym": "NYSE:CHPT",
+   "name": "ChargePoint",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-05",
+   "last_qty": 20
+  },
+  {
+   "sym": "NASDAQ:VRA",
+   "name": "Vera Bradley",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-05",
+   "last_qty": 21
   }
  ],
  "names": {
@@ -1066,6 +1083,33 @@
   "Zscaler": "NASDAQ:ZS",
   "iShares MSCI Europe Information Technology Sector UCITS…": "XETR:ESIT",
   "iShares S&P 500 Information Technology Sector UCITS ETF…": "XETR:QDVE",
-  "iShares STOXX Europe 600 Construction & Materials UCITS…": "XETR:EXV8"
+  "iShares STOXX Europe 600 Construction & Materials UCITS…": "XETR:EXV8",
+  "Zalando SE": "XETR:ZAL",
+  "Lam Research": "XETR:LAR0"
+ },
+ "last_inbox": {
+  "file": "holdings-202611051422.json",
+  "exported": "2026-11-05 14:22",
+  "read": 119,
+  "added": [
+   "Zalando SE",
+   "Lam Research"
+  ],
+  "sold": [
+   "Tractor Supply",
+   "ChargePoint",
+   "Vera Bradley"
+  ],
+  "back": [],
+  "changed": 17,
+  "auto_matched": [
+   "Zalando SE -> XETR:ZAL",
+   "Lam Research -> XETR:LAR0"
+  ],
+  "unmatched": [
+   "Röko B (no listed stock with that name has a matching price)",
+   "Union Pacific (several possible matches: XETR:UNP, NYSE:UNP)"
+  ],
+  "refused": null
  }
 }
