@@ -227,7 +227,7 @@ def rsi_arr(c, n=14):
 
 APPROACH_PCT = 1.0    # the 50-day average counts as "about to touch" the 200-day when within this % of it ...
 APPROACH_DAYS = 10    # ... and closing in so that it would touch within this many sessions at its pace of the last 5
-TOUCH_HOLD = 3        # sessions a candle-touch event is kept after the candle that touched
+TOUCH_HOLD = 5        # sessions a candle-touch event is kept after the candle that touched
 ALERT_HOLD = 7        # sessions an alert is kept after the last bar that met the test
 
 
@@ -371,7 +371,7 @@ def analyse(B):
     # opposite cross has happened since.
     # Candle touch events on a bar j (see the page's "Candle touch" column). A candle "touches" an average when the previous close was on one
     # side of it and the candle's high (coming from below) or low (coming from above) reached it:
-    #   buy200  came up from below and touched the 200-day            sell200  came down from above and touched the 200-day
+    #   buy200  came up from below, touched the 200-day and closed above it   sell200  came down from above, touched it and closed below it
     #   buy50   touched the 50-day downwards, closed above it, and the 50-day is above the 200-day (a dip in an uptrend)
     #   sell50  touched the 50-day upwards, closed below it, and the 50-day is below the 200-day (a rally in a downtrend)
     def tch_events(j):
@@ -379,13 +379,13 @@ def analyse(B):
             return []
         m50, m200, pc = sma(c, 50, j), sma(c, 200, j), c[j - 1]
         ev = []
-        if pc < m200 <= h[j]: ev.append("buy200")
-        if pc > m200 >= l[j]: ev.append("sell200")
+        if pc < m200 <= h[j] and c[j] > m200: ev.append("buy200")
+        if pc > m200 >= l[j] and c[j] < m200: ev.append("sell200")
         if m50 > m200 and pc > m50 >= l[j] and c[j] > m50: ev.append("buy50")
         if m50 < m200 and pc < m50 <= h[j] and c[j] < m50: ev.append("sell50")
         return ev
     R["tch"] = R["tch_ago"] = None   # the events of the newest bar (of the last TOUCH_HOLD + 1) that had any, and how many sessions ago that was
-    if s200 and n >= 203:
+    if s200 and n >= 200 + TOUCH_HOLD:
         for ago in range(0, TOUCH_HOLD + 1):
             ev = tch_events(n - ago)
             if ev:
