@@ -257,6 +257,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   td.sigc { white-space: nowrap; }
   .sig-alert { font-weight: 700; }
   .tch { display: block; }
+  .sg-part, .tc-part { display: block; }
+  .tc-part { margin-top: 4px; }
   .tch.buy { color: var(--series-0); }
   .tch.sell { color: var(--series-1); }
   .tch.big { font-weight: 700; }
@@ -408,8 +410,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <thead><tr>
           <th data-field="name"><button data-k="name">Holding</button></th>
           <th class="num" data-field="value_sek"><button data-k="value_sek">Value SEK</button></th>
-          <th data-field="signal"><button data-k="signal_rank">Signal</button></th>
-          <th data-field="touch" title="Candle touch rules (hover a cell for its own alert)"><button data-k="touch_rank" data-rules="1">Candle touch</button></th>
+          <th data-field="signal" title="Signal and Candle touch rules"><button data-k="signal_rank" data-rules="1">Signal-CandleTouch</button></th>
           <th class="num" data-field="price_live">Price now</th>
           <th class="num" data-field="day_chg"><button data-k="day_chg">Today</button></th>
           <th class="num" data-field="r1m"><button data-k="r1m">1 month</button></th>
@@ -568,8 +569,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <thead><tr>
           <th>Holding</th>
           <th class="num">Value SEK</th>
-          <th data-field="signal">Signal</th>
-          <th data-field="touch">Candle touch</th>
+          <th data-field="signal">Signal-CandleTouch</th>
           <th class="num">Price now</th>
           <th class="num">Today</th>
           <th class="num">1 month</th>
@@ -605,8 +605,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         <thead><tr>
           <th data-field="name"><button data-k="name">Holding</button></th>
           <th class="num" data-field="value_sek"><button data-k="gone_by">Value SEK</button></th>
-          <th data-field="signal"><button data-k="signal_rank">Signal</button></th>
-          <th data-field="touch" title="Candle touch rules (hover a cell for its own alert)"><button data-k="touch_rank" data-rules="1">Candle touch</button></th>
+          <th data-field="signal" title="Signal and Candle touch rules"><button data-k="signal_rank" data-rules="1">Signal-CandleTouch</button></th>
           <th class="num" data-field="price">Price now</th>
           <th class="num" data-field="r1m_day">Today</th>
           <th class="num" data-field="r1m"><button data-k="r1m">1 month</button></th>
@@ -1024,13 +1023,16 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   // buy200 = came up from below, the high reached the 200-day and it closed above it; sell200 = came down from above, the low reached it and it closed below it;
   // buy50 = touched the 50-day downwards, closed above it, 50-day over the 200-day; sell50 = touched it upwards, closed below it, 50-day under the 200-day
   const TOUCH_HOLD = 5;   // same number as scripts/board_lib.py
+  const SIG_BOARD_RULES = ['Signal rules',
+    'Alert buy / Alert sell: the 50-day MA is about to touch the 200-day MA from below / from above (within ' + APPROACH_PCT + '% of it and closing in so that, at its pace over the last 5 sessions, it would touch within ' + APPROACH_DAYS + ' trading days). Kept for ' + ALERT_HOLD + ' trading days after the last session that met this (so it also covers the touch itself) unless the averages cross the other way.',
+    'Otherwise the strategy view behind the December column: Strong buy, Buy, Hold, Sell or Strong sell.'].join('\n');
   const TCH_RULES = ['Candle touch rules',
     'Alert buy (blue): the daily candle touches the 200-day MA upwards (comes up from below, its high reaches it) and finishes the day above the 200-day MA.',
     'Alert buy (bold blue): the candle touches the 50-day MA downwards (comes down from above, its low reaches it), finishes the day above the 50-day MA, and the 50-day MA is above the 200-day MA.',
     'Alert sell (orange): the candle touches the 200-day MA downwards (comes down from above, its low reaches it) and finishes the day below the 200-day MA.',
     'Alert sell (bold orange): the candle touches the 50-day MA upwards (comes up from below, its high reaches it), finishes the day below the 50-day MA, and the 50-day MA is below the 200-day MA.',
     'Each alert is kept for ' + TOUCH_HOLD + ' sessions after its candle unless a newer one appears. Otherwise a dash.'].join('\n');
-  document.querySelectorAll('button[data-rules]').forEach((b) => { b.title = TCH_RULES; });
+  document.querySelectorAll('button[data-rules]').forEach((b) => { b.title = SIG_BOARD_RULES + '\n\n' + TCH_RULES; });
   const TCH_INFO = { buy200: { ma: 200, dir: 1, txt: '200-day upwards, closed above' }, sell200: { ma: 200, dir: -1, txt: '200-day downwards, closed below' },
                      buy50: { ma: 50, dir: 1, txt: '50-day downwards, closed above' }, sell50: { ma: 50, dir: -1, txt: '50-day upwards, closed below' } };
   function touchOf(r) {
@@ -1071,6 +1073,16 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       c.append(sp, n);
     });
     c.title = tc.items.map((it) => 'Candle touched the ' + it.txt + ' (' + tc.when + ')').join('; ') + '\n\n' + TCH_RULES;
+    return c;
+  }
+  // one cell for the merged Signal-CandleTouch column: the Signal first, any Candle touch alerts underneath (sg may be null: no signal at all)
+  function sigTouchCell(sg, tc) {
+    const c = document.createElement('td'); c.className = 'sigc'; const tips = [];
+    const put = (src, cls) => { const d = document.createElement('span'); d.className = cls; while (src.firstChild) d.appendChild(src.firstChild); c.appendChild(d); tips.push(src.title); };
+    if (sg) put(sigCell(sg), 'sg-part');
+    if (tc.items.length) put(touchCell(tc), 'tc-part');
+    else if (!sg) { c.textContent = '\u2014'; c.classList.add('mut'); tips.push(touchCell(tc).title); }
+    c.title = tips.join('\n\n');
     return c;
   }
   const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
@@ -1473,8 +1485,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tr.append(
         nameTd(r.name, r.sym, null, () => select(r.sym, 'monthly')),
         td(fmtInt(r.value_sek), 'num'),
-        sigCell(r._sig),
-        touchCell(r._tch),
+        sigTouchCell(r._sig, r._tch),
         td(r.price_live == null ? '—' : plain(r.price_live, r.price_live < 10 ? 3 : 2) + ' ' + r.cur + (r.session === 'pre' ? ' · pre' : ''), 'num'),
         td(signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
         td(signed(r.r1m), 'num ' + tone(r.r1m)),
@@ -2838,8 +2849,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       }
       return r;
     }
-    document.querySelectorAll('#lookup-tbl th[data-field]').forEach((th) => { th.title = th.dataset.field === 'touch' ? TCH_RULES : SIG_RULES; th.style.cursor = 'help'; });
-    const lookupSig = (r) => { const sg = signalOf(r); if (!sg.alert && !r.rating) { const c = document.createElement('td'); c.textContent = '\u2014'; c.className = 'mut'; return c; } return sigCell(sg); };
+    document.querySelectorAll('#lookup-tbl th[data-field]').forEach((th) => { th.title = SIG_RULES + '\n\n' + TCH_RULES; th.style.cursor = 'help'; });
+    const lookupCell = (r) => { const sg = signalOf(r); return sigTouchCell(!sg.alert && !r.rating ? null : sg, touchOf(r)); };
 
     // ----- result row
     function cellsFor(d) {
@@ -2853,8 +2864,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       return [
         nameTd(d.name, d.sym, null, null),
         td(own ? fmtInt(own.value_sek) : null, 'num'),
-        lookupSig(lr),
-        touchCell(touchOf(lr)),
+        lookupCell(lr),
         td(d.close == null ? null : plain(d.close, d.close < 10 ? 3 : 2) + ' ' + d.cur, 'num'),
         td(signed(d.change, 2), 'num ' + tone(d.change)),
         td(signed(d.perf1m), 'num ' + tone(d.perf1m)),
@@ -2894,8 +2904,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tr.append(
         nameTd(r.name, r.sym, null, null),
         td(fmtInt(r.value_sek), 'num'),
-        sigCell(signalOf(r)),
-        touchCell(touchOf(r)),
+        sigTouchCell(signalOf(r), touchOf(r)),
         td(price == null ? null : plain(price, price < 10 ? 3 : 2) + ' ' + r.cur + (hasLive && r.session === 'pre' ? ' · pre' : ''), 'num'),
         td(signed(chg, 2), 'num ' + tone(chg)),
         td(signed(r.r1m), 'num ' + tone(r.r1m)),
@@ -3010,7 +3019,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tbody.replaceChildren();
       const rows = d.status === 'ok' ? d.data.slice() : [];
       if (!rows.length) {
-        const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 24; c.className = 'mut';
+        const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 23; c.className = 'mut';
         c.textContent = d.status === 'ok' ? 'No former holdings yet.' : 'Former holdings appear after the next rebuild.';
         tr.appendChild(c); tbody.appendChild(tr); return;
       }
@@ -3024,8 +3033,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         tr.append(
           nameTd(r.name, r.sym, null, null),
           td(fmtGone(r.gone_by), 'num gone'),
-          sigCell(r._sig),
-          touchCell(r._tch),
+          sigTouchCell(r._sig, r._tch),
           td(r.price == null ? null : plain(r.price, r.price < 10 ? 3 : 2) + ' ' + r.cur, 'num'),
           td(r.day_chg == null ? null : signed(r.day_chg, 2), 'num ' + tone(r.day_chg)),
           td(signed(r.r1m), 'num ' + tone(r.r1m)),
