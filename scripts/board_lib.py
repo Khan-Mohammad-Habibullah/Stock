@@ -55,7 +55,8 @@ def scan(body):
 
 SCAN_COLS = ["name", "description", "exchange", "country", "currency", "type", "sector", "industry", "close", "market_cap_basic",
              "total_revenue_yoy_growth_ttm", "earnings_per_share_diluted_yoy_growth_ttm", "net_margin_ttm", "gross_margin_ttm",
-             "price_earnings_ttm", "debt_to_equity", "return_on_equity", "free_cash_flow_ttm", "recommendation_mark", "price_target_average"]
+             "price_earnings_ttm", "debt_to_equity", "return_on_equity", "free_cash_flow_ttm", "recommendation_mark", "price_target_average",
+             "total_debt_fq", "cash_n_short_term_invest_fq", "cash_n_equivalents_fq"]   # the last three: the halal screen (scripts/halal.py)
 
 
 def scan_rows(j):

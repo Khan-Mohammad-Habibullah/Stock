@@ -257,6 +257,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   td.sigc { white-space: nowrap; }
   .sig-alert { font-weight: 700; }
   .tch { display: block; }
+  .hl-wrap { display: block; margin-top: 3px; line-height: 1.2; }
+  .hl { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  a.hl:hover { text-decoration: underline; }
+  .hl.ok { background: color-mix(in srgb, var(--color-ok) 18%, transparent); color: var(--color-ok); }
+  .hl.bad { background: color-mix(in srgb, var(--color-bad) 18%, transparent); color: var(--color-bad); }
+  .hl.mid { background: color-mix(in srgb, var(--series-1) 20%, transparent); color: var(--series-1); }
+  .hl.na { background: color-mix(in srgb, var(--color-fg) 8%, transparent); color: var(--color-fg-muted); font-weight: 400; }
   .tch.buy { color: var(--series-0); }
   .tch.sell { color: var(--series-1); }
   .tch.big { font-weight: 700; }
@@ -401,6 +408,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <span class="count" id="shown"></span>
     </div>
     <p class="hs-note" id="sig-note"><b>Signal.</b> <b class="pos">Alert buy</b> appears when the 50-day average is about to touch the 200-day from below, and <b class="neg">Alert sell</b> when it is about to touch it from above. "About to touch" means within 1% of the 200-day and closing in so that, at its pace over the last 5 sessions, it would meet it within 10 trading days. An alert stays for 7 trading days after the last session that met this (so it also covers the touch itself) unless the averages cross the other way. The rest of the time the column shows the strategy view behind the December column: Strong buy (consider adding), Buy (hold, add on dips), Hold, Sell (consider trimming) and Strong sell (consider selling). Not advice on what to buy or sell.</p>
+    <p class="hs-note" id="halal-note"><b>Halal.</b> The chip under each name is an estimate, not <a href="https://musaffa.com/" target="_blank" rel="noopener noreferrer">Musaffa</a>'s own result (its terms of use do not allow automated retrieval of its screening), so click the chip for that stock's page on Musaffa and read the official answer there. <b>Not halal</b>: conventional banking, brokers, insurance, tobacco, alcohol or gambling, or debt, or cash and short-term investments, of 30% or more of the company's market value. <b>Doubtful</b>: defence, entertainment and media, restaurants, food retail, hotels, investment holding or asset management and similar mixed activities, a ratio within 5 points of its limit, or a figure the data source does not give. <b>Halal</b>: none of those. Funds are marked <b>Fund</b> and not screened. The share of income from interest (5% in the AAOIFI standard) is not checked, and the ratios use today's market value, so Musaffa and this estimate can differ. Updated with the daily rebuild.</p>
     <p class="hs-note" id="tch-note"><b>Candle touch.</b> <b style="color:var(--series-0)">Alert buy</b> in blue: regular when the daily candle touches the 200-day average upwards (comes up from below and its high reaches it) and finishes the day on the upper side of it; bold when it touches the 50-day average downwards (comes down from above and its low reaches it), finishes the day above the 50-day, and the 50-day is above the 200-day. <b style="color:var(--series-1)">Alert sell</b> in orange: regular when the candle touches the 200-day downwards and finishes the day below it; bold when it touches the 50-day upwards, finishes the day below it, and the 50-day is below the 200-day. Each alert is kept for 5 sessions after its candle unless a newer one appears; a dash otherwise. "From above" and "from below" are judged against the previous close.</p>
     <p class="hs-note stale" id="stale-tbl" hidden></p>
     <div class="tbl-wrap">
@@ -770,6 +778,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <p><b>Monthly likely low and high.</b> For each month-end from October 2026 to October 2027, the likely low and likely high are the 25th and 75th percentile prices: half of outcomes fall between them, a quarter below and a quarter above. The gap widens with the square root of time, so a holding with a 40% yearly swing sits within roughly ±14% after three months and ±27% after a year. Real prices jump around earnings and news, so actual paths are lumpier than these smooth bands.</p>
       <p><b>Most likely price and the bold side.</b> The most likely price is the middle of the range after a modest tilt: today's price grown at 5% a year (roughly stocks' long-run average) plus 1.5 percentage points for each point of the holding's 1-year outlook score, capped at ±10, so between −5% and +15% a year. With that tilt, the chance of ending at or above the likely high and at or below the likely low are no longer equal; the larger one is in bold. The tilt is a judgment: trends and fundamentals have only a weak record of predicting one-year returns, so it is kept small, and for very volatile holdings the two chances stay close to 25% each.</p>
       <p><b>Automatic updates and former holdings.</b> Every weekday morning, and whenever you update your holdings, the board is rebuilt from scratch on GitHub: about 1,600 companies' daily bars from Yahoo Finance and their sector, fundamentals and analyst data from TradingView's screener, for your holdings, the stocks you used to own and the eight markets' money flow. The technical readings follow the rules above; checked against the board's original readings for 102 holdings, the rebuild gives the same October signal for 94, the same MACD, Alligator, Bollinger and price-structure reading for 93 to 100, and RSI and moving-average distances within a point or two for all but one or two. The 1-, 3- and 5-year outlooks use weights recovered from the original scores (same group for 83 to 85% of holdings, never more than one group apart), so treat them as approximate. The detail panel's notes on news stay as written. Former holdings are every stock that was on the board and is not any more, dated by the first Nordnet export it was missing from.</p>
+      <p><b>Halal indicator.</b> An estimated Shariah screen on the AAOIFI model: first the business (conventional finance, insurance, tobacco, alcohol and gambling fail; defence, media, restaurants, food retail, hotels, investment holding and similar are doubtful), then two ratios against the company's market value, interest-bearing debt under 30% and cash plus short-term investments under 30%, with a ratio within 5 points of the limit or a missing figure marked doubtful. It runs on TradingView's industry and balance-sheet figures in the daily rebuild for your holdings and live in the browser for the Strategy tab and the lookup. It is not Musaffa's result: the chip links to the stock's Musaffa page for that, and the two can differ (Musaffa also tests income from interest and averages market value over 36 months).</p>
       <p><b>Candle touch column.</b> Alert buy in regular blue means the daily candle touched the 200-day moving average upwards: the previous close was below it, the day's high reached it, and the day finished above it. Alert buy in bold blue means the candle touched the 50-day average downwards (previous close above it, the low reached it), closed the day above it, and the 50-day is above the 200-day, so a dip in an uptrend. Alert sell in regular orange is the mirror image on the 200-day (previous close above it, the low reached it, and the day finished below it), and bold orange means the candle touched the 50-day upwards (previous close below it, the high reached it), closed below it, and the 50-day is below the 200-day, a rally in a downtrend. An alert is kept for 5 sessions after the candle, or until a newer alert replaces it; if both averages are touched the same day, both are shown. While TradingView's live prices are on (every minute), today's candle counts as it develops, so an alert can appear or disappear during the day until the close settles it; the stored history comes from the daily rebuild.</p>
       <p><b>Signal column.</b> Alert buy means the 50-day moving average is about to touch the 200-day from below (a golden cross is near) and Alert sell that it is about to touch it from above (a death cross is near). The test: the gap between them is under 1% of the 200-day, the 50-day has been on the same side for 6 sessions, and it has been closing in fast enough that, at its pace over the last 5 sessions, it would touch within 10 trading days. The alert is kept for 7 trading days after the last session that met the test, which also covers the cross itself, unless the averages cross the other way. The live prices are checked every minute, so an alert can appear before the daily rebuild. Otherwise the column translates the strategy view in the December column: Consider adding is Strong buy, Hold with adding on dips is Buy, Hold stays Hold, Consider trimming is Sell and Consider selling is Strong sell. A moving-average approach often fizzles out (the averages can turn away before touching), and a cross is a slow signal that comes after much of the move.</p>
       <p><b>Limits.</b> Indicators describe the trend and momentum so far; they do not predict prices, and a two-week window is mostly noise. Analyst targets can lag sharp falls, so a large upside to target often means the target has not been cut yet. Earnings reports in late October and early November can override any of these readings. The money-flow readings tilt the odds rather than confirm what institutions did: even the best method tested was right only 53% to 57% of the time, and reported holdings arrive months later in quarterly filings.</p>
@@ -1020,6 +1029,53 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     c.title = sg.alert ? sg.label + ': ' + sg.note + '. Strategy view: ' + sg.rating : 'Strategy view (the 50-day average is not about to touch the 200-day)';
     return c;
   }
+  // ---------- Halal indicator: an estimated Shariah screen, linked to the stock's Musaffa page ----------
+  // Same rules as scripts/halal.py (copied from halal.RULES by scripts/patch_halal.py). Not Musaffa's own result: its terms forbid automated retrieval.
+  const HALAL_RULES = {"debt_max": 30.0, "cash_max": 30.0, "near": 5.0, "haram": ["Major Banks", "Regional Banks", "Savings Banks", "Investment Banks/Brokers", "Life/Health Insurance", "Multi-Line Insurance", "Property/Casualty Insurance", "Specialty Insurance", "Insurance Brokers/Services", "Tobacco", "Beverages: Alcoholic", "Casinos/Gaming"], "doubtful": ["Financial Conglomerates", "Finance/Rental/Leasing", "Investment Managers", "Investment Trusts/Mutual Funds", "Managed Health Care", "Aerospace & Defense", "Movies/Entertainment", "Broadcasting", "Cable/Satellite TV", "Restaurants", "Food Retail", "Drugstore Chains", "Hotels/Resorts/Cruise lines"]};
+  // d: { industry, mcap, debt, cash, cashEq, fund } in the same currency (the screener's USD) -> { halal, halal_why }
+  function halalOf(d) {
+    const R = HALAL_RULES;
+    if (d.fund) return { halal: 'Not screened', halal_why: 'Fund: whether it is halal depends on every holding, so it is not screened here. Check the fund on Musaffa.' };
+    const ind = d.industry || '';
+    if (R.haram.indexOf(ind) >= 0) return { halal: 'Not halal', halal_why: 'Business: ' + ind + ' (interest-based finance, insurance, tobacco, alcohol or gambling)' };
+    const mc = d.mcap, pct = (x) => (x == null || !mc ? null : x / mc * 100);
+    const debt = pct(d.debt), cash = pct(d.cash != null ? d.cash : d.cashEq);
+    const f0 = (v) => v.toFixed(0) + '%';
+    const fig = 'debt ' + (debt == null ? 'n/a' : f0(debt)) + ' and cash ' + (cash == null ? 'n/a' : f0(cash)) + ' of market value (limit ' + R.debt_max.toFixed(0) + '%)';
+    const over = [];
+    if (debt != null && debt >= R.debt_max) over.push('debt ' + f0(debt) + ' of market value (limit ' + R.debt_max.toFixed(0) + '%)');
+    if (cash != null && cash >= R.cash_max) over.push('cash and short-term investments ' + f0(cash) + ' of market value (limit ' + R.cash_max.toFixed(0) + '%)');
+    if (over.length) return { halal: 'Not halal', halal_why: 'Ratios: ' + over.join('; ') };
+    const why = [];
+    if (R.doubtful.indexOf(ind) >= 0) why.push('business: ' + ind + ' (mixed or questionable activities)');
+    if (debt == null || cash == null || !mc) why.push('a figure is missing (' + fig + ')');
+    if (debt != null && debt >= R.debt_max - R.near) why.push('debt close to the limit (' + f0(debt) + ')');
+    if (cash != null && cash >= R.cash_max - R.near) why.push('cash close to the limit (' + f0(cash) + ')');
+    if (why.length) { const t = why.join('; '); return { halal: 'Doubtful', halal_why: t.charAt(0).toUpperCase() + t.slice(1) }; }
+    return { halal: 'Halal', halal_why: 'Business: ' + (ind || 'n/a') + '; ' + fig };
+  }
+  // TradingView symbol (EXCHANGE:TICKER) -> the stock's page on musaffa.com (Yahoo-style ticker; share classes "VOLV B.ST")
+  const MUSAFFA_SUFFIX = { OMXSTO: '.ST', OSL: '.OL', OMXCOP: '.CO', OMXHEX: '.HE', XETR: '.DE', TSX: '.TO', LSE: '.L', SIX: '.SW', BME: '.MC', MIL: '.MI', VIE: '.VI' };
+  function musaffaUrl(sym) {
+    const i = String(sym || '').indexOf(':'); if (i < 0) return null;
+    const ex = sym.slice(0, i); let tk = sym.slice(i + 1).replace(/\.$/, '');
+    const suf = MUSAFFA_SUFFIX[ex] || '';
+    if (suf) tk = tk.replace(/[_-]/g, ' ');
+    return 'https://musaffa.com/stock/' + encodeURIComponent(tk + suf) + (suf ? '' : '/');
+  }
+  // h: { halal, halal_why } (a holdings row, or the result of halalOf); sym: for the Musaffa link. Returns a block with the chip, or null.
+  function halalChip(h, sym) {
+    if (!h || !h.halal) return null;
+    const cls = { 'Halal': 'ok', 'Not halal': 'bad', 'Doubtful': 'mid', 'Not screened': 'na' }[h.halal] || 'na';
+    const url = h.halal === 'Not screened' ? null : musaffaUrl(sym);
+    const el = document.createElement(url ? 'a' : 'span'); el.className = 'hl ' + cls;
+    el.textContent = h.halal === 'Not screened' ? 'Fund' : h.halal;
+    el.title = h.halal_why + '\n\nAn estimate from market data (business activity, debt and cash against market value), not Musaffa’s result.' + (url ? ' Click for this stock on Musaffa.' : '');
+    if (url) { el.href = url; el.target = '_blank'; el.rel = 'noopener noreferrer'; el.addEventListener('click', (e) => e.stopPropagation()); }
+    const w = document.createElement('span'); w.className = 'hl-wrap'; w.appendChild(el);
+    return w;
+  }
+
   // ---------- Candle touch column: the daily candle against the 200- and 50-day averages (events kept for 5 sessions) ----------
   // buy200 = came up from below, the high reached the 200-day and it closed above it; sell200 = came down from above, the low reached it and it closed below it;
   // buy50 = touched the 50-day downwards, closed above it, 50-day over the 200-day; sell50 = touched it upwards, closed below it, 50-day under the 200-day
@@ -1471,7 +1527,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const td = (text, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = text; return c; };
       const chip = (label, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; const s = document.createElement('span'); s.className = 'chip ' + chipCls(label); s.textContent = label; c.appendChild(s); return c; };
       tr.append(
-        nameTd(r.name, r.sym, null, () => select(r.sym, 'monthly')),
+        nameTd(r.name, r.sym, null, () => select(r.sym, 'monthly'), r),
         td(fmtInt(r.value_sek), 'num'),
         sigCell(r._sig),
         touchCell(r._tch),
@@ -2359,7 +2415,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     ];
     const COLS = ['name', 'description', 'exchange', 'currency', 'close', 'change', 'volume', 'RSI', 'MACD.macd', 'MACD.signal', 'SMA50', 'SMA200',
       'Perf.1M', 'Perf.3M', 'ADX', 'ADX+DI', 'ADX-DI', 'ChaikinMoneyFlow', 'market_cap_basic', 'total_revenue_yoy_growth_ttm', 'net_margin_ttm',
-      'recommendation_mark', 'price_target_average', 'sector', 'update_mode', 'premarket_close', 'premarket_change', 'current_session'];
+      'recommendation_mark', 'price_target_average', 'sector', 'update_mode', 'premarket_close', 'premarket_change', 'current_session',
+      'industry', 'total_debt_fq', 'cash_n_short_term_invest_fq', 'cash_n_equivalents_fq'];
     const X = {}; COLS.forEach((c, i) => { X[c] = i; });
     const LARGE_N = 30, MID_N = 40, MID_MIN = 85, MID_MAX = 3, MIN_AVAIL = 8, TOP_N = 10;
     const RULES = [
@@ -2387,6 +2444,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         sma50: num(g('SMA50')), sma200: num(g('SMA200')), perf1m: num(g('Perf.1M')), perf3m: num(g('Perf.3M')), adx: num(g('ADX')), dip: num(g('ADX+DI')), dim: num(g('ADX-DI')),
         cmf: num(g('ChaikinMoneyFlow')), mcap: num(g('market_cap_basic')), revg: num(g('total_revenue_yoy_growth_ttm')), margin: num(g('net_margin_ttm')),
         rec: num(g('recommendation_mark')), target: num(g('price_target_average')), sector: g('sector'), mode: g('update_mode'),
+        industry: g('industry'), debt: num(g('total_debt_fq')), cash: num(g('cash_n_short_term_invest_fq')), cashEq: num(g('cash_n_equivalents_fq')),
         pre: g('current_session') === 'pre_market' && num(g('premarket_close')) != null, prePx: num(g('premarket_close')), preChg: num(g('premarket_change')),
       };
       d.px = d.pre ? d.prePx : d.close; d.dchg = d.pre && d.preChg != null ? d.preChg : d.change;
@@ -2475,6 +2533,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         nm.append(nmBtn, document.createTextNode(' '));
         const tk = document.createElement('span'); tk.className = 'tk'; tk.textContent = d.tk; nm.appendChild(tk);
         if (own.has(d.sym)) { const o = document.createElement('span'); o.className = 'own'; o.textContent = 'in your holdings'; nm.appendChild(o); }
+        const hc = halalChip(halalOf({ industry: d.industry, mcap: d.mcap, debt: d.debt, cash: d.cash, cashEq: d.cashEq }), d.sym); if (hc) nm.appendChild(hc);
         const macdTxt = d.macd == null || d.macds == null ? '—' : (d.macd > d.macds ? 'Bullish' : 'Bearish');
         const cmfTxt = d.cmf == null ? '—' : (d.cmf > 0.05 ? 'Coming in' : d.cmf < -0.05 ? 'Leaving' : 'Flat');
         tr.append(
@@ -2562,7 +2621,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       'ChaikinMoneyFlow', 'ADX', 'ADX+DI', 'ADX-DI',
       'market_cap_basic', 'total_revenue_yoy_growth_ttm', 'net_margin_ttm', 'price_earnings_ttm',
       'recommendation_mark', 'price_target_average',
-      'high', 'low', 'close[1]', 'close[2]', 'high[1]', 'low[1]', 'high[2]', 'low[2]', 'SMA50[1]', 'SMA50[2]', 'SMA200[1]', 'SMA200[2]'];
+      'high', 'low', 'close[1]', 'close[2]', 'high[1]', 'low[1]', 'high[2]', 'low[2]', 'SMA50[1]', 'SMA50[2]', 'SMA200[1]', 'SMA200[2]',
+      'type', 'total_debt_fq', 'cash_n_short_term_invest_fq', 'cash_n_equivalents_fq'];
     const X = {}; COLS.forEach((c, i) => { X[c] = i; });
     const num = (v) => (typeof v === 'number' && isFinite(v) ? v : null);
     const clip = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -2585,6 +2645,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         cmf: num(g('ChaikinMoneyFlow')), adx: num(g('ADX')), dip: num(g('ADX+DI')), dim: num(g('ADX-DI')),
         mcap: num(g('market_cap_basic')), revg: num(g('total_revenue_yoy_growth_ttm')), margin: num(g('net_margin_ttm')),
         pe: num(g('price_earnings_ttm')), rec: num(g('recommendation_mark')), target: num(g('price_target_average')),
+        fund: g('type') === 'fund', debt: num(g('total_debt_fq')), cash: num(g('cash_n_short_term_invest_fq')), cashEq: num(g('cash_n_equivalents_fq')),
       };
       // the latest bar and the two before it (index 0 = latest) for the Signal and Candle touch columns
       d.hist = [0, 1, 2].map((k) => { const f = (n) => num(g(k ? n + '[' + k + ']' : n)); return { c: f('close'), h: f('high'), l: f('low'), m50: f('SMA50'), m200: f('SMA200') }; });
@@ -2851,7 +2912,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const macdOk = d.macd != null && d.macds != null;
       const lr = lookupRow(d, december);
       return [
-        nameTd(d.name, d.sym, null, null),
+        nameTd(d.name, d.sym, null, null, halalOf({ industry: d.industry, mcap: d.mcap, debt: d.debt, cash: d.cash, cashEq: d.cashEq, fund: d.fund })),
         td(own ? fmtInt(own.value_sek) : null, 'num'),
         lookupSig(lr),
         touchCell(touchOf(lr)),
@@ -2892,7 +2953,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const chg = hasLive ? r.day_chg : live ? live.change : r.day_chg;
       const tr = document.createElement('tr');
       tr.append(
-        nameTd(r.name, r.sym, null, null),
+        nameTd(r.name, r.sym, null, null, r),
         td(fmtInt(r.value_sek), 'num'),
         sigCell(signalOf(r)),
         touchCell(touchOf(r)),
@@ -3022,7 +3083,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       rows.forEach((r) => {
         const tr = document.createElement('tr');
         tr.append(
-          nameTd(r.name, r.sym, null, null),
+          nameTd(r.name, r.sym, null, null, r),
           td(fmtGone(r.gone_by), 'num gone'),
           sigCell(r._sig),
           touchCell(r._tch),
@@ -3613,11 +3674,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   })();
 
   // ---------- per-row chart modal: TradingView's own embeddable chart ----------
-  function nameTd(label, sym, cls, onSelect) {
+  function nameTd(label, sym, cls, onSelect, halal) {
     const c = document.createElement('td'); c.className = cls || 'nm';
     const b = document.createElement('button'); b.type = 'button'; b.className = 'chart-link'; b.textContent = label;
     b.addEventListener('click', (e) => { e.stopPropagation(); if (onSelect) onSelect(); openChart(sym, label); });
     c.appendChild(b);
+    const hc = halalChip(halal, sym); if (hc) c.appendChild(hc);
     return c;
   }
   let tvScriptPromise = null;

@@ -24,6 +24,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import board_lib as L
 import classify as CL
+import halal as HL
 
 PAGE = "index.html"
 RATING = {"Consider adding": "Strong buy", "Hold, add on dips": "Buy", "Hold": "Hold", "Consider trimming": "Sell", "Consider selling by December": "Strong sell"}
@@ -250,6 +251,11 @@ def main():
         elif not is_etf and CL.unmapped(sym, F):
             errors.append("%s: TradingView industry %r not in the GICS table, filed under %s" % (sym, F.get("industry"), cls["gics_industry"]))
         r.update(cls)
+        # estimated Shariah screen (scripts/halal.py); the page links each stock to its Musaffa page for the official result
+        hl = HL.screen(F, is_etf)
+        if not F and old and old.get("halal"):
+            hl = {k: old.get(k) for k in ("halal", "halal_why")}  # screener gave nothing today: keep the last screen
+        r.update(hl)
         for k in ["price", "r1m", "r3m", "r12m", "rsi", "macd", "vs20", "vs50", "vs200", "ma_cross", "sma50", "sma200", "ma_state", "ma_ago", "ma_gap", "ma_alert", "ma_alert_ago", "ma_eta", "tch", "tch_ago", "prev_close", "bar_date", "pctb", "bollinger", "alligator", "cpr", "cpr_tc",
                   "cpr_bc", "cpr_r1", "cpr_s1", "cmf", "cmf60", "udv", "udv50", "obv", "adx", "candles", "candles_w", "w_rsi", "vs40w", "off_high", "vol",
                   "vol_days", "structure", "patterns", "oct_score", "oct_signal", "oct_why"]:
