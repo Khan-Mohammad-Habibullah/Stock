@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-05 14:22",
- "source": "Nordnet export of 2026-11-05 14:22",
+ "updated": "2026-11-08 23:07",
+ "source": "Nordnet export of 2026-11-08 23:07",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -60,7 +60,7 @@
   },
   {
    "sym": "NASDAQ:SRTS",
-   "qty": 288,
+   "qty": 208,
    "name": "Sensus Healthcare",
    "market": "US",
    "cur": "USD"
@@ -452,7 +452,7 @@
   },
   {
    "sym": "NASDAQ:NVDA",
-   "qty": 3,
+   "qty": 6,
    "name": "NVIDIA",
    "market": "US",
    "cur": "USD"
@@ -571,7 +571,7 @@
   },
   {
    "sym": "OMXCOP:AMBU_B",
-   "qty": 26,
+   "qty": 43,
    "name": "Ambu",
    "market": "Denmark",
    "cur": "DKK"
@@ -1088,27 +1088,17 @@
   "Lam Research": "XETR:LAR0"
  },
  "last_inbox": {
-  "file": "holdings-202611051422.json",
-  "exported": "2026-11-05 14:22",
+  "file": "holdings-202611082307.json",
+  "exported": "2026-11-08 23:07",
   "read": 119,
-  "added": [
-   "Zalando SE",
-   "Lam Research"
-  ],
-  "sold": [
-   "Tractor Supply",
-   "ChargePoint",
-   "Vera Bradley"
-  ],
+  "added": [],
+  "sold": [],
   "back": [],
-  "changed": 17,
-  "auto_matched": [
-   "Zalando SE -> XETR:ZAL",
-   "Lam Research -> XETR:LAR0"
-  ],
+  "changed": 3,
+  "auto_matched": [],
   "unmatched": [
    "Röko B (no listed stock with that name has a matching price)",
-   "Union Pacific (several possible matches: XETR:UNP, NYSE:UNP)"
+   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)"
   ],
   "refused": null
  }
