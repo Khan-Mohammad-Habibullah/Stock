@@ -531,12 +531,15 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       </select>
       <span class="count" id="scr-shown"></span>
     </div>
+    <p class="hs-note" id="scr-sig-note"><b>Signal and Candle touch</b> follow the same rules as in Every holding (hover the headers for them). For a company you own they use your stored daily history; for any other company TradingView only gives the latest daily candle and the two before it, as in Look up any stock, so the \u201cabout to touch\u201d test looks at 3 daily gaps instead of 6, a candle touch is kept for the latest and the previous session instead of 5, and the strategy view behind Signal is the lookup\u2019s December view.</p>
     <p class="hs-note" id="scr-status" aria-live="polite">Loading from TradingView…</p>
     <div class="tbl-wrap">
       <table class="hold scr" id="scr-tbl">
         <thead><tr>
           <th class="num"><button data-k="rank">#</button></th>
           <th><button data-k="name">Company</button></th>
+          <th data-field="signal"><button data-k="sig">Signal</button></th>
+          <th data-field="touch"><button data-k="tch">Candle touch</button></th>
           <th class="sec"><button data-k="size">Size</button></th>
           <th class="num sec"><button data-k="close">Price now</button></th>
           <th class="num sec"><button data-k="change">Today</button></th>
@@ -1029,6 +1032,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     c.title = sg.alert ? sg.label + ': ' + sg.note + '. Strategy view: ' + sg.rating : 'Strategy view (the 50-day average is not about to touch the 200-day)';
     return c;
   }
+  let lookupEnrich = null;   // set by the lookup: async (symbols) => Map(symbol -> row for signalOf / touchOf); used by the Strategy screen table
   // ---------- Halal indicator: an estimated Shariah screen, linked to the stock's Musaffa page ----------
   // Same rules as scripts/halal.py (copied from halal.RULES by scripts/patch_halal.py). Not Musaffa's own result: its terms forbid automated retrieval.
   const HALAL_RULES = {"debt_max": 30.0, "cash_max": 30.0, "near": 5.0, "haram": ["Major Banks", "Regional Banks", "Savings Banks", "Investment Banks/Brokers", "Life/Health Insurance", "Multi-Line Insurance", "Property/Casualty Insurance", "Specialty Insurance", "Insurance Brokers/Services", "Tobacco", "Beverages: Alcoholic", "Casinos/Gaming"], "doubtful": ["Financial Conglomerates", "Finance/Rental/Leasing", "Investment Managers", "Investment Trusts/Mutual Funds", "Managed Health Care", "Aerospace & Defense", "Movies/Entertainment", "Broadcasting", "Cable/Satellite TV", "Restaurants", "Food Retail", "Drugstore Chains", "Hotels/Resorts/Cruise lines"]};
@@ -2505,9 +2509,28 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       rank: (d) => d.rank, name: (d) => d.name, size: (d) => d.size, close: (d) => d.px, change: (d) => d.dchg, perf1m: (d) => d.perf1m, perf3m: (d) => d.perf3m,
       rsi: (d) => d.rsi, macd: (d) => (d.macd != null && d.macds != null ? d.macd - d.macds : null), vs50: (d) => d.vs50, vs200: (d) => d.vs200, cmf: (d) => d.cmf,
       rec: (d) => d.rec, upside: (d) => d.upside, revg: (d) => d.revg, margin: (d) => d.margin, mcap: (d) => d.mcap, score: (d) => d.score,
+      sig: (d) => { const x = sgOf(d); return x && x.sg ? x.sg.rank : null; }, tch: (d) => { const x = sgOf(d); return x ? x.tc.rank : null; },
     };
     const mcapTxt = (v, cur) => (v == null ? '—' : (v >= 1e12 ? (v / 1e12).toFixed(2) + ' T' : v >= 1e9 ? (v / 1e9).toFixed(1) + ' B' : (v / 1e6).toFixed(0) + ' M') + ' ' + cur);
     const holdSet = () => { const h = dash.data('holdings'); return new Set(h.status === 'ok' ? h.data.map((r) => r.sym) : []); };
+    const holdMap = () => { const h = dash.data('holdings'); return new Map(h.status === 'ok' ? h.data.map((r) => [r.sym, r]) : []); };
+    // Signal and Candle touch for one listed company: its holdings row if you own it, otherwise the enriched lookup row (null while loading)
+    SC.enr = new Map();
+    let ownRows = new Map();
+    function sgOf(d) {
+      const r = ownRows.get(d.sym) || SC.enr.get(d.sym);
+      if (!r) return null;
+      const sg = signalOf(r);
+      return { sg: sg.alert || r.rating ? sg : null, tc: touchOf(r) };
+    }
+    async function enrichTop() {
+      if (!lookupEnrich || SC.enrBusy) return;
+      const syms = [];
+      Object.values(SC.data).forEach((b) => b.top.forEach((d) => { if (!ownRows.has(d.sym)) syms.push(d.sym); }));
+      if (!syms.length) return;
+      SC.enrBusy = true;
+      try { const m = await lookupEnrich(syms); if (m.size) { SC.enr = m; draw(); } } catch (e) { /* the columns stay as dashes until the next refresh */ } finally { SC.enrBusy = false; }
+    }
     function draw() {
       tabs.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === SC.mkt)));
       const box = SC.data[SC.mkt];
@@ -2521,7 +2544,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       });
       document.querySelectorAll('#scr-tbl th').forEach((th) => { const b = th.querySelector('button'); th.setAttribute('aria-sort', b && b.dataset.k === k ? (dir > 0 ? 'ascending' : 'descending') : 'none'); });
       $('scr-shown').textContent = box ? rows.length + ' of ' + list.length + ' shown' : '';
-      const own = holdSet();
+      const own = holdSet(); ownRows = holdMap();
       const out = [];
       rows.forEach((d) => {
         const tr = document.createElement('tr'); tr.dataset.key = d.sym; if (SC.open === d.sym) tr.className = 'sel';
@@ -2534,10 +2557,11 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         const tk = document.createElement('span'); tk.className = 'tk'; tk.textContent = d.tk; nm.appendChild(tk);
         if (own.has(d.sym)) { const o = document.createElement('span'); o.className = 'own'; o.textContent = 'in your holdings'; nm.appendChild(o); }
         const hc = halalChip(halalOf({ industry: d.industry, mcap: d.mcap, debt: d.debt, cash: d.cash, cashEq: d.cashEq }), d.sym); if (hc) nm.appendChild(hc);
+        const sx = sgOf(d), sgCells = sx ? { sig: sx.sg ? sigCell(sx.sg) : td('\u2014', 'mut'), tch: touchCell(sx.tc) } : { sig: td('\u2014', 'mut'), tch: td('\u2014', 'mut') };
         const macdTxt = d.macd == null || d.macds == null ? '—' : (d.macd > d.macds ? 'Bullish' : 'Bearish');
         const cmfTxt = d.cmf == null ? '—' : (d.cmf > 0.05 ? 'Coming in' : d.cmf < -0.05 ? 'Leaving' : 'Flat');
         tr.append(
-          td(d.rank, 'rk'), nm, td(d.size, 'sec'),
+          td(d.rank, 'rk'), nm, sgCells.sig, sgCells.tch, td(d.size, 'sec'),
           td(d.px == null ? '—' : plain(d.px, d.px < 10 ? 3 : 2) + ' ' + d.cur + (d.pre ? ' · pre' : ''), 'num sec'),
           td(signed(d.dchg, 2), 'num sec ' + tone(d.dchg)), td(signed(d.perf1m), 'num sec ' + tone(d.perf1m)), td(signed(d.perf3m), 'num sec ' + tone(d.perf3m)),
           td(plain(d.rsi, 0), 'num sec'), td(macdTxt, 'sec ' + (macdTxt === 'Bullish' ? 'pos' : macdTxt === 'Bearish' ? 'neg' : 'mut')),
@@ -2551,7 +2575,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         out.push(tr);
         if (SC.open === d.sym) {
           const dr = document.createElement('tr'); dr.className = 'scr-detail';
-          const c = document.createElement('td'); c.colSpan = 19;
+          const c = document.createElement('td'); c.colSpan = 21;
           const h = document.createElement('p'); h.className = 'hs-note'; h.style.marginBottom = '6px';
           h.textContent = d.pts + ' of ' + d.avail + ' readings point up, score ' + d.score + ' · ' + d.size + ' cap' + (d.sector ? ' · ' + d.sector : '') + ' · ' + d.exch;
           const ul = document.createElement('ul'); ul.className = 'rules';
@@ -2568,7 +2592,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         }
       });
       if (!rows.length) {
-        const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 19; c.className = 'mut';
+        const tr = document.createElement('tr'); const c = document.createElement('td'); c.colSpan = 21; c.className = 'mut';
         c.textContent = box ? 'No stocks match the search.' : (SC.err ? 'Could not load this market from TradingView.' : 'Loading…'); tr.appendChild(c); out.push(tr);
       }
       tbody.replaceChildren(...out);
@@ -2601,9 +2625,15 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       } catch (e) {
         SC.err = 'x';
         $('scr-status').textContent = SC.last ? 'Could not reach TradingView; showing the data from ' + SC.last.toLocaleTimeString() : 'Could not reach TradingView, so this screen is empty for now. It retries every 5 minutes.';
-      } finally { clearTimeout(to); SC.busy = false; draw(); }
+      } finally { clearTimeout(to); SC.busy = false; draw(); enrichTop(); }
     }
     SC.draw = draw;
+    const SIG_TXT = ['Signal rules', 'Alert buy / Alert sell: the 50-day MA is about to touch the 200-day MA from below / from above (within ' + APPROACH_PCT + '% of it and closing in, so it would touch within ' + APPROACH_DAYS + ' trading days). Kept for ' + ALERT_HOLD + ' trading days after the last session that met this (so it also covers the touch itself) unless the averages cross the other way.',
+      'Otherwise the strategy view: Strong buy, Buy, Hold, Sell or Strong sell.'].join('\n');
+    document.querySelectorAll('#scr-tbl th[data-field]').forEach((th) => {
+      th.title = (th.dataset.field === 'touch' ? TCH_RULES : SIG_TXT) + '\n\nFor a company you do not own only the latest daily candle and the two before it are available (as in Look up any stock), so the pace in Signal is taken over 2 sessions and a candle touch is kept for the latest and the previous session.';
+    });
+    dash.onData(() => { if (SC.last) SC.draw(); });
     window.__scr = SC;
     draw();
     refresh(true);
@@ -2901,6 +2931,21 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     }
     document.querySelectorAll('#lookup-tbl th[data-field]').forEach((th) => { th.title = th.dataset.field === 'touch' ? TCH_RULES : SIG_RULES; th.style.cursor = 'help'; });
     const lookupSig = (r) => { const sg = signalOf(r); if (!sg.alert && !r.rating) { const c = document.createElement('td'); c.textContent = '\u2014'; c.className = 'mut'; return c; } return sigCell(sg); };
+
+    // batch version for the Strategy screen table: the same parse, December view and lookupRow, one request for many symbols
+    lookupEnrich = async function (syms) {
+      const out = new Map();
+      for (let i = 0; i < syms.length; i += 100) {
+        const res = await fetch('https://scanner.tradingview.com/global/scan', {
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: JSON.stringify({ symbols: { tickers: syms.slice(i, i + 100) }, columns: COLS }),
+        });
+        if (!res.ok) continue;
+        const j = await res.json();
+        (j.data || []).forEach((row) => { const d = parse(row); out.set(row.s, lookupRow(d, decemberOf(d, sectorFlow(d)))); });
+      }
+      return out;
+    };
 
     // ----- result row
     function cellsFor(d) {
