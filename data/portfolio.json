@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-08 23:07",
- "source": "Nordnet export of 2026-11-08 23:07",
+ "updated": "2026-11-09 17:42",
+ "source": "Nordnet export of 2026-11-09 17:42",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -59,15 +59,8 @@
    "cur": "USD"
   },
   {
-   "sym": "NASDAQ:SRTS",
-   "qty": 208,
-   "name": "Sensus Healthcare",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
    "sym": "XETR:VVSM",
-   "qty": 17,
+   "qty": 20,
    "name": "VanEck Semiconductor ETF (UCITS)",
    "market": "US ETF",
    "cur": "EUR"
@@ -85,13 +78,6 @@
    "name": "Cellebrite",
    "market": "US",
    "cur": "USD"
-  },
-  {
-   "sym": "OSL:KCC",
-   "qty": 100,
-   "name": "Klaveness Combination Carriers",
-   "market": "Norway",
-   "cur": "NOK"
   },
   {
    "sym": "NASDAQ:INTC",
@@ -153,13 +139,6 @@
    "sym": "OMXSTO:AZN",
    "qty": 6,
    "name": "AstraZeneca",
-   "market": "Sweden",
-   "cur": "SEK"
-  },
-  {
-   "sym": "OMXSTO:CIBUS",
-   "qty": 77,
-   "name": "Cibus Real Estate",
    "market": "Sweden",
    "cur": "SEK"
   },
@@ -248,13 +227,6 @@
    "cur": "SEK"
   },
   {
-   "sym": "OSL:VAR",
-   "qty": 114,
-   "name": "Var Energi",
-   "market": "Norway",
-   "cur": "NOK"
-  },
-  {
    "sym": "NYSE:CRM",
    "qty": 3,
    "name": "Salesforce",
@@ -286,20 +258,6 @@
    "sym": "OMXSTO:HEXA_B",
    "qty": 30,
    "name": "Hexagon B",
-   "market": "Sweden",
-   "cur": "SEK"
-  },
-  {
-   "sym": "OSL:MPCC",
-   "qty": 101,
-   "name": "MPC Container Ships",
-   "market": "Norway",
-   "cur": "NOK"
-  },
-  {
-   "sym": "OMXSTO:BILI_A",
-   "qty": 43,
-   "name": "Bilia A",
    "market": "Sweden",
    "cur": "SEK"
   },
@@ -374,13 +332,6 @@
    "cur": "SEK"
   },
   {
-   "sym": "OSL:ODFB",
-   "qty": 20,
-   "name": "Odfjell B",
-   "market": "Norway",
-   "cur": "NOK"
-  },
-  {
    "sym": "OMXSTO:INDT",
    "qty": 20,
    "name": "Indutrade",
@@ -430,13 +381,6 @@
    "cur": "SEK"
   },
   {
-   "sym": "OSL:WAWI",
-   "qty": 24,
-   "name": "Wallenius Wilhelmsen",
-   "market": "Norway",
-   "cur": "NOK"
-  },
-  {
    "sym": "NYSE:SPGI",
    "qty": 1,
    "name": "S&P Global",
@@ -452,7 +396,7 @@
   },
   {
    "sym": "NASDAQ:NVDA",
-   "qty": 6,
+   "qty": 8,
    "name": "NVIDIA",
    "market": "US",
    "cur": "USD"
@@ -466,7 +410,7 @@
   },
   {
    "sym": "OMXSTO:BEIJ_B",
-   "qty": 48,
+   "qty": 68,
    "name": "Beijer Ref B",
    "market": "Sweden",
    "cur": "SEK"
@@ -599,7 +543,7 @@
   },
   {
    "sym": "XETR:SPYH",
-   "qty": 1,
+   "qty": 2,
    "name": "SPDR MSCI Europe Health Care UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
@@ -640,13 +584,6 @@
    "cur": "USD"
   },
   {
-   "sym": "NASDAQ:UROY",
-   "qty": 60,
-   "name": "Uranium Royalty",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
    "sym": "NASDAQ:APPF",
    "qty": 1,
    "name": "AppFolio A",
@@ -659,13 +596,6 @@
    "name": "NTG Nordic Transport Group",
    "market": "Denmark",
    "cur": "DKK"
-  },
-  {
-   "sym": "OMXSTO:MCOV_B",
-   "qty": 7,
-   "name": "Medicover B",
-   "market": "Sweden",
-   "cur": "SEK"
   },
   {
    "sym": "OMXSTO:TROAX",
@@ -794,13 +724,6 @@
    "cur": "NOK"
   },
   {
-   "sym": "NYSE:MBGL",
-   "qty": 1,
-   "name": "Mobility Global",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
    "sym": "XETR:ZAL",
    "qty": 8,
    "name": "Zalando SE",
@@ -813,6 +736,20 @@
    "name": "Lam Research",
    "market": "Germany",
    "cur": "EUR"
+  },
+  {
+   "sym": "TSX:AEM",
+   "qty": 2,
+   "name": "Agnico Eagle",
+   "market": "Canada",
+   "cur": "CAD"
+  },
+  {
+   "sym": "TSX:FNV",
+   "qty": 1,
+   "name": "Franco-Nevada",
+   "market": "Canada",
+   "cur": "CAD"
   }
  ],
  "former": [
@@ -956,6 +893,94 @@
    "cur": "USD",
    "gone_by": "2026-11-05",
    "last_qty": 21
+  },
+  {
+   "sym": "NASDAQ:SRTS",
+   "name": "Sensus Healthcare",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-09",
+   "last_qty": 208
+  },
+  {
+   "sym": "OSL:KCC",
+   "name": "Klaveness Combination Carriers",
+   "market": "Norway",
+   "cur": "NOK",
+   "gone_by": "2026-11-09",
+   "last_qty": 100
+  },
+  {
+   "sym": "OMXSTO:CIBUS",
+   "name": "Cibus Real Estate",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-11-09",
+   "last_qty": 77
+  },
+  {
+   "sym": "OSL:VAR",
+   "name": "Var Energi",
+   "market": "Norway",
+   "cur": "NOK",
+   "gone_by": "2026-11-09",
+   "last_qty": 114
+  },
+  {
+   "sym": "OSL:MPCC",
+   "name": "MPC Container Ships",
+   "market": "Norway",
+   "cur": "NOK",
+   "gone_by": "2026-11-09",
+   "last_qty": 101
+  },
+  {
+   "sym": "OMXSTO:BILI_A",
+   "name": "Bilia A",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-11-09",
+   "last_qty": 43
+  },
+  {
+   "sym": "OSL:ODFB",
+   "name": "Odfjell B",
+   "market": "Norway",
+   "cur": "NOK",
+   "gone_by": "2026-11-09",
+   "last_qty": 20
+  },
+  {
+   "sym": "OSL:WAWI",
+   "name": "Wallenius Wilhelmsen",
+   "market": "Norway",
+   "cur": "NOK",
+   "gone_by": "2026-11-09",
+   "last_qty": 24
+  },
+  {
+   "sym": "NASDAQ:UROY",
+   "name": "Uranium Royalty",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-09",
+   "last_qty": 60
+  },
+  {
+   "sym": "OMXSTO:MCOV_B",
+   "name": "Medicover B",
+   "market": "Sweden",
+   "cur": "SEK",
+   "gone_by": "2026-11-09",
+   "last_qty": 7
+  },
+  {
+   "sym": "NYSE:MBGL",
+   "name": "Mobility Global",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-09",
+   "last_qty": 1
   }
  ],
  "names": {
@@ -1085,20 +1110,44 @@
   "iShares S&P 500 Information Technology Sector UCITS ETF…": "XETR:QDVE",
   "iShares STOXX Europe 600 Construction & Materials UCITS…": "XETR:EXV8",
   "Zalando SE": "XETR:ZAL",
-  "Lam Research": "XETR:LAR0"
+  "Lam Research": "XETR:LAR0",
+  "Agnico Eagle": "TSX:AEM",
+  "Franco-Nevada": "TSX:FNV"
  },
  "last_inbox": {
-  "file": "holdings-202611082307.json",
-  "exported": "2026-11-08 23:07",
-  "read": 119,
-  "added": [],
-  "sold": [],
+  "file": "holdings-202611091742.json",
+  "exported": "2026-11-09 17:42",
+  "read": 114,
+  "added": [
+   "Agnico Eagle",
+   "Franco-Nevada"
+  ],
+  "sold": [
+   "Sensus Healthcare",
+   "Klaveness Combination Carriers",
+   "Cibus Real Estate",
+   "Var Energi",
+   "MPC Container Ships",
+   "Bilia A",
+   "Odfjell B",
+   "Wallenius Wilhelmsen",
+   "Uranium Royalty",
+   "Medicover B",
+   "Mobility Global"
+  ],
   "back": [],
-  "changed": 3,
-  "auto_matched": [],
+  "changed": 4,
+  "auto_matched": [
+   "Agnico Eagle -> TSX:AEM",
+   "Franco-Nevada -> TSX:FNV"
+  ],
   "unmatched": [
+   "Micron Technology (several possible matches: XETR:MTE, NASDAQ:MU)",
+   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
+   "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
    "Röko B (no listed stock with that name has a matching price)",
-   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)"
+   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)",
+   "Vestas Wind Systems (several possible matches: OMXCOP:VWS, XETR:VWSB)"
   ],
   "refused": null
  }
