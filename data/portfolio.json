@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-11 09:17",
- "source": "Nordnet export of 2026-11-11 09:17",
+ "updated": "2026-11-11 17:11",
+ "source": "Nordnet export of 2026-11-11 17:11",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -150,13 +150,6 @@
    "cur": "USD"
   },
   {
-   "sym": "NASDAQ:SMCI",
-   "qty": 27,
-   "name": "Super Micro Computer",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
    "sym": "NASDAQ:PRCT",
    "qty": 49,
    "name": "Procept BioRobotics",
@@ -209,13 +202,6 @@
    "sym": "NASDAQ:OCTV",
    "qty": 38,
    "name": "Octave Intelligence SDB",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
-   "sym": "NASDAQ:GLXY",
-   "qty": 43,
-   "name": "Galaxy Digital",
    "market": "US",
    "cur": "USD"
   },
@@ -988,6 +974,22 @@
    "cur": "USD",
    "gone_by": "2026-11-09",
    "last_qty": 1
+  },
+  {
+   "sym": "NASDAQ:SMCI",
+   "name": "Super Micro Computer",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-11",
+   "last_qty": 27
+  },
+  {
+   "sym": "NASDAQ:GLXY",
+   "name": "Galaxy Digital",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-11",
+   "last_qty": 43
   }
  ],
  "names": {
@@ -1123,27 +1125,26 @@
   "Vestas Wind Systems": "OMXCOP:VWS"
  },
  "last_inbox": {
-  "file": "holdings-202611110917.json",
-  "exported": "2026-11-11 09:17",
-  "read": 117,
-  "added": [
-   "Vestas Wind Systems"
+  "file": "holdings-202611111711.json",
+  "exported": "2026-11-11 17:11",
+  "read": 115,
+  "added": [],
+  "sold": [
+   "Super Micro Computer",
+   "Galaxy Digital"
   ],
-  "sold": [],
   "back": [],
-  "changed": 3,
-  "auto_matched": [
-   "Vestas Wind Systems -> OMXCOP:VWS"
-  ],
+  "changed": 0,
+  "auto_matched": [],
   "unmatched": [
-   "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
-   "Advanced Micro Devices (several possible matches: NASDAQ:AMD, XETR:AMD)",
    "Micron Technology (several possible matches: NASDAQ:MU, XETR:MTE)",
-   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)",
+   "Advanced Micro Devices (several possible matches: XETR:AMD, NASDAQ:AMD)",
+   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
    "Röko B (no listed stock with that name has a matching price)",
-   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
    "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
-   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)"
+   "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
+   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
+   "Procter & Gamble (several possible matches: XETR:PRG, NYSE:PG)"
   ],
   "refused": null
  }
