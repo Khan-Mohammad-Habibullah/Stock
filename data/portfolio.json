@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-09 17:42",
- "source": "Nordnet export of 2026-11-09 17:42",
+ "updated": "2026-11-11 09:17",
+ "source": "Nordnet export of 2026-11-11 09:17",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -396,7 +396,7 @@
   },
   {
    "sym": "NASDAQ:NVDA",
-   "qty": 8,
+   "qty": 10,
    "name": "NVIDIA",
    "market": "US",
    "cur": "USD"
@@ -515,7 +515,7 @@
   },
   {
    "sym": "OMXCOP:AMBU_B",
-   "qty": 43,
+   "qty": 63,
    "name": "Ambu",
    "market": "Denmark",
    "cur": "DKK"
@@ -732,7 +732,7 @@
   },
   {
    "sym": "XETR:LAR0",
-   "qty": 1,
+   "qty": 2,
    "name": "Lam Research",
    "market": "Germany",
    "cur": "EUR"
@@ -750,6 +750,13 @@
    "name": "Franco-Nevada",
    "market": "Canada",
    "cur": "CAD"
+  },
+  {
+   "sym": "OMXCOP:VWS",
+   "qty": 11,
+   "name": "Vestas Wind Systems",
+   "market": "Denmark",
+   "cur": "DKK"
   }
  ],
  "former": [
@@ -1112,42 +1119,31 @@
   "Zalando SE": "XETR:ZAL",
   "Lam Research": "XETR:LAR0",
   "Agnico Eagle": "TSX:AEM",
-  "Franco-Nevada": "TSX:FNV"
+  "Franco-Nevada": "TSX:FNV",
+  "Vestas Wind Systems": "OMXCOP:VWS"
  },
  "last_inbox": {
-  "file": "holdings-202611091742.json",
-  "exported": "2026-11-09 17:42",
-  "read": 114,
+  "file": "holdings-202611110917.json",
+  "exported": "2026-11-11 09:17",
+  "read": 117,
   "added": [
-   "Agnico Eagle",
-   "Franco-Nevada"
+   "Vestas Wind Systems"
   ],
-  "sold": [
-   "Sensus Healthcare",
-   "Klaveness Combination Carriers",
-   "Cibus Real Estate",
-   "Var Energi",
-   "MPC Container Ships",
-   "Bilia A",
-   "Odfjell B",
-   "Wallenius Wilhelmsen",
-   "Uranium Royalty",
-   "Medicover B",
-   "Mobility Global"
-  ],
+  "sold": [],
   "back": [],
-  "changed": 4,
+  "changed": 3,
   "auto_matched": [
-   "Agnico Eagle -> TSX:AEM",
-   "Franco-Nevada -> TSX:FNV"
+   "Vestas Wind Systems -> OMXCOP:VWS"
   ],
   "unmatched": [
-   "Micron Technology (several possible matches: XETR:MTE, NASDAQ:MU)",
-   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
    "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
-   "Röko B (no listed stock with that name has a matching price)",
+   "Advanced Micro Devices (several possible matches: NASDAQ:AMD, XETR:AMD)",
+   "Micron Technology (several possible matches: NASDAQ:MU, XETR:MTE)",
    "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)",
-   "Vestas Wind Systems (several possible matches: OMXCOP:VWS, XETR:VWSB)"
+   "Röko B (no listed stock with that name has a matching price)",
+   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
+   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
+   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)"
   ],
   "refused": null
  }
