@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-11 17:11",
- "source": "Nordnet export of 2026-11-11 17:11",
+ "updated": "2026-11-13 13:18",
+ "source": "Nordnet export of 2026-11-13 13:18",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -74,7 +74,7 @@
   },
   {
    "sym": "NASDAQ:CLBT",
-   "qty": 112,
+   "qty": 141,
    "name": "Cellebrite",
    "market": "US",
    "cur": "USD"
@@ -382,7 +382,7 @@
   },
   {
    "sym": "NASDAQ:NVDA",
-   "qty": 10,
+   "qty": 12,
    "name": "NVIDIA",
    "market": "US",
    "cur": "USD"
@@ -459,7 +459,7 @@
   },
   {
    "sym": "NASDAQ:AVGO",
-   "qty": 1,
+   "qty": 2,
    "name": "Broadcom",
    "market": "US",
    "cur": "USD"
@@ -571,7 +571,7 @@
   },
   {
    "sym": "NASDAQ:APPF",
-   "qty": 1,
+   "qty": 2,
    "name": "AppFolio A",
    "market": "US",
    "cur": "USD"
@@ -725,7 +725,7 @@
   },
   {
    "sym": "TSX:AEM",
-   "qty": 2,
+   "qty": 3,
    "name": "Agnico Eagle",
    "market": "Canada",
    "cur": "CAD"
@@ -1125,26 +1125,24 @@
   "Vestas Wind Systems": "OMXCOP:VWS"
  },
  "last_inbox": {
-  "file": "holdings-202611111711.json",
-  "exported": "2026-11-11 17:11",
-  "read": 115,
+  "file": "holdings-202611131318.json",
+  "exported": "2026-11-13 13:18",
+  "read": 116,
   "added": [],
-  "sold": [
-   "Super Micro Computer",
-   "Galaxy Digital"
-  ],
+  "sold": [],
   "back": [],
-  "changed": 0,
+  "changed": 5,
   "auto_matched": [],
   "unmatched": [
-   "Micron Technology (several possible matches: NASDAQ:MU, XETR:MTE)",
-   "Advanced Micro Devices (several possible matches: XETR:AMD, NASDAQ:AMD)",
-   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
-   "Röko B (no listed stock with that name has a matching price)",
-   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
    "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
+   "Advanced Micro Devices (several possible matches: XETR:AMD, NASDAQ:AMD)",
+   "Röko B (no listed stock with that name has a matching price)",
    "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
-   "Procter & Gamble (several possible matches: XETR:PRG, NYSE:PG)"
+   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)",
+   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
+   "Micron Technology (several possible matches: XETR:MTE, NASDAQ:MU)",
+   "Emerson Electric (several possible matches: XETR:EMR, NYSE:EMR)",
+   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)"
   ],
   "refused": null
  }
