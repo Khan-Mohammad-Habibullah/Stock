@@ -257,6 +257,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   td.sigc { white-space: nowrap; }
   .sig-alert { font-weight: 700; }
   .tch { display: block; }
+  @keyframes rowflash { 0% { background: color-mix(in srgb, var(--series-0) 35%, transparent); } 100% { background: transparent; } }
+  tr.flash td { animation: rowflash 2.2s ease-out; }
   .hl-wrap { display: block; margin-top: 3px; line-height: 1.2; }
   .hl { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; text-decoration: none; white-space: nowrap; }
   a.hl:hover { text-decoration: underline; }
@@ -1299,6 +1301,16 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   }
 
   // ---------- December lists ----------
+  // a click in a December list selects the stock and takes you to its row in "Every holding"
+  function jumpToHolding(sym) {
+    select(sym, true);
+    const tr = tbody.querySelector('tr[data-key="' + CSS.escape(sym) + '"]');
+    if (!tr) return;
+    const wrap = tbody.closest('.tbl-wrap');
+    if (wrap) wrap.scrollTop = Math.max(0, tr.offsetTop - wrap.clientHeight / 3);
+    tr.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    tr.classList.remove('flash'); void tr.offsetWidth; tr.classList.add('flash');
+  }
   const dMkt = document.getElementById('d-mkt');
   let stateD = 'nonus';
   dMkt.addEventListener('change', () => { stateD = dMkt.value; drawDecember(); });
@@ -1325,8 +1337,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       left.append(meta);
       top.append(left, mk('span', 'december', r.december, 'chip ' + chipCls(r.december)));
       li.append(top, mk('p', 'dec_why', r.dec_why, 'why'));
-      li.addEventListener('click', () => select(r.sym, true));
-      li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(r.sym, true); } });
+      li.addEventListener('click', () => jumpToHolding(r.sym));
+      li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jumpToHolding(r.sym); } });
       return li;
     };
     const none = (t) => { const li = document.createElement('li'); li.className = 'hs-note'; li.textContent = t; return li; };
