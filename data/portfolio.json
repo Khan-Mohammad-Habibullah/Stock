@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-13 13:18",
- "source": "Nordnet export of 2026-11-13 13:18",
+ "updated": "2026-11-24 19:03",
+ "source": "Nordnet export of 2026-11-24 19:03",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -11,7 +11,7 @@
   },
   {
    "sym": "OMXSTO:HEM",
-   "qty": 329,
+   "qty": 393,
    "name": "Hemnet Group",
    "market": "Sweden",
    "cur": "SEK"
@@ -25,14 +25,14 @@
   },
   {
    "sym": "NASDAQ:ZS",
-   "qty": 7,
+   "qty": 4,
    "name": "Zscaler",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NYSE:V",
-   "qty": 4,
+   "qty": 2,
    "name": "Visa",
    "market": "US",
    "cur": "USD"
@@ -60,7 +60,7 @@
   },
   {
    "sym": "XETR:VVSM",
-   "qty": 20,
+   "qty": 22,
    "name": "VanEck Semiconductor ETF (UCITS)",
    "market": "US ETF",
    "cur": "EUR"
@@ -74,7 +74,7 @@
   },
   {
    "sym": "NASDAQ:CLBT",
-   "qty": 141,
+   "qty": 40,
    "name": "Cellebrite",
    "market": "US",
    "cur": "USD"
@@ -109,7 +109,7 @@
   },
   {
    "sym": "XETR:QDVE",
-   "qty": 21,
+   "qty": 25,
    "name": "iShares S&P 500 IT UCITS",
    "market": "US ETF",
    "cur": "EUR"
@@ -123,7 +123,7 @@
   },
   {
    "sym": "XETR:ESIT",
-   "qty": 79,
+   "qty": 90,
    "name": "iShares MSCI Europe IT UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
@@ -144,22 +144,15 @@
   },
   {
    "sym": "NASDAQ:TMDX",
-   "qty": 14,
+   "qty": 9,
    "name": "TransMedics Group",
    "market": "US",
    "cur": "USD"
   },
   {
    "sym": "NASDAQ:PRCT",
-   "qty": 49,
+   "qty": 30,
    "name": "Procept BioRobotics",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
-   "sym": "NASDAQ:LULU",
-   "qty": 9,
-   "name": "Lululemon Athletica",
    "market": "US",
    "cur": "USD"
   },
@@ -179,7 +172,7 @@
   },
   {
    "sym": "XETR:W1TB",
-   "qty": 17,
+   "qty": 24,
    "name": "WisdomTree Cybersecurity UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
@@ -214,7 +207,7 @@
   },
   {
    "sym": "NYSE:CRM",
-   "qty": 3,
+   "qty": 4,
    "name": "Salesforce",
    "market": "US",
    "cur": "USD"
@@ -228,7 +221,7 @@
   },
   {
    "sym": "OMXSTO:CLAS_B",
-   "qty": 14,
+   "qty": 7,
    "name": "Clas Ohlson B",
    "market": "Sweden",
    "cur": "SEK"
@@ -354,7 +347,7 @@
   },
   {
    "sym": "XETR:SAP",
-   "qty": 2,
+   "qty": 3,
    "name": "SAP",
    "market": "Germany",
    "cur": "EUR"
@@ -367,13 +360,6 @@
    "cur": "SEK"
   },
   {
-   "sym": "NYSE:SPGI",
-   "qty": 1,
-   "name": "S&P Global",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
    "sym": "OMXSTO:MCAP",
    "qty": 8,
    "name": "MedCap",
@@ -382,7 +368,7 @@
   },
   {
    "sym": "NASDAQ:NVDA",
-   "qty": 12,
+   "qty": 14,
    "name": "NVIDIA",
    "market": "US",
    "cur": "USD"
@@ -417,7 +403,7 @@
   },
   {
    "sym": "OMXSTO:BONEX",
-   "qty": 12,
+   "qty": 22,
    "name": "BONESUPPORT",
    "market": "Sweden",
    "cur": "SEK"
@@ -431,7 +417,7 @@
   },
   {
    "sym": "OMXSTO:SOBI",
-   "qty": 8,
+   "qty": 12,
    "name": "Swedish Orphan Biovitrum",
    "market": "Sweden",
    "cur": "SEK"
@@ -459,7 +445,7 @@
   },
   {
    "sym": "NASDAQ:AVGO",
-   "qty": 2,
+   "qty": 4,
    "name": "Broadcom",
    "market": "US",
    "cur": "USD"
@@ -536,7 +522,7 @@
   },
   {
    "sym": "OSL:BWE",
-   "qty": 41,
+   "qty": 63,
    "name": "BW Energy Limited",
    "market": "Norway",
    "cur": "NOK"
@@ -559,13 +545,6 @@
    "sym": "NASDAQ:ADBE",
    "qty": 1,
    "name": "Adobe",
-   "market": "US",
-   "cur": "USD"
-  },
-  {
-   "sym": "NYSE:PHM",
-   "qty": 2,
-   "name": "PulteGroup",
    "market": "US",
    "cur": "USD"
   },
@@ -641,7 +620,7 @@
   },
   {
    "sym": "NASDAQ:CPRT",
-   "qty": 5,
+   "qty": 11,
    "name": "Copart",
    "market": "US",
    "cur": "USD"
@@ -697,7 +676,7 @@
   },
   {
    "sym": "OMXSTO:GETI_B",
-   "qty": 4,
+   "qty": 8,
    "name": "Getinge B",
    "market": "Sweden",
    "cur": "SEK"
@@ -718,7 +697,7 @@
   },
   {
    "sym": "XETR:LAR0",
-   "qty": 2,
+   "qty": 3,
    "name": "Lam Research",
    "market": "Germany",
    "cur": "EUR"
@@ -732,7 +711,7 @@
   },
   {
    "sym": "TSX:FNV",
-   "qty": 1,
+   "qty": 2,
    "name": "Franco-Nevada",
    "market": "Canada",
    "cur": "CAD"
@@ -990,6 +969,30 @@
    "cur": "USD",
    "gone_by": "2026-11-11",
    "last_qty": 43
+  },
+  {
+   "sym": "NASDAQ:LULU",
+   "name": "Lululemon Athletica",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-24",
+   "last_qty": 9
+  },
+  {
+   "sym": "NYSE:SPGI",
+   "name": "S&P Global",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-24",
+   "last_qty": 1
+  },
+  {
+   "sym": "NYSE:PHM",
+   "name": "PulteGroup",
+   "market": "US",
+   "cur": "USD",
+   "gone_by": "2026-11-24",
+   "last_qty": 2
   }
  ],
  "names": {
@@ -1125,24 +1128,30 @@
   "Vestas Wind Systems": "OMXCOP:VWS"
  },
  "last_inbox": {
-  "file": "holdings-202611131318.json",
-  "exported": "2026-11-13 13:18",
-  "read": 116,
+  "file": "holdings-202611241903.json",
+  "exported": "2026-11-24 19:03",
+  "read": 115,
   "added": [],
-  "sold": [],
+  "sold": [
+   "Lululemon Athletica",
+   "S&P Global",
+   "PulteGroup"
+  ],
   "back": [],
-  "changed": 5,
+  "changed": 22,
   "auto_matched": [],
   "unmatched": [
+   "Micron Technology (several possible matches: NASDAQ:MU, XETR:MTE)",
+   "Advanced Micro Devices (several possible matches: NASDAQ:AMD, XETR:AMD)",
+   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
+   "Arista Networks (several possible matches: NYSE:ANET, XETR:1170)",
    "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
-   "Advanced Micro Devices (several possible matches: XETR:AMD, NASDAQ:AMD)",
+   "Emerson Electric (several possible matches: NYSE:EMR, XETR:EMR)",
+   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
    "Röko B (no listed stock with that name has a matching price)",
    "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
-   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)",
-   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
-   "Micron Technology (several possible matches: XETR:MTE, NASDAQ:MU)",
-   "Emerson Electric (several possible matches: XETR:EMR, NYSE:EMR)",
-   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)"
+   "Palo Alto Networks (several possible matches: NASDAQ:PANW, XETR:5AP)",
+   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)"
   ],
   "refused": null
  }
