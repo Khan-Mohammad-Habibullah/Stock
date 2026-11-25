@@ -51,6 +51,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   .hs-extracted { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 4px; padding: 3px 10px; border-radius: 999px; background: var(--color-panel); border: 1px solid var(--color-border-line); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
   .hs-extracted .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ok); flex: none; }
   .hs-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-md); min-width: 0; }
+  #mix-oct { align-content: start; }
   .hs-card h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
   .hs-note { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); max-width: 80ch; }
   .hs-grid2 { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
@@ -301,8 +302,9 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-grid2" id="mix">
     <div class="hs-card" id="mix-oct">
-      <h2><span class="mo">October</span> signal</h2>
-      <p class="hs-note">Share of portfolio value in each group, with the number of holdings.</p>
+      <h2><span class="mo">October</span><span class="mox2" hidden></span> <span id="mix-oct-t">signal</span></h2>
+      <p class="hs-note" id="mix-oct-note">Share of portfolio value in each group, with the number of holdings.</p>
+      <div class="ctl"><select id="f-month-card" aria-label="Month shown in this card"><option value="">This month</option></select></div>
       <div class="mix" data-source="oct_counts">
         <div class="mix-bar dash-skeleton" id="bar-oct"></div>
         <div class="mix-legend" id="leg-oct"></div>
@@ -1144,8 +1146,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
 
   // ---------- mix bars ----------
-  function drawMix(id, labels, barEl, legEl) {
-    const d = dash.data(id);
+  function drawMix(id, labels, barEl, legEl, custom) {
+    const d = custom ? { status: 'ok', data: custom } : dash.data(id);
     barEl.replaceChildren();
     legEl.replaceChildren();
     if (d.status !== 'ok') {
@@ -1154,10 +1156,11 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     }
     barEl.classList.remove('dash-skeleton');
     const selR = rowsAll().find((x) => x.sym === state.sel);
-    const hereLabel = selR ? selR.oct_signal : null;
+    const so = custom && selR ? outlookOf(selR.sym, MC.m) : null;
+    const hereLabel = custom ? (so ? so.label : null) : (selR ? selR.oct_signal : null);
     d.data.forEach((row, i) => {
       const seg = document.createElement('div');
-      seg.className = 'c-' + CLS[i] + (row.label === hereLabel ? ' here' : '');
+      seg.className = 'c-' + (row.cls || CLS[i]) + (row.label === hereLabel ? ' here' : '');
       seg.style.width = (row.share * 100) + '%';
       seg.title = row.label + (row.label === hereLabel ? ' · ' + selR.name : '');
       barEl.appendChild(seg);
@@ -1166,16 +1169,16 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const lab = document.createElement('div');
       lab.className = 'lab';
       const sw = document.createElement('span');
-      sw.className = 'sw c-' + CLS[i];
+      sw.className = 'sw c-' + (row.cls || CLS[i]);
       lab.append(sw, document.createTextNode(row.label));
       const num = document.createElement('div');
       num.className = 'num';
-      num.dataset.source = id; num.dataset.field = 'share'; num.dataset.where = 'label=' + enc(row.label);
+      if (!custom) { num.dataset.source = id; num.dataset.field = 'share'; num.dataset.where = 'label=' + enc(row.label); }
       num.textContent = fmtPct1(row.share);
       const sub = document.createElement('div');
       sub.className = 'sub';
       const n = document.createElement('span');
-      n.dataset.source = id; n.dataset.field = 'n'; n.dataset.where = 'label=' + enc(row.label);
+      if (!custom) { n.dataset.source = id; n.dataset.field = 'n'; n.dataset.where = 'label=' + enc(row.label); }
       n.textContent = row.n;
       sub.append(n, document.createTextNode(row.n === 1 ? ' holding' : ' holdings'));
       item.append(lab, num, sub);
@@ -1497,12 +1500,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const c = nowYM(), cur = ymKey(c.y, c.m);
     return Array.from(new Set(d.data.map((r) => r.month))).filter((k) => k > cur).sort().slice(0, 12);
   }
-  function outlookOf(sym) {
+  function outlookOf(sym, mth) {
+    if (mth === undefined) mth = MV.m;
     const d = dash.data('monthly');
-    if (d.status !== 'ok' || !MV.m) return null;
+    if (d.status !== 'ok' || !mth) return null;
     if (monthKey !== d.data.length + '|' + d.data[0].date) { monthIdx = null; }
     if (!monthIdx) { monthIdx = new Map(d.data.map((r) => [r.sym + '|' + r.month, r])); monthKey = d.data.length + '|' + d.data[0].date; }
-    const r = monthIdx.get(sym + '|' + MV.m);
+    const r = monthIdx.get(sym + '|' + mth);
     if (!r) return null;
     return { label: OUTLOOK[r.leans] || 'Even', score: (r.chance_high - r.chance_low) * 100, row: r };
   }
@@ -1554,6 +1558,42 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     }
   }
   fMonth.addEventListener('change', () => { MV.m = fMonth.value; state.oct = ''; syncMonthView(); drawTable(); });
+  // ---- the signal-mix card has its own month dropdown ----
+  const fMonthC = document.getElementById('f-month-card');
+  const MC = { m: '' };
+  fMonthC.addEventListener('change', () => { MC.m = fMonthC.value; drawOctMix(); });
+  const OUT_CLS = { 'Leans up': 'b1', Even: 'n', 'Leans down': 'e1' };
+  function syncMixMonth() {
+    const later = laterMonths(), c = nowYM();
+    fMonthC.options[0].textContent = MONTH_NAMES[c.m] + ' · signal';
+    if (Array.from(fMonthC.options).slice(1).map((o) => o.value).join() !== later.join()) {
+      while (fMonthC.options.length > 1) fMonthC.remove(1);
+      later.forEach((k) => { const o = document.createElement('option'); o.value = k; o.textContent = monthName(k) + ' · outlook'; fMonthC.appendChild(o); });
+    }
+    if (MC.m && !later.includes(MC.m)) MC.m = '';
+    fMonthC.value = MC.m;
+    const mo = document.querySelector('#mix-oct .mo'), x = document.querySelector('#mix-oct .mox2');
+    if (mo) mo.hidden = !!MC.m;
+    if (x) { x.hidden = !MC.m; x.textContent = MC.m ? monthName(MC.m) : ''; }
+    const t = document.getElementById('mix-oct-t'); if (t) t.textContent = MC.m ? 'outlook' : 'signal';
+    const n = document.getElementById('mix-oct-note');
+    if (n) n.textContent = MC.m
+      ? 'Share of portfolio value that leans up, stays even or leans down in ' + monthName(MC.m) + ', with the number of holdings. This is the price-range outlook from the month-by-month model (an assumed yearly drift), not a technical signal, and it tells less the further out the month.'
+      : 'Share of portfolio value in each group, with the number of holdings.';
+  }
+  function drawOctMix() {
+    syncMixMonth();
+    const bar = document.getElementById('bar-oct'), leg = document.getElementById('leg-oct');
+    const hd = dash.data('holdings');
+    if (!MC.m || hd.status !== 'ok') { drawMix('oct_counts', OCT, bar, leg); return; }
+    const rows = hd.data, total = rows.reduce((a, r) => a + Number(r.value_sek), 0);
+    const outs = rows.map((r) => ({ r, o: outlookOf(r.sym, MC.m) }));
+    const out = OUT_LABELS.map((label) => {
+      const g = outs.filter((x) => x.o && x.o.label === label), sek = g.reduce((a, x) => a + Number(x.r.value_sek), 0);
+      return { label, n: g.length, share: total ? sek / total : 0, cls: OUT_CLS[label] };
+    });
+    drawMix('oct_counts', OUT_LABELS, bar, leg, out);
+  }
   fLt.addEventListener('change', () => { state.lt = fLt.value; drawTable(); });
   const fH = document.getElementById('f-h');
   fH.addEventListener('change', () => { state.ltH = fH.value; drawTable(); });
@@ -1677,7 +1717,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     }
     // show the market the stock trades in on the sector money-flow chart
     if (picked && MKTS.includes(picked.flow_market)) stateMk = picked.flow_market;
-    drawMix('oct_counts', OCT, document.getElementById('bar-oct'), document.getElementById('leg-oct'));
+    drawOctMix();
     drawHorizons();
     drawFlows();
     drawDecember();
@@ -2169,7 +2209,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       }
     }
     refreshMonth();
-    drawMix('oct_counts', OCT, document.getElementById('bar-oct'), document.getElementById('leg-oct'));
+    drawOctMix();
     drawHorizons();
     const dv = dash.data('dec_overview');
     if (dv.status === 'ok' && dv.data.length) {
