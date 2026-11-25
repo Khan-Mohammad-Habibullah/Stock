@@ -281,6 +281,7 @@ def main():
             r["upside"] = round((loc / r["price"] - 1) * 100, 1)
         else:
             r["target"] = r["upside"] = None
+        r["tv_rating"] = L.tech_rating(g("Recommend.All"), g("Recommend.All|1W"), g("Recommend.All|1M"))
         # money flow in the stock
         mkt = "Europe" if is_etf else OWN_MKT.get(sym.split(":")[0], "Europe")
         P, mom_rel = stock_P(sym, mkt)
@@ -445,12 +446,14 @@ def main():
             Tm = max((d - base).days, 1) / 365
             z = 0.6745
             lo, hi = px * math.exp(-z * sig * math.sqrt(Tm)), px * math.exp(z * sig * math.sqrt(Tm))
-            ch = 1 - nd((math.log(hi / px) - drift * Tm) / (sig * math.sqrt(Tm)))
-            cL = nd((math.log(lo / px) - drift * Tm) / (sig * math.sqrt(Tm)))
+            # expected log return: 1-year score drift, analyst target (later months) and technical ratings (near months)
+            E = L.expected_return(Tm, drift, r.get("upside"), r.get("tv_rating"))
+            ch = 1 - nd((math.log(hi / px) - E) / (sig * math.sqrt(Tm)))
+            cL = nd((math.log(lo / px) - E) / (sig * math.sqrt(Tm)))
             dp = 4 if px < 1 else 2
             M.append(dict(sym=r["sym"], name=r["name"], cur=r["cur"], month="%d-%02d" % (y, mth), date=d.isoformat(), likely_low=round(lo, dp), likely_high=round(hi, dp),
-                          most_likely=round(px * math.exp(drift * Tm), dp), chance_high=round(ch, 3), chance_low=round(cL, 3),
-                          leans="High" if ch - cL >= 0.03 else "Low" if ch - cL <= -0.03 else "Even", drift_pct_yr=round(drift * 100, 1)))
+                          most_likely=round(px * math.exp(E), dp), chance_high=round(ch, 3), chance_low=round(cL, 3),
+                          leans="High" if ch - cL >= 0.03 else "Low" if ch - cL <= -0.03 else "Even", drift_pct_yr=round(E / Tm * 100, 1)))
 
     # ------------------------------------------------ 5. ETFs and exposure
     hb = {r["sym"]: r for r in H}

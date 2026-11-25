@@ -56,7 +56,8 @@ def scan(body):
 SCAN_COLS = ["name", "description", "exchange", "country", "currency", "type", "sector", "industry", "close", "market_cap_basic",
              "total_revenue_yoy_growth_ttm", "earnings_per_share_diluted_yoy_growth_ttm", "net_margin_ttm", "gross_margin_ttm",
              "price_earnings_ttm", "debt_to_equity", "return_on_equity", "free_cash_flow_ttm", "recommendation_mark", "price_target_average",
-             "total_debt_fq", "cash_n_short_term_invest_fq", "cash_n_equivalents_fq"]   # the last three: the halal screen (scripts/halal.py)
+             "total_debt_fq", "cash_n_short_term_invest_fq", "cash_n_equivalents_fq",   # these three: the halal screen (scripts/halal.py)
+             "Recommend.All", "Recommend.All|1W", "Recommend.All|1M"]   # daily, weekly and monthly TradingView technical ratings (-1 sell ... +1 buy): the near-month outlook
 
 
 def scan_rows(j):
@@ -700,3 +701,35 @@ def lt_label(s):
 
 def apply_model(coef, feats):
     return float(sum(a * b for a, b in zip(coef[:-1], feats)) + coef[-1])
+
+
+# ---------------------------------------------------------------- monthly outlook: expected drift
+BASE_DRIFT = 0.05           # typical yearly drift the outlook is graded against
+RATING_W = (0.3, 0.4, 0.3)  # daily, weekly, monthly technical rating
+TECH_YEARLY = 0.30          # a rating of +1 pushes the expected return at a rate of 30% a year ...
+TECH_TAU = 0.25             # ... fading with a 3-month time constant, so it adds at most 7.5% in total
+AN_SHRINK = 0.5             # analyst targets are optimistic: count half of the implied upside
+AN_RAMP = 0.5               # years until analyst targets reach their full (50%) weight
+
+
+def tech_rating(d, d1w, d1m):
+    """Weighted technical rating from the daily, weekly and monthly TradingView ratings (any may be missing); None if all are."""
+    vals = [(w, v) for w, v in zip(RATING_W, (d, d1w, d1m)) if v is not None]
+    if not vals:
+        return None
+    return round(sum(w * v for w, v in vals) / sum(w for w, _ in vals), 3)
+
+
+def expected_return(T, base, upside_pct, rating):
+    """Expected log return from now to T years ahead.
+    base       yearly drift from the 1-year score (5% + 1.5 x score, kept within +-10%), as a fraction
+    upside_pct analyst average target vs the price, in % (None when no target)
+    rating     weighted technical rating -1..+1 (None when unknown)
+    Near months follow the technical rating; later months lean more on the analyst target (shrunk by half)."""
+    e = base * T
+    if upside_pct is not None:
+        mu_an = max(-0.20, min(0.30, AN_SHRINK * upside_pct / 100))
+        e += 0.5 * min(1.0, T / AN_RAMP) * (mu_an - base) * T
+    if rating is not None:
+        e += rating * TECH_YEARLY * TECH_TAU * (1 - math.exp(-T / TECH_TAU))
+    return e

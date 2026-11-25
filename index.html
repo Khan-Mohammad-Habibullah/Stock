@@ -452,7 +452,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   <section class="hs-card" id="monthly">
     <h2>Possible price, month by month</h2>
-    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. Chance of most likely is the chance of landing in that middle band rather than beyond either tail, which is why it is close to 50% throughout. A range with a modest tilt, not a forecast.</p>
+    <p class="hs-note">For each month-end over the next year: a likely low and a likely high (half of outcomes fall between them) and the most likely price in the middle. The side with the better chance of being reached is in bold, with each side's chance beside it; where the two chances are within 3 points of each other neither is bold. Chance of most likely is the chance of landing in that middle band rather than beyond either tail, which is why it is close to 50% throughout. The middle is each holding's expected price: its 1-year score as the starting drift, TradingView's weekly, monthly and daily technical ratings for the next few months, and the analysts' average price target (counted at half, since targets run optimistic) for the months after. A range with a modest tilt, not a forecast.</p>
     <div class="ctl">
       <input id="m-q" type="search" placeholder="Search by name or ticker" aria-label="Search holdings for the monthly range" autocomplete="off">
       <select id="m-sel" aria-label="Holding for the monthly range"></select>
@@ -1512,7 +1512,9 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const bs = dash.data('board_status'), dd = bs.status === 'ok' && bs.data[0] ? bs.data[0].data_date : null;
     if (!dd) return (x.chance_high - x.chance_low) * 100;
     const T = Math.max((Date.parse(x.date) - Date.parse(dd)) / 86400000, 1) / 365;
-    return tiltAt(x, x.drift_pct_yr / 100, T) - tiltAt(x, BASE_DRIFT, T);
+    const px = Math.sqrt(x.likely_low * x.likely_high);   // the range is centred on today's price in log terms
+    const E = Math.log(x.most_likely / px);   // this holding's own expected return to that month
+    return tiltAt(x, E / T, T) - tiltAt(x, BASE_DRIFT, T);
   }
   const gradeOf = (t) => (t >= 10 ? 'Bullish' : t >= 3 ? 'Mildly bullish' : t <= -10 ? 'Bearish' : t <= -3 ? 'Mildly bearish' : 'Neutral');
   function outlookOf(sym, mth) {
@@ -1570,7 +1572,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const note = document.getElementById('mo-note');
     if (note) {
       note.hidden = !MV.m;
-      note.textContent = MV.m ? 'The column now shows each holding\'s price-range outlook for ' + monthName(MV.m) + ', not a technical signal: leans up, even or leans down, from the model under Possible price, month by month (an assumed yearly drift with the stock\'s own swings around it). The further out the month, the less it tells you. Hover a chip for the likely range. The filter and the sort follow this month. Pick ' + MONTH_NAMES[c.m] + ' to go back to today\'s signal.' : '';
+      note.textContent = MV.m ? 'The column now shows each holding\'s price-range outlook for ' + monthName(MV.m) + ', not a technical signal: leans up, even or leans down, from the model under Possible price, month by month (TradingView\'s technical ratings for the near months, analyst price targets for the later ones, and the stock\'s own swings around that). The further out the month, the less it tells you. Hover a chip for the likely range. The filter and the sort follow this month. Pick ' + MONTH_NAMES[c.m] + ' to go back to today\'s signal.' : '';
     }
   }
   fMonth.addEventListener('change', () => { MV.m = fMonth.value; state.oct = ''; syncMonthView(); drawTable(); });
@@ -1594,7 +1596,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const t = document.getElementById('mix-oct-t'); if (t) t.textContent = MC.m ? 'outlook' : 'signal';
     const n = document.getElementById('mix-oct-note');
     if (n) n.textContent = MC.m
-      ? 'Share of portfolio value in each group for ' + monthName(MC.m) + ', with the number of holdings. Later months cannot use the daily indicators, so each holding is graded from its price-range outlook for that month (the month-by-month model, built on an assumed yearly drift): the chance of ending above the likely range minus the chance of ending below it, measured against a typical market drift of 5% a year. Neutral is in line with that; 3 points or more above it is Mildly bullish, 10 or more Bullish, and 3 or 10 points below it Mildly bearish or Bearish. So Bearish here means a weaker outlook than the typical drift, not necessarily a falling price. The further out the month, the less it tells you.'
+      ? 'Share of portfolio value in each group for ' + monthName(MC.m) + ', with the number of holdings. Later months cannot use the daily indicators, so each holding is graded from its price-range outlook for that month (the month-by-month model: TradingView\'s technical ratings for near months, analyst price targets for later ones): the chance of ending above the likely range minus the chance of ending below it, measured against a typical market drift of 5% a year. Neutral is in line with that; 3 points or more above it is Mildly bullish, 10 or more Bullish, and 3 or 10 points below it Mildly bearish or Bearish. So Bearish here means a weaker outlook than the typical drift, not necessarily a falling price. The further out the month, the less it tells you.'
       : 'Share of portfolio value in each group, with the number of holdings.';
   }
   function drawOctMix() {
@@ -1832,7 +1834,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tb.appendChild(tr);
     });
     const lastRow = rows[rows.length - 1];
-    document.getElementById('m-sub').textContent += ' · leans ' + (lastRow.leans === 'Even' ? 'neither way' : lastRow.leans.toLowerCase()) + ' · assumed drift ' + (lastRow.drift_pct_yr > 0 ? '+' : '') + lastRow.drift_pct_yr.toFixed(1) + '% a year';
+    document.getElementById('m-sub').textContent += ' · leans ' + (lastRow.leans === 'Even' ? 'neither way' : lastRow.leans.toLowerCase()) + ' · expected drift ' + (lastRow.drift_pct_yr > 0 ? '+' : '') + lastRow.drift_pct_yr.toFixed(1) + '% a year';
 
     // chart
     const start = { date: new Date('2026-10-13T00:00:00Z'), lo: h.price, hi: h.price, ml: h.price };
@@ -3665,7 +3667,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       tb.appendChild(tr);
     });
     const lastRow = rows[rows.length - 1];
-    document.getElementById('cm-sub').textContent += ' · leans ' + (lastRow.leans === 'Even' ? 'neither way' : lastRow.leans.toLowerCase()) + ' · assumed drift ' + (lastRow.drift_pct_yr > 0 ? '+' : '') + lastRow.drift_pct_yr.toFixed(1) + '% a year';
+    document.getElementById('cm-sub').textContent += ' · leans ' + (lastRow.leans === 'Even' ? 'neither way' : lastRow.leans.toLowerCase()) + ' · expected drift ' + (lastRow.drift_pct_yr > 0 ? '+' : '') + lastRow.drift_pct_yr.toFixed(1) + '% a year';
 
     const start = { date: new Date('2026-10-17T00:00:00Z'), lo: h.price, hi: h.price, ml: h.price };
     const pts = [start].concat(rows.map((r) => ({ date: new Date(r.date + 'T00:00:00Z'), lo: r.likely_low, hi: r.likely_high, ml: r.most_likely, leans: r.leans, month: r.month })));
