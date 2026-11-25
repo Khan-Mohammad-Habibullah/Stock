@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-24 19:03",
- "source": "Nordnet export of 2026-11-24 19:03",
+ "updated": "2026-11-25 18:13",
+ "source": "Nordnet export of 2026-11-25 18:13",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -368,7 +368,7 @@
   },
   {
    "sym": "NASDAQ:NVDA",
-   "qty": 14,
+   "qty": 16,
    "name": "NVIDIA",
    "market": "US",
    "cur": "USD"
@@ -1128,30 +1128,26 @@
   "Vestas Wind Systems": "OMXCOP:VWS"
  },
  "last_inbox": {
-  "file": "holdings-202611241903.json",
-  "exported": "2026-11-24 19:03",
+  "file": "holdings-202611251813.json",
+  "exported": "2026-11-25 18:13",
   "read": 115,
   "added": [],
-  "sold": [
-   "Lululemon Athletica",
-   "S&P Global",
-   "PulteGroup"
-  ],
+  "sold": [],
   "back": [],
-  "changed": 22,
+  "changed": 1,
   "auto_matched": [],
   "unmatched": [
-   "Micron Technology (several possible matches: NASDAQ:MU, XETR:MTE)",
-   "Advanced Micro Devices (several possible matches: NASDAQ:AMD, XETR:AMD)",
-   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
-   "Arista Networks (several possible matches: NYSE:ANET, XETR:1170)",
+   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)",
    "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
-   "Emerson Electric (several possible matches: NYSE:EMR, XETR:EMR)",
-   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
-   "Röko B (no listed stock with that name has a matching price)",
    "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
-   "Palo Alto Networks (several possible matches: NASDAQ:PANW, XETR:5AP)",
-   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)"
+   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
+   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
+   "Röko B (no listed stock with that name has a matching price)",
+   "Emerson Electric (several possible matches: XETR:EMR, NYSE:EMR)",
+   "Palo Alto Networks (several possible matches: XETR:5AP, NASDAQ:PANW)",
+   "Arista Networks (several possible matches: XETR:1170, NYSE:ANET)",
+   "Advanced Micro Devices (several possible matches: XETR:AMD, NASDAQ:AMD)",
+   "Micron Technology (several possible matches: NASDAQ:MU, XETR:MTE)"
   ],
   "refused": null
  }
