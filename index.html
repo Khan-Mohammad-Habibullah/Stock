@@ -374,8 +374,10 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <section class="hs-card" id="holdings">
     <h2>Every holding</h2>
     <p class="hs-note">Click a column to sort and a row to see every indicator for that holding. Prices are in each listing's own currency. Money flow ranks each stock against its own market to 16 October: its 12-month trend counts three parts, heavy-volume buying over 60 days and 20-day Chaikin money flow one part each; "strong" is the top or bottom 10% with at least 20 million kronor traded a day.</p>
+    <p class="hs-note" id="mo-note" hidden></p>
     <div class="ctl">
       <input id="q" type="search" placeholder="Search holdings" aria-label="Search holdings">
+      <select id="f-month" aria-label="Month shown in the signal column"><option value="">This month</option></select>
       <select id="f-oct" aria-label="Signal for the current month">
         <option value="" id="f-oct-all">All October signals</option>
         <option>Bullish</option><option>Mildly bullish</option><option>Neutral</option><option>Mildly bearish</option><option>Bearish</option>
@@ -771,7 +773,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   <section class="hs-card" id="method">
     <h2>How the signals are worked out</h2>
     <div class="method">
-      <p><b><span class="mo">October</span> signal.</b> Each holding gets a point for each bullish reading and loses one for each bearish reading, on daily bars: RSI(14) between 55 and 75 or below 45; MACD(12,26,9) above or below its signal line and moving the same way; price above or below both the 20- and 50-day averages; the Williams Alligator eating up or down; price above the top or below the bottom of this month's CPR; buying or selling pressure (Chaikin money flow over 20 days together with up/down volume); higher highs and lows or lower highs and lows; and a break above or below the 55-day range. Bollinger bands riding the upper or lower band and a bullish or bearish candlestick pattern in the last three days count half a point. A total of 4 or more is Bullish, 1.5 to 4 Mildly bullish, −1.5 to 1.5 Neutral, −4 to −1.5 Mildly bearish and −4 or lower Bearish.</p>
+      <p><b><span class="mo">October</span> signal.</b> In Every holding a month dropdown swaps this column to a later month's price-range outlook (see Possible price, month by month) instead. Each holding gets a point for each bullish reading and loses one for each bearish reading, on daily bars: RSI(14) between 55 and 75 or below 45; MACD(12,26,9) above or below its signal line and moving the same way; price above or below both the 20- and 50-day averages; the Williams Alligator eating up or down; price above the top or below the bottom of this month's CPR; buying or selling pressure (Chaikin money flow over 20 days together with up/down volume); higher highs and lows or lower highs and lows; and a break above or below the 55-day range. Bollinger bands riding the upper or lower band and a bullish or bearish candlestick pattern in the last three days count half a point. A total of 4 or more is Bullish, 1.5 to 4 Mildly bullish, −1.5 to 1.5 Neutral, −4 to −1.5 Mildly bearish and −4 or lower Bearish.</p>
       <p><b>Monthly CPR</b> is the central pivot range for <span class="mo">October</span>, built from <span class="mop">September</span>'s high, low and close. Trading above its top is read as bullish for the month, below its bottom as bearish. R1 and S1 are the first resistance and support levels.</p>
       <p><b>Outlook over 1, 3 and 5 years.</b> Each horizon is a score that weighs different evidence, sorted into the same five groups (Positive at +3.5 or more, Leaning positive from +1, Mixed between, Leaning negative from −1, Negative at −3.5 or less). <b>1 year</b> leans on what tends to persist for months: price against the 40-week average and whether that average is rising, weekly MACD, the last 6 months against the S&amp;P 500 or OMX Stockholm, a small share of the <span class="mo">October</span> score, a penalty for being more than half below the 52-week high, revenue and earnings growth, and the analyst consensus and average target. <b>3 years</b> leans on the business: revenue growth (the biggest weight), earnings growth, net margin, free cash flow, return on equity, debt to equity and the P/E, with a light weight on the weekly trend and analysts. <b>5 years</b> leans on durability: profitability, return on equity, free cash flow, gross margin, whether revenue is growing or shrinking, debt, how much growth the valuation already assumes, and size (under $1B counts against, over $50B for). ETFs are scored on trend only, with a small credit at 3 and 5 years for spreading company risk; holdings with no fundamentals in TradingView's screener are Mixed at 3 and 5 years. These are rules of thumb built from current data, not forecasts: no one predicts 5-year returns reliably, and the further out the horizon, the more the score describes the business rather than the share price.</p>
       <p><b>Where money is moving.</b> There is no public record of what institutions buy day to day, so the board infers it from trading. To choose how, the ways of reading flows were tested on four years of daily bars for about 1,300 stocks in the US, Sweden, Norway, Europe and Canada: every week each sector was scored, and the score was checked against how the sector then did against its own market over the next one and three months. The method was chosen on the period up to mid-2025 and confirmed on the 14 months since, which it had not seen. The reading that held up best is the sector's 12-month trend with the last month left out (the average of its companies), counted three parts, plus its heavy-volume buying over the last 60 days, counted one part: big investors build and cut positions over months, so their buying shows up as a lasting trend more reliably than in any one week's volume. Each sector is ranked against the others in its market (US companies worth over $2 billion; the biggest Swedish, Norwegian and Canadian companies; European companies worth over $5 billion, plus Danish and Finnish companies). Denmark, Finland, Germany and Canada also have their own chart, each ranked among that market's largest companies (about 70, 80, 110 and 130 by market value, one share class per company), with sectors of at least three companies: the top sixth reads as strong inflow, the top third as money coming in, the bottom third as money leaving and the bottom sixth as strong outflow, with the score running from −7.5 to +7.5. On the unseen period, sectors in the top sixth beat their market over the next one to three months 56% of the time and those in the bottom sixth lagged it 57% of the time; the earlier volume-first reading was right 50% to 52% of the time, close to a coin toss. Holdings are matched to their industry where at least six (US and Europe) or four (Sweden and Norway) companies share it, otherwise to their sector, with the same four hand matches as before. Danish, Finnish and German holdings keep their reading against European large caps; on their home market's chart they count towards the “what you hold” figure only.</p>
@@ -860,6 +862,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     });
   }
   let shownMonth = null;
+  const MV = { m: '' };   // month picked in Every holding ('' = this month's signal, else 'YYYY-MM' for that month's range outlook)
   function refreshMonth() {
     const c = nowYM();
     const name = MONTH_NAMES[c.m], prev = MONTH_NAMES[(c.m + 11) % 12];
@@ -869,8 +872,9 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     document.querySelectorAll('.mo').forEach((e) => { if (e.textContent !== name) e.textContent = name; });
     document.querySelectorAll('.mo3').forEach((e) => { const t = name.slice(0, 3); if (e.textContent !== t) e.textContent = t; });
     document.querySelectorAll('.mop').forEach((e) => { if (e.textContent !== prev) e.textContent = prev; });
-    const all = document.getElementById('f-oct-all'); if (all) all.textContent = 'All ' + name + ' signals';
-    const sel = document.getElementById('f-oct'); if (sel) sel.setAttribute('aria-label', name + ' signal');
+    const all = document.getElementById('f-oct-all'); if (all && !MV.m) all.textContent = 'All ' + name + ' signals';
+    const sel = document.getElementById('f-oct'); if (sel && !MV.m) sel.setAttribute('aria-label', name + ' signal');
+    if (typeof syncMonthView === 'function') syncMonthView();
     const sy = signalYM();
     const stale = !!sy && (sy.y !== c.y || sy.m !== c.m);
     const msg = stale ? 'Heads up: the signals, scores and levels shown here were last computed for ' + MONTH_NAMES[sy.m] + ' ' + sy.y + '. They update when the board is rebuilt for ' + name + '.' : '';
@@ -976,6 +980,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   const isIn = (f) => f === 'Strong inflow' || f === 'Money coming in';
   const isOut = (f) => f === 'Strong outflow' || f === 'Money leaving';
   const chipCls = (label) => {
+    if (label === 'Leans up') return 'b1';
+    if (label === 'Leans down') return 'e1';
     if (FLOWC[label]) return FLOWC[label];
     const k = DEC.indexOf(label);
     if (k >= 0) return CLS[k];
@@ -1478,6 +1484,76 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   const fMkt = document.getElementById('f-mkt');
   qEl.addEventListener('input', () => { state.q = qEl.value.trim().toLowerCase(); drawTable(); });
   fOct.addEventListener('change', () => { state.oct = fOct.value; drawTable(); });
+  // ---- month dropdown: this month = today's signal, later months = that month's price-range outlook ----
+  const fMonth = document.getElementById('f-month');
+  const OUTLOOK = { High: 'Leans up', Low: 'Leans down', Even: 'Even' };
+  const OUT_LABELS = ['Leans up', 'Even', 'Leans down'];
+  let monthIdx = null, monthKey = '';
+  const ymKey = (y, m) => y + '-' + String(m + 1).padStart(2, '0');
+  const monthName = (k) => MONTH_NAMES[+k.slice(5, 7) - 1] + ' ' + k.slice(0, 4);
+  function laterMonths() {
+    const d = dash.data('monthly');
+    if (d.status !== 'ok') return [];
+    const c = nowYM(), cur = ymKey(c.y, c.m);
+    return Array.from(new Set(d.data.map((r) => r.month))).filter((k) => k > cur).sort().slice(0, 12);
+  }
+  function outlookOf(sym) {
+    const d = dash.data('monthly');
+    if (d.status !== 'ok' || !MV.m) return null;
+    if (monthKey !== d.data.length + '|' + d.data[0].date) { monthIdx = null; }
+    if (!monthIdx) { monthIdx = new Map(d.data.map((r) => [r.sym + '|' + r.month, r])); monthKey = d.data.length + '|' + d.data[0].date; }
+    const r = monthIdx.get(sym + '|' + MV.m);
+    if (!r) return null;
+    return { label: OUTLOOK[r.leans] || 'Even', score: (r.chance_high - r.chance_low) * 100, row: r };
+  }
+  const octVal = (r) => (MV.m ? (r._mo ? r._mo.label : null) : r.oct_signal);
+  const octOk = (r) => !state.oct || octVal(r) === state.oct;
+  const sortVal = (r, k) => (MV.m && k === 'oct_score' ? (r._mo ? r._mo.score : null) : r[k]);
+  function octTitle(r) {
+    if (!MV.m) return '';
+    const o = r._mo;
+    if (!o) return monthName(MV.m) + ': no range outlook for this holding';
+    const x = o.row, fm = (v) => plain(v, v < 10 ? 3 : 2);
+    return monthName(MV.m) + ' outlook: ' + o.label.toLowerCase() + '. Likely range ' + fm(x.likely_low) + ' to ' + fm(x.likely_high) + ' ' + x.cur + ' (half of outcomes), most likely ' + fm(x.most_likely) + '. Chance of finishing above the range ' + Math.round(x.chance_high * 100) + '%, below it ' + Math.round(x.chance_low * 100) + '%.';
+  }
+  function syncMonthView() {
+    const later = laterMonths(), have = Array.from(fMonth.options).slice(1).map((o) => o.value).join();
+    const c = nowYM();
+    fMonth.options[0].textContent = MONTH_NAMES[c.m] + ' · signal';
+    if (have !== later.join()) {
+      while (fMonth.options.length > 1) fMonth.remove(1);
+      later.forEach((k) => { const o = document.createElement('option'); o.value = k; o.textContent = monthName(k) + ' · outlook'; fMonth.appendChild(o); });
+    }
+    if (MV.m && !later.includes(MV.m)) { MV.m = ''; state.oct = ''; fOct.value = ''; }
+    fMonth.value = MV.m;
+    // filter choices follow the view
+    const want = MV.m ? OUT_LABELS : OCT;
+    const cur = Array.from(fOct.options).slice(1).map((o) => o.value).join();
+    const allOpt = document.getElementById('f-oct-all');
+    if (cur !== want.join()) {
+      while (fOct.options.length > 1) fOct.remove(1);
+      want.forEach((l) => { const o = document.createElement('option'); o.textContent = l; fOct.appendChild(o); });
+      fOct.value = state.oct;
+    }
+    allOpt.textContent = MV.m ? 'All ' + monthName(MV.m) + ' outlooks' : 'All ' + MONTH_NAMES[c.m] + ' signals';
+    fOct.setAttribute('aria-label', MV.m ? monthName(MV.m) + ' outlook' : MONTH_NAMES[c.m] + ' signal');
+    // column header
+    const btn = document.querySelector('#tbl th[data-field="oct_signal"] button');
+    if (btn) {
+      let x = btn.querySelector('.mox');
+      if (!x) { x = document.createElement('span'); x.className = 'mox'; btn.appendChild(x); }
+      const mo = btn.querySelector('.mo');
+      if (mo) mo.hidden = !!MV.m;
+      x.hidden = !MV.m;
+      x.textContent = MV.m ? monthName(MV.m).slice(0, 3) + ' ' + MV.m.slice(0, 4) + ' outlook' : '';
+    }
+    const note = document.getElementById('mo-note');
+    if (note) {
+      note.hidden = !MV.m;
+      note.textContent = MV.m ? 'The column now shows each holding\'s price-range outlook for ' + monthName(MV.m) + ', not a technical signal: leans up, even or leans down, from the model under Possible price, month by month (an assumed yearly drift with the stock\'s own swings around it). The further out the month, the less it tells you. Hover a chip for the likely range. The filter and the sort follow this month. Pick ' + MONTH_NAMES[c.m] + ' to go back to today\'s signal.' : '';
+    }
+  }
+  fMonth.addEventListener('change', () => { MV.m = fMonth.value; state.oct = ''; syncMonthView(); drawTable(); });
   fLt.addEventListener('change', () => { state.lt = fLt.value; drawTable(); });
   const fH = document.getElementById('f-h');
   fH.addEventListener('change', () => { state.ltH = fH.value; drawTable(); });
@@ -1505,6 +1581,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     if (tr) select(tr.dataset.key, 'monthly');
   });
 
+  function octCell(r, chip) {
+    const c = chip(octVal(r) || '—');
+    if (MV.m) c.title = octTitle(r);
+    return c;
+  }
+
   function rowsAll() {
     const d = dash.data('holdings');
     return d.status === 'ok' ? d.data : [];
@@ -1512,19 +1594,21 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
   function drawTable() {
     const all = rowsAll();
+    syncMonthView();
+    all.forEach((r) => { r._mo = outlookOf(r.sym); });
     all.forEach((r) => { r._sig = signalOf(r); r.signal_rank = r._sig.rank; r._tch = touchOf(r); r.touch_rank = r._tch.rank; });
     let rows = all.filter((r) =>
       (!state.sig || r._sig.label === state.sig) &&
       tchOk(r) &&
       (!state.q || (r.name + ' ' + r.sym).toLowerCase().includes(state.q)) &&
-      (!state.oct || r.oct_signal === state.oct) &&
+      octOk(r) &&
       (!state.lt || r[state.ltH] === state.lt) &&
       (!state.dec || r.december === state.dec) &&
       (!state.sflow || r.sflow === state.sflow) &&
       (!state.mkt || r.market === state.mkt));
     const k = state.sort, dir = state.dir;
     rows = rows.slice().sort((a, b) => {
-      const x = a[k], y = b[k];
+      const x = sortVal(a, k), y = sortVal(b, k);
       if (x == null && y == null) return 0;
       if (x == null) return 1;
       if (y == null) return -1;
@@ -1558,7 +1642,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         td(r.cpr || '—', 'sec ' + (r.cpr === 'Above' ? 'pos' : r.cpr === 'Below' ? 'neg' : 'mut')),
         td(r.bollinger, 'sec'),
         td(plain(r.udv, 2), 'num sec ' + (r.udv == null ? 'mut' : r.udv > 1.1 ? 'pos' : r.udv < 0.9 ? 'neg' : 'mut')),
-        chip(r.oct_signal),
+        octCell(r, chip),
         chip(r.o1y),
         chip(r.o3y, 'sec'),
         chip(r.o5y),
@@ -1577,7 +1661,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     return !((!state.sig || (r._sig && r._sig.label === state.sig)) &&
       (!r._tch || tchOk(r)) &&
       (!state.q || (r.name + ' ' + r.sym).toLowerCase().includes(state.q)) &&
-      (!state.oct || r.oct_signal === state.oct) &&
+      octOk(r) &&
       (!state.lt || r[state.ltH] === state.lt) &&
       (!state.dec || r.december === state.dec) &&
       (!state.sflow || r.sflow === state.sflow) &&
