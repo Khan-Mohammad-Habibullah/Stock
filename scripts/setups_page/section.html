@@ -1,0 +1,42 @@
+  <section class="hs-card" id="setups">
+    <h2>Setups before 15% rises</h2>
+    <p class="hs-note">Which chart setups came before a rise of 15% or more within about two months, how often each one really did, and which stocks show a setup whose historical success rate clears 95%. History and today's list are kept apart below. A past success rate does not mean a 15% rise will happen, and nothing here says what a stock will do next.</p>
+    <p class="hs-note" id="su-status" aria-live="polite">Loading…</p>
+    <div class="scr-tabs" id="su-tabs" role="group" aria-label="Market"></div>
+    <div class="ctl">
+      <input id="su-q" type="search" placeholder="Search by name or ticker" aria-label="Search setups by name or ticker">
+      <select id="su-setup" aria-label="Setup"><option value="">All setups</option></select>
+      <span class="count" id="su-shown"></span>
+    </div>
+    <details class="scr-how" id="su-rules">
+      <summary>The setups and their exact rules</summary>
+      <div id="su-rules-body"></div>
+    </details>
+
+    <p class="su-band">History &middot; tested on Nov 2021&ndash;Nov 2026 &middot; built on 2021&ndash;2024, tested unchanged on 2024&ndash;2026 &middot; rerun on the first weekend of each month</p>
+    <h3>Table A &ndash; Setup rules and how they performed</h3>
+    <p class="hs-note" id="su-a-note"></p>
+    <div class="tbl-wrap"><table class="hold scr" id="su-a"><thead></thead><tbody></tbody></table></div>
+    <h3>Table B &ndash; Historical examples, wins and misses</h3>
+    <p class="hs-note" id="su-b-note"></p>
+    <div class="tbl-wrap"><table class="hold scr" id="su-b"><thead></thead><tbody></tbody></table></div>
+
+    <p class="su-band" id="su-today">Today &middot; current candidates &middot; the list is rebuilt once a trading day, Tuesday to Saturday at 06:00 Stockholm time</p>
+    <h3>Table C &ndash; Current candidates as of the latest close (only setups that pass the 95% bar)</h3>
+    <p class="hs-note" id="su-c-note"></p>
+    <div class="ctl"><span class="count" id="su-c-shown"></span></div>
+    <div class="tbl-wrap"><table class="hold scr" id="su-c"><thead></thead><tbody></tbody></table></div>
+    <h3 id="su-rm-h">Removed in the last 5 rebuilds</h3>
+    <p class="hs-note" id="su-rm-note"></p>
+    <div class="tbl-wrap"><table class="hold scr" id="su-rm"><thead></thead><tbody></tbody></table></div>
+
+    <details class="scr-how" id="su-below">
+      <summary id="su-below-sum">Below the 95% bar</summary>
+      <p class="hs-note" id="su-below-note"></p>
+      <div class="tbl-wrap"><table class="hold scr" id="su-bl"><thead></thead><tbody></tbody></table></div>
+    </details>
+
+    <h3>Data, period and limits</h3>
+    <div id="su-method"></div>
+  </section>
+
