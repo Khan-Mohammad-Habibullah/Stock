@@ -1,6 +1,6 @@
 name: Rerun the setups study (monthly)
 
-# Reruns the historical study behind Tables A and B of "Setups before 15% rises" on the first weekend of each month
+# Reruns the historical study behind Tables A and B of "Setups before 20% rises" on the first weekend of each month
 # (Saturday the 1st-7th, or Sunday the 1st when the Saturday fell in the previous month). Table C's success rates follow the latest study.
 on:
   schedule:

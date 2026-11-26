@@ -1,4 +1,4 @@
-"""Data for "Setups before 15% rises": the stock list and 5+ years of adjusted daily bars.
+"""Data for "Setups before 20% rises": the stock list and 5+ years of adjusted daily bars.
 
   * Stock list: the same 7 markets and the same rule as the Strategy tab's screen (TradingView screener, common stocks listed in the
     market and based in that country, one share class per company = the most traded one, the 70 largest by market value).

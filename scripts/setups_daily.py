@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""Daily rebuild of the current matches for "Setups before 15% rises" -> data/setups.json (Table C, the "Below the 95% bar" list and the live record).
-
-Every stock whose latest completed candle meets ALL conditions of a setup is stored, for every setup. The page shows only the setups that pass the 95% bar
-in the latest study in Table C and puts the others in the collapsed "Below the 95% bar" list.
+"""Daily rebuild of the current candidates for "Setups before 20% rises" -> data/setups.json (Table C and the live record).
 
 Runs from GitHub Actions at 06:00 Stockholm time, Tuesday to Saturday (after all seven markets have closed). Only completed daily
 candles are used: a bar dated today in its exchange's time zone is dropped.
@@ -27,8 +24,7 @@ import setups_study as SS
 
 STO = zoneinfo.ZoneInfo("Europe/Stockholm")
 KEEP_REMOVED = 5          # rebuilds a removed name stays listed
-SCHEMA = 2               # 2 = 15% rises, all eight setups, complete matches only (an older file is recomputed in full, never carried)
-LIVE_FLAG_MIN = 20        # resolved cases before a live record below the bar is flagged
+NEAR_MAX = 6              # one-condition-short names kept per setup and market
 STALE_DAYS = 6            # a stock whose last bar is older than its market's is left out
 
 
@@ -68,8 +64,7 @@ def cond_value(k, key, r):
             ("high52", "vol"): "volume %.1f× average" % r.vr,
             ("high52", "x50"): "50-day %s vs 200-day" % pc(r.sma50 / r.sma200 - 1),
         }
-        alias = {"brkhv": "base", "pullhv": "pull", "sqzhv": "squeeze"}.get(k)
-        return m.get((k, key)) or (m.get((alias, key)) if alias else None) or m.get(("pull", key), "")
+        return m.get((k, key), "")
     except Exception:
         return ""
 
@@ -133,9 +128,6 @@ def main():
     if study:
         for st in study["stats"]:
             rate[(st["setup"], st["market"])] = st
-    old_schema = bool(prev) and prev.get("schema") != SCHEMA
-    if old_schema:
-        prev["candidates"] = [c for c in prev.get("candidates", []) if c.get("complete")]   # one-condition-short rows no longer exist
     prev_c = {(c["sym"], c["setup"]): c for c in (prev or {}).get("candidates", [])}
     seq = (prev or {}).get("seq", 0) + 1
     today_s = local.date().isoformat()
@@ -145,7 +137,7 @@ def main():
         if mk not in last_bar or len(have) < 0.6 * len(rows):
             carried.append(mk); notes_err.append("%s: too little data (%d of %d stocks), kept the previous list" % (mk, len(have), len(rows)))
             new_c += [c for c in (prev or {}).get("candidates", []) if c["market"] == mk]; continue
-        if prev and not old_schema and prev.get("last_bar", {}).get(mk) == last_bar[mk]:
+        if prev and prev.get("last_bar", {}).get(mk) == last_bar[mk]:
             carried.append(mk)   # no new daily candle: the market was closed (holiday), keep its candidates
             new_c += [c for c in prev["candidates"] if c["market"] == mk]; continue
         for d in have:
@@ -155,9 +147,9 @@ def main():
             for k in SL.ORDER:
                 total = len(SL.SETUPS[k]["conds"])
                 met = int(r[k + "_met"])
-                if met < total:
+                if met < total and not (total >= 5 and met == total - 1):
                     continue
-                complete = True
+                complete = met == total
                 conds = []
                 for ck, text, _ in SL.SETUPS[k]["conds"]:
                     ok = bool(r["%s_%s" % (k, ck)])
@@ -191,10 +183,20 @@ def main():
                     base=(rate.get((k, "All")) or {}).get("matched"), n_hist=(rate.get((k, "All")) or {}).get("n"),
                     last_prev=last_prev, earnings_next=nxt_d,
                     first_seen=first_seen, entry_close=entry_close, new=bool(prev) and complete and first_seen == today_s))
-    out_c = list(new_c)   # carried markets already contributed their previous rows through new_c above
+    # near misses: keep the closest few per setup and market
+    out_c = []
+    for mk in U:
+        mine = [c for c in new_c if c["market"] == mk]
+        out_c += [c for c in mine if c["complete"] or mk in carried]
+        for k in SL.ORDER:
+            near = sorted([c for c in mine if (not c["complete"]) and c["setup"] == k and mk not in carried], key=lambda c: c["rank"])[:NEAR_MAX]
+            out_c += near
+        if mk in carried:
+            pass
+    # carried markets already contributed their previous rows (complete and near) through new_c above
     seen = set(); fin = []
     for c in out_c:
-        kk = (c["sym"], c["setup"])
+        kk = (c["sym"], c["setup"], c["complete"])
         if kk not in seen:
             seen.add(kk); fin.append(c)
     # ---- removed names: complete before, gone now (only for markets that were recomputed)
@@ -208,7 +210,7 @@ def main():
         reason = "conditions no longer met"
         if len(after):
             if after.c.max() >= oc["entry_close"] * (1 + SL.RISE):
-                reason = "reached +15%"
+                reason = "reached +20%"
             elif oc.get("invalid") and (after.c < oc["invalid"]).any():
                 reason = "setup failed (closed below its invalidation level)"
         removed.append(dict(sym=s, name=oc["name"], market=oc["market"], setup=k, removed_on=today_s, seq=seq, reason=reason,
@@ -246,11 +248,9 @@ def main():
         L = [e for e in LOG if e["setup"] == k]
         done = [e for e in L if e["status"] in ("hit", "missed")]
         h = sum(e["status"] == "hit" for e in done)
-        rt = h / len(done) if done else None
-        live[k] = dict(logged=len(L), resolved=len(done), hits=h, open=len(L) - len(done), rate=rt,
-                       flag=bool(len(done) >= LIVE_FLAG_MIN and rt < SL.BAR))   # live record below 95% over 20 or more resolved cases
+        live[k] = dict(logged=len(L), resolved=len(done), hits=h, open=len(L) - len(done), rate=(h / len(done) if len(done) >= SL.MIN_CASES else None))
     out = dict(
-        schema=SCHEMA, built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), seq=seq,
+        built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), seq=seq,
         bar_date=max(last_bar.values()) if last_bar else None, last_bar=last_bar, carried=carried, errors=notes_err,
         skipped=[dict(sym=s, reason=r) for s, r in sorted(err.items())],
         universe={k: len(v) for k, v in U.items()}, first_run=prev is None,
@@ -258,9 +258,8 @@ def main():
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     json.dump(out, open(a.out, "w"), separators=(",", ":"))
     json.dump(LOG, open(a.log, "w"), separators=(",", ":"))
-    ps = {k: v["passes"] for k, v in (study or {}).get("verdicts", {}).items()}
-    shown = [c for c in fin if ps.get(c["setup"])]
-    print("matches", len(fin), "across", len({c["setup"] for c in fin}), "setups;", len(shown), "in Table C (setups passing the bar:", [k for k, v in ps.items() if v], "); removed", len(removed), "; carried", carried, "; log", len(LOG))
+    comp = [c for c in fin if c["complete"]]
+    print("candidates", len(comp), "complete,", len(fin) - len(comp), "one short; removed", len(removed), "; carried", carried, "; log", len(LOG))
 
 
 if __name__ == "__main__":

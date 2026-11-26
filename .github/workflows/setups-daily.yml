@@ -1,6 +1,6 @@
 name: Update setups before 20% rises (daily)
 
-# Rebuilds the list of current candidates (Table C of "Setups before 15% rises" on the Strategy tab) from completed daily candles,
+# Rebuilds the list of current candidates (Table C of "Setups before 20% rises" on the Strategy tab) from completed daily candles,
 # once per trading day at 06:00 Stockholm time, Tuesday to Saturday, after all seven markets have closed.
 # 06:00 Stockholm is 05:00 UTC in winter and 04:00 UTC in summer, so there are runs at both and the script skips the one that
 # is too early (before 06:00 local) or that comes after the day's rebuild; a later fallback covers a dropped run.
