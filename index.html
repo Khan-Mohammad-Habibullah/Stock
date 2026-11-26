@@ -599,11 +599,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <div class="tbl-wrap"><table class="hold scr" id="su-a"><thead></thead><tbody></tbody></table></div>
     <h3>Table B &ndash; Historical examples, wins and misses</h3>
     <p class="hs-note" id="su-b-note"></p>
+    <div class="scr-tabs" id="su-tabs-b" role="group" aria-label="Market for Table B"></div>
     <div class="tbl-wrap"><table class="hold scr" id="su-b"><thead></thead><tbody></tbody></table></div>
 
     <p class="su-band" id="su-today">Today &middot; current candidates &middot; the list is rebuilt once a trading day, Tuesday to Saturday at 06:00 Stockholm time</p>
     <h3>Table C &ndash; Current candidates as of the latest close</h3>
     <p class="hs-note" id="su-c-note"></p>
+    <div class="scr-tabs" id="su-tabs-c" role="group" aria-label="Market for Table C"></div>
     <div class="ctl">
       <select id="su-near" aria-label="Which matches to show">
         <option value="">All conditions met</option>
@@ -2852,7 +2854,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   (function () {
     const MARKETS = ['USA', 'Sweden', 'Denmark', 'Germany', 'Finland', 'Norway', 'Canada'];
     const $ = (id) => document.getElementById(id);
-    const SU = { mkt: 'All', q: '', setup: '', near: '', study: null, cur: null, live: new Map(), liveAt: null, err: null,
+    const SU = { mkt: 'All', mB: 'All', mC: 'All', q: '', setup: '', near: '', study: null, cur: null, live: new Map(), liveAt: null, err: null,
       A: { k: 'ord', dir: 1, open: null }, B: { k: 'date', dir: -1, open: null }, C: { k: 'rank', dir: 1, open: null }, R: { k: 'date', dir: -1, open: null } };
     const LEVEL_TXT = {
       base: 'Breakout level: the highest close of the 40 sessions before the breakout. Support: the lowest close of those 40 sessions. Resistance: the 52-week high when it is above the price. Invalidation: 3% under the breakout level.',
@@ -2932,7 +2934,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       return ul;
     };
     const para = (txt) => { const p = document.createElement('p'); p.className = 'hs-note'; p.style.marginBottom = '6px'; p.textContent = txt; return p; };
-    const inMkt = (m) => SU.mkt === 'All' || m === SU.mkt;
+    const inMkt = (m, w) => { const x = w || SU.mkt; return x === 'All' || m === x; };
     const matchQ = (name, sym) => !SU.q || (name + ' ' + sym).toLowerCase().includes(SU.q);
 
     // ---- Table A
@@ -2952,7 +2954,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     (r) => r.k, () => 'Loading…');
 
     // ---- Table B
-    const exRows = () => (SU.study ? SU.study.examples.filter((e) => inMkt(e.market) && (!SU.setup || e.setup === SU.setup) && matchQ(e.name, e.sym)).map((e) => Object.assign(e, { _k: e.setup + e.sym + e.date })) : []);
+    const exRows = () => (SU.study ? SU.study.examples.filter((e) => inMkt(e.market, SU.mB) && (!SU.setup || e.setup === SU.setup) && matchQ(e.name, e.sym)).map((e) => Object.assign(e, { _k: e.setup + e.sym + e.date })) : []);
     const drawB = table('su-b', SU.B, [
       { k: 'name', label: 'Stock', val: (e) => e.name, cell: (e) => nameTd(e.sym, e.name) },
       { k: 'market', label: 'Market', cls: 'sec', val: (e) => e.market, cell: (e) => e.market },
@@ -2977,7 +2979,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const distTxt = (lvl, c) => (lvl == null ? '—' : pxTxt(lvl, c.cur) + ' (' + sgn((px(c) / lvl - 1) * 100) + ')');
     const candRows = () => {
       if (!SU.cur) return [];
-      return SU.cur.candidates.filter((c) => (c.complete || SU.near) && inMkt(c.market) && (!SU.setup || c.setup === SU.setup) && matchQ(c.name, c.sym))
+      return SU.cur.candidates.filter((c) => (c.complete || SU.near) && inMkt(c.market, SU.mC) && (!SU.setup || c.setup === SU.setup) && matchQ(c.name, c.sym))
         .map((c) => { c._k = c.sym + c.setup + (c.complete ? 'c' : 'n'); c._below = c.invalid != null && px(c) < c.invalid; c._cls = c._below ? 'below' : ''; return c; });
     };
     const drawC = table('su-c', SU.C, [
@@ -3014,7 +3016,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       { k: 'why', label: 'Reason', cls: 'sm', val: (r) => r.reason, cell: (r) => r.reason },
       { k: 'entry', label: 'First listed at', cls: 'num sec', val: (r) => r.entry_close, cell: (r) => dTxt(r.first_seen) + ' · ' + pxTxt(r.entry_close, r.cur) },
       { k: 'last', label: 'Last close', cls: 'num sec', val: (r) => r.last_close, cell: (r) => pxTxt(r.last_close, r.cur) },
-    ], () => (SU.cur ? SU.cur.removed.filter((r) => inMkt(r.market) && (!SU.setup || r.setup === SU.setup) && matchQ(r.name, r.sym)) : []), null,
+    ], () => (SU.cur ? SU.cur.removed.filter((r) => inMkt(r.market, SU.mC) && (!SU.setup || r.setup === SU.setup) && matchQ(r.name, r.sym)) : []), null,
     (r) => r.sym + r.setup + r.removed_on, () => (SU.cur ? 'Nothing was removed in the last 5 rebuilds.' : 'Loading…'));
 
     // ---- notes, status and method text
@@ -3061,15 +3063,17 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       } else if (SU.err) { const el = $('su-status'); el.className = 'hs-note su-warn'; el.textContent = '⚠ ' + SU.err; }
     }
     function drawAll() {
-      document.querySelectorAll('#su-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === SU.mkt)));
+      [['su-tabs', 'mkt'], ['su-tabs-b', 'mB'], ['su-tabs-c', 'mC']].forEach(([id, key]) => document.querySelectorAll('#' + id + ' button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === SU[key]))));
       drawA(); const nb = drawB(); const nc = drawC(); drawR();
       $('su-shown').textContent = SU.study ? nb + ' examples shown' : '';
       $('su-c-shown').textContent = SU.cur ? nc + ' candidates shown' : '';
     }
     ['All'].concat(MARKETS).forEach((m) => {
-      const b = document.createElement('button'); b.type = 'button'; b.dataset.m = m; b.textContent = m === 'All' ? 'All markets' : m;
-      b.addEventListener('click', () => { SU.mkt = m; SU.A.open = SU.B.open = SU.C.open = null; drawAll(); });
-      $('su-tabs').appendChild(b);
+      const label = m === 'All' ? 'All markets' : m;
+      const mk = (id, on) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.m = m; b.textContent = label; b.addEventListener('click', () => { on(); drawAll(); }); $(id).appendChild(b); };
+      mk('su-tabs', () => { SU.mkt = SU.mB = SU.mC = m; SU.A.open = SU.B.open = SU.C.open = null; });
+      mk('su-tabs-b', () => { SU.mB = m; SU.B.open = null; });
+      mk('su-tabs-c', () => { SU.mC = m; SU.C.open = null; });
     });
     $('su-q').addEventListener('input', (e) => { SU.q = e.target.value.trim().toLowerCase(); drawAll(); });
     $('su-setup').addEventListener('change', (e) => { SU.setup = e.target.value; drawAll(); });
