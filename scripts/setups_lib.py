@@ -1,9 +1,11 @@
-"""Rules, features and tests for "Setups before 20% rises" (Strategy tab).
+"""Rules, features and tests for "Setups before 15% rises" (Strategy tab).
 
 Everything here uses only data up to the day being judged (no look-ahead): a setup is judged on the close of its own day, and what
 happened afterwards is measured separately.
 
-A "rise" = the highest close in the next 42 trading days is at least 20% above the setup-day close.
+A "rise" = the highest close in the next 42 trading days is at least 15% above the setup-day close.
+The 95% bar (see verdict() in setups_study.py): a setup passes only if the lower end of the 95% Wilson interval of its success rate in the test period
+exceeds 95%, its build-period rate is at least 95%, and no single market or year supplies more than half of its cases.
 """
 import datetime
 import math
@@ -12,10 +14,12 @@ import numpy as np
 import pandas as pd
 
 HORIZON = 42          # trading days (about two months)
-RISE = 0.20
+RISE = 0.15
 MIN_CASES = 30        # a success rate is shown only from this many cases
+BAR = 0.95            # the bar a setup has to clear
+MAX_SHARE = 0.5       # no single market or calendar year may supply more than this share of a setup's cases
 STUDY_FROM = "2021-11-26"   # first setup day of the five-year study (earlier bars only warm up the averages)
-SPLIT = "2024-07-01"  # thresholds were picked on setup days before this; later days are the untouched check
+SPLIT = "2024-11-26"  # build period: setup days before this; test period: this day onward (rules are frozen before the test period is looked at)
 
 # ---------------------------------------------------------------- the setups: exact rules with numbers
 # Each condition: (key, text, test(df) -> boolean Series). A setup fires on a day when every condition is true.
@@ -74,11 +78,41 @@ def _conds():
             ("vol", "Volume at least 1.5 times its 50-day average", lambda d: d.vr >= 1.5),
             ("x50", "50-day average above the 200-day average", lambda d: d.sma50 > d.sma200),
         ])
+    # --- three variants tuned on the build period only (the one change: volatile stocks, daily range >= 4%, because volatility dominated the build period)
+    S["brkhv"] = dict(
+        name="Volume breakout in a rising trend (volatile stocks)",
+        short="Closes above the highest close of the last 40 sessions on heavy volume, in a rising trend, in a stock that moves 4% or more a day",
+        conds=[
+            ("brk", "Close above the highest close of the previous 40 sessions", lambda d: d.c > d.hh40),
+            ("vol", "Volume at least 1.5 times its 50-day average", lambda d: d.vr >= 1.5),
+            ("t200", "Close above the 200-day average", lambda d: d.c > d.sma200),
+            ("rise50", "50-day average up more than 2% over the last 10 sessions", lambda d: d.slope50 > 0.02),
+            ("atr", "Average daily range (14 days) at least 4% of the price", lambda d: d.atr >= 0.04),
+        ])
+    S["pullhv"] = dict(
+        name="Pullback to a rising 50-day average (volatile stocks)",
+        short="The pullback setup in a stock that moves 4% or more a day",
+        conds=[c for c in S["pull"]["conds"] if c[0] != "atr"] + [("atr", "Average daily range (14 days) at least 4% of the price", lambda d: d.atr >= 0.04)])
+    S["sqzhv"] = dict(
+        name="Squeeze breakout (volatile stocks)",
+        short="The squeeze breakout in a stock that moves 4% or more a day",
+        conds=[c for c in S["squeeze"]["conds"] if c[0] != "atr"] + [("atr", "Average daily range (14 days) at least 4% of the price", lambda d: d.atr >= 0.04)])
     return S
 
 
 SETUPS = _conds()
-ORDER = ["base", "pull", "squeeze", "oversold", "high52"]
+ORDER = ["base", "pull", "squeeze", "oversold", "high52", "brkhv", "pullhv", "sqzhv"]
+
+
+def wilson_low(h, n, z=1.96):
+    """Lower end of the 95% Wilson score interval for h successes in n cases (0 when n = 0)."""
+    if not n:
+        return 0.0
+    p = h / n
+    d = 1 + z * z / n
+    c = p + z * z / (2 * n)
+    m = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    return (c - m) / d
 
 
 # ---------------------------------------------------------------- features (past data only)
@@ -153,16 +187,16 @@ def levels(setup, r):
     hh60 = float(r.hh60) if pd.notna(r.hh60) else None
     hh252 = float(r.hh252) if pd.notna(r.hh252) else None
     out = dict(breakout=None, support=None, resistance=None, invalid=None)
-    if setup == "base":
+    if setup in ("base", "brkhv"):
         lvl = float(r.hh40)
         out.update(breakout=lvl, support=float(r.ll40), invalid=lvl * 0.97, resistance=hh252 if hh252 and hh252 > c else None)
-    elif setup == "squeeze":
+    elif setup in ("squeeze", "sqzhv"):
         lvl = float(r.hh20)
         out.update(breakout=lvl, support=float(r.sma20), invalid=lvl * 0.97, resistance=hh252 if hh252 and hh252 > c else (hh60 if hh60 and hh60 > c else None))
     elif setup == "high52":
         lvl = float(r.hh252)
         out.update(breakout=lvl, support=lvl, invalid=lvl * 0.97, resistance=None)
-    elif setup == "pull":
+    elif setup in ("pull", "pullhv"):
         out.update(support=float(r.sma50), invalid=float(r.l10), resistance=hh60 if hh60 and hh60 > c else None)
     elif setup == "oversold":
         out.update(support=float(r.l10), invalid=float(r.l10), resistance=float(r.sma50) if pd.notna(r.sma50) and r.sma50 > c else (hh60 if hh60 and hh60 > c else None))
@@ -219,7 +253,7 @@ def run_study(frames):
 
 
 def peak_info(A_sym_c, i):
-    """For a signal on bar i of one stock's close array: (peak gain, days to first +20%, days to peak, largest drop before the peak)."""
+    """For a signal on bar i of one stock's close array: (peak gain, days to first +15%, days to peak, largest drop before the peak)."""
     c = A_sym_c
     w = c[i + 1: i + 1 + HORIZON]
     if len(w) == 0:
