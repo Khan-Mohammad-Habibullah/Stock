@@ -1,0 +1,58 @@
+name: Rerun the setups study (monthly)
+
+# Reruns the historical study behind Tables A and B of "Setups before 20% rises" on the first weekend of each month
+# (Saturday the 1st-7th, or Sunday the 1st when the Saturday fell in the previous month). Table C's success rates follow the latest study.
+on:
+  schedule:
+    - cron: "0 7 * * 6,0"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: board-data
+  cancel-in-progress: false
+
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Is it the first weekend of the month?
+        id: gate
+        run: |
+          d=$(date -u +%-d); w=$(date -u +%u)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || { [ "$w" = 6 ] && [ "$d" -le 7 ]; } || { [ "$w" = 7 ] && [ "$d" = 1 ]; }; then
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "Not the first weekend of the month; skipping."
+            echo "run=no" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'yes'
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.run == 'yes'
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+        if: steps.gate.outputs.run == 'yes'
+      - name: Run the study
+        if: steps.gate.outputs.run == 'yes'
+        run: python3 scripts/setups_study.py
+      - name: Commit and push
+        if: steps.gate.outputs.run == 'yes'
+        run: |
+          git config user.name "setups-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/setups_study.json data/setups.json
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -q -m "Rerun setups study ($(date -u +%F))"
+          for i in 1 2 3 4 5; do
+            git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0
+            sleep 10
+          done
+          exit 1
