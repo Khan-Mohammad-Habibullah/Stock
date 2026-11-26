@@ -27,6 +27,7 @@ import setups_study as SS
 
 STO = zoneinfo.ZoneInfo("Europe/Stockholm")
 KEEP_REMOVED = 5          # rebuilds a removed name stays listed
+SCHEMA = 2               # 2 = 15% rises, all eight setups, complete matches only (an older file is recomputed in full, never carried)
 LIVE_FLAG_MIN = 20        # resolved cases before a live record below the bar is flagged
 STALE_DAYS = 6            # a stock whose last bar is older than its market's is left out
 
@@ -132,6 +133,9 @@ def main():
     if study:
         for st in study["stats"]:
             rate[(st["setup"], st["market"])] = st
+    old_schema = bool(prev) and prev.get("schema") != SCHEMA
+    if old_schema:
+        prev["candidates"] = [c for c in prev.get("candidates", []) if c.get("complete")]   # one-condition-short rows no longer exist
     prev_c = {(c["sym"], c["setup"]): c for c in (prev or {}).get("candidates", [])}
     seq = (prev or {}).get("seq", 0) + 1
     today_s = local.date().isoformat()
@@ -141,7 +145,7 @@ def main():
         if mk not in last_bar or len(have) < 0.6 * len(rows):
             carried.append(mk); notes_err.append("%s: too little data (%d of %d stocks), kept the previous list" % (mk, len(have), len(rows)))
             new_c += [c for c in (prev or {}).get("candidates", []) if c["market"] == mk]; continue
-        if prev and prev.get("last_bar", {}).get(mk) == last_bar[mk]:
+        if prev and not old_schema and prev.get("last_bar", {}).get(mk) == last_bar[mk]:
             carried.append(mk)   # no new daily candle: the market was closed (holiday), keep its candidates
             new_c += [c for c in prev["candidates"] if c["market"] == mk]; continue
         for d in have:
@@ -246,7 +250,7 @@ def main():
         live[k] = dict(logged=len(L), resolved=len(done), hits=h, open=len(L) - len(done), rate=rt,
                        flag=bool(len(done) >= LIVE_FLAG_MIN and rt < SL.BAR))   # live record below 95% over 20 or more resolved cases
     out = dict(
-        built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), seq=seq,
+        schema=SCHEMA, built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), seq=seq,
         bar_date=max(last_bar.values()) if last_bar else None, last_bar=last_bar, carried=carried, errors=notes_err,
         skipped=[dict(sym=s, reason=r) for s, r in sorted(err.items())],
         universe={k: len(v) for k, v in U.items()}, first_run=prev is None,
