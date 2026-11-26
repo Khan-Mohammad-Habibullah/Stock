@@ -45,7 +45,8 @@ jobs:
         run: |
           git config user.name "setups-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/setups_study.json data/setups.json
+          git add data/setups_study.json
+          [ -f data/setups.json ] && git add data/setups.json || true
           if git diff --cached --quiet; then
             echo "Nothing changed."
             exit 0
