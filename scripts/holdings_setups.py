@@ -34,7 +34,7 @@ import setups_model as SM
 
 STO = zoneinfo.ZoneInfo("Europe/Stockholm")
 OUT, LOG, STUDY, HSTUDY, PORT = "data/holdings_setups.json", "data/holdings_log.json", "data/setups_study.json", "data/holdings_study.json", "data/portfolio.json"
-SCHEMA = 2
+SCHEMA = 3
 TV_COLS = ["name", "description", "type", "exchange", "country", "currency", "close", "open", "high", "low", "volume", "RSI", "MACD.macd", "MACD.signal",
            "ATR", "SMA50", "SMA200", "price_52_week_high", "average_volume_60d_calc", "market_cap_basic", "earnings_release_next_date"]
 TV_MIN = ["name", "description", "type", "exchange", "country", "currency", "close", "volume", "RSI", "MACD.macd", "MACD.signal", "SMA50", "SMA200",
@@ -314,31 +314,30 @@ def main():
                                 levels={kk: fmt(vv) for kk, vv in lv.items()}, status=status, vb=(vbucket(edges, rsd.rv20) if edges else None)))
 
         # ---- falls: the rules that passed the test (the table), and all six rules (shown only when asked for, marked as not passed)
-        r10 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("rate"))
-        r20 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall20", {}).get("rate"))
-        # typical dates: the quartiles of the trading days past cases of the rule took to fall, counted from this setup day
-        fall_dates = lambda k, col, mk_, d0: ([XC.trading_days_after(mk_, d0, max(1, int(round(q)))).isoformat() for q in dq_] if (dq_ := ((frules.get(k, {}).get("days_q") or {}).get(col))) else None)
+        fres = lambda k: frules.get(k, {}).get("results", {}).get("all", {}).get("fall", {})
+        rf = lambda k: fres(k).get("rate")
+        # typical dates: the quartiles of the trading days past cases of the rule took to fall 20%, counted from this setup day
+        fall_dates = lambda k, mk_, d0: ([XC.trading_days_after(mk_, d0, max(1, int(round(q)))).isoformat() for q in dq_] if (dq_ := frules.get(k, {}).get("days_q")) else None)
         for allowed, sink in ((passed, rows_fall), (HF.FALL_ORDER if frules else [], rows_fall_all)):
             Wf = runs_in_window(df, allowed) if allowed else {}
             if not any(w["starts_in"] for w in Wf.values()):
                 continue
             sd = min(st for w in Wf.values() for st in w["starts_in"])
             rsd = df.iloc[sd]
-            ks = sorted(Wf, key=lambda k: (-(k in passed), -(r10(k) or -1), HF.FALL_ORDER.index(k)))
+            ks = sorted(Wf, key=lambda k: (-(k in passed), -(rf(k) or -1), HF.FALL_ORDER.index(k)))
             best = ks[0]
             sd_date = datetime.date.fromisoformat(dates[sd])
             lvl = float(HF.fall_level(df).iloc[sd])
-            e10 = HF.estimate(fmodels.get("fall10"), set(ks), rsd, mk, size, r10(best))
-            e20 = HF.estimate(fmodels.get("fall20"), set(ks), rsd, mk, size, r20(best))
+            ef = HF.estimate(fmodels.get("fall"), set(ks), rsd, mk, size, rf(best))
             after = df.c.values[sd + 1:]
-            mn1 = float(after[:HF.M1].min()) if len(after) else None
-            status = ("fell10" if mn1 and mn1 <= rsd.c * (1 - HF.FALL1) else "above" if r_now.c > lvl else "still" if any(Wf[k]["today"] for k in ks) else "gone")
+            mn1 = float(after[:HF.M2].min()) if len(after) else None
+            status = ("fell" if mn1 and mn1 <= rsd.c * (1 - HF.FALL) else "above" if r_now.c > lvl else "still" if any(Wf[k]["today"] for k in ks) else "gone")
             sink.append(dict(common, setup_day=dates[sd], setup_close=fmt(rsd.c), days_since=int(n - 1 - sd), best=best, any_passed=any(k in passed for k in ks),
-                             rules=[dict(rule=k, passed=k in passed, rate10=r10(k), rate20=r20(k), n=frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("n"),
+                             rules=[dict(rule=k, passed=k in passed, rate=rf(k), n=fres(k).get("n"),
                                          run_start=dates[Wf[k]["run_start"]], days=[dates[i] for i in Wf[k]["days"]], today=Wf[k]["today"],
                                          conds=cond_list(HF.FALL_RULES, k, r_now, fall_value)) for k in ks],
-                             typ10=fall_dates(best, "fall10", mk, sd_date), typ20=fall_dates(best, "fall20", mk, sd_date),
-                             est10=e10, est20=e20, level=fmt(lvl), deadline=XC.trading_days_after(mk, sd_date, HF.M3).isoformat(),
+                             typ=fall_dates(best, mk, sd_date),
+                             est=ef, level=fmt(lvl), deadline=XC.trading_days_after(mk, sd_date, HF.M2).isoformat(),
                              since=fmt(r_now.c / rsd.c - 1), min_since=(fmt(float(after.min())) if len(after) else None), status=status,
                              vb=(vbucket(edges, rsd.rv20) if edges else None)))
 
@@ -373,8 +372,8 @@ def main():
     for r in rows_fall:
         if ("fall", r["sym"], r["setup_day"]) not in have:
             LOGD.append(dict(kind="fall", sym=r["sym"], name=r["name"], market=r["market"], setup_day=r["setup_day"], rules=[x["rule"] for x in r["rules"]], best=r["best"],
-                             entry_close=r["setup_close"], est10=(r["est10"]["est"] if r["est10"] else None), est20=(r["est20"]["est"] if r["est20"] else None),
-                             hist10=r["rules"][0]["rate10"], first_seen=local.date().isoformat(), status="open"))
+                             entry_close=r["setup_close"], est=(r["est"]["est"] if r["est"] else None),
+                             hist=r["rules"][0]["rate"], first_seen=local.date().isoformat(), status="open"))
     for e in LOGD:
         if e["sym"] in frames and "lag" not in e:   # trading days between the setup day and the rebuild that first logged it
             df = frames[e["sym"]]
@@ -390,12 +389,9 @@ def main():
             elif len(w) >= SL.HORIZON:
                 e.update(status="missed", gain=round(float(w.max() / e["entry_close"] - 1) * 100, 1))
         else:
-            w1, w3 = after[:HF.M1], after[:HF.M3]
-            if e.get("fall10") is None and ((len(w1) and w1.min() <= e["entry_close"] * (1 - HF.FALL1)) or len(w1) >= HF.M1):
-                e["fall10"] = int(bool(len(w1) and w1.min() <= e["entry_close"] * (1 - HF.FALL1)))
-            if e.get("fall20") is None and ((len(w3) and w3.min() < e["entry_close"] * (1 - HF.FALL3)) or len(w3) >= HF.M3):
-                e["fall20"] = int(bool(len(w3) and w3.min() < e["entry_close"] * (1 - HF.FALL3)))
-            if e.get("fall10") is not None and e.get("fall20") is not None:
+            w = after[:HF.M2]
+            if e.get("fall") is None and ((len(w) and w.min() <= e["entry_close"] * (1 - HF.FALL)) or len(w) >= HF.M2):
+                e["fall"] = int(bool(len(w) and w.min() <= e["entry_close"] * (1 - HF.FALL)))
                 e["status"] = "closed"
     LIVE_LAG = 2   # the live records count only setups logged within 2 trading days of their setup day (older ones were filled in after the fact)
     up_done = [e for e in LOGD if e["kind"] == "up" and e["status"] in ("hit", "missed") and e.get("lag", 99) <= LIVE_LAG]
@@ -403,10 +399,10 @@ def main():
     ests = [e for e in up_done if e.get("est") is not None]
     live_up.update(avg_est=(float(np.mean([e["est"] for e in ests])) if ests else None), actual=(float(np.mean([e["status"] == "hit" for e in ests])) if ests else None), n_est=len(ests))
     live_up["warn"] = bool(len(ests) >= 30 and live_up["actual"] < live_up["avg_est"] - 0.10)
-    f_done = [e for e in LOGD if e["kind"] == "fall" and e.get("fall10") is not None and e.get("lag", 99) <= LIVE_LAG]
-    live_fall = dict(logged=sum(e["kind"] == "fall" and e.get("lag", 99) <= LIVE_LAG for e in LOGD), resolved=len(f_done), hits=sum(e["fall10"] for e in f_done),
-                     rate=(float(np.mean([e["fall10"] for e in f_done])) if f_done else None),
-                     hist=(float(np.mean([e["hist10"] for e in f_done if e.get("hist10") is not None])) if any(e.get("hist10") is not None for e in f_done) else None))
+    f_done = [e for e in LOGD if e["kind"] == "fall" and e.get("fall") is not None and e.get("lag", 99) <= LIVE_LAG]
+    live_fall = dict(logged=sum(e["kind"] == "fall" and e.get("lag", 99) <= LIVE_LAG for e in LOGD), resolved=len(f_done), hits=sum(e["fall"] for e in f_done),
+                     rate=(float(np.mean([e["fall"] for e in f_done])) if f_done else None),
+                     hist=(float(np.mean([e["hist"] for e in f_done if e.get("hist") is not None])) if any(e.get("hist") is not None for e in f_done) else None))
     live_fall["warn"] = bool(len(f_done) >= 20 and live_fall["hist"] is not None and live_fall["rate"] < live_fall["hist"] - 0.10)
 
     if deferred:

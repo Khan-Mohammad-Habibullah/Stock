@@ -5,7 +5,7 @@
      (same stock list, same bars, same rules and the same declustering as that study, which is only read, never changed).
   2. The fall study: six fixed rules written down before testing (scripts/holdings_falls.py), tested on every stock and day,
      build years before SPLIT and check years from it, against the base rate at the same volatility. A rule is kept only if it
-     beats that base rate by 5 points for a 10% fall within a month in BOTH periods, with 30+ cases in each, and no single market,
+     beats that base rate by 5 points for a fall of 20% within two months in BOTH periods, with 30+ cases in each, and no single market,
      year or calendar month holds more than half of its cases.
   3. Estimated rates for a fall (logistic regression fitted on the build years only, kept only if it beats the plain rule rate on the check years).
 
@@ -29,7 +29,7 @@ import setups_study as SS
 
 OUT = "data/holdings_study.json"
 MARKETS = [m["k"] for m in SD.MARKETS]
-KEEP = ["sym", "date", "c", "rv20", "atr", "from52h", "rsi", "vr", "breadth", "hit", "fall10", "fall20", "fall_both", "d10", "d20"] + ["m%d" % m for m in range(1, 7)]
+KEEP = ["sym", "date", "c", "rv20", "atr", "from52h", "rsi", "vr", "breadth", "hit", "fall", "dfall"] + ["m%d" % m for m in range(1, 7)]
 
 
 def rnd(x, d=4):
@@ -107,7 +107,7 @@ def main():
 
     # ---- 2. the fall study
     base_fall = {}
-    for col in ("fall10", "fall20", "fall_both"):
+    for col in ("fall",):
         b = P[P[col].notna()].groupby("vb")[col].mean()
         A["b_" + col] = A.vb.map(b)
         base_fall[col] = dict(All=float(P[col].mean()), by_vb={str(int(v)): float(x) for v, x in b.items()})
@@ -120,14 +120,14 @@ def main():
         cases[k] = X
         res = {}
         for per, Y in (("all", X), ("build", X[X.date < cut]), ("check", X[X.date >= cut])):
-            res[per] = {col: rate_part(Y, col, "b_" + col) for col in ("fall10", "fall20", "fall_both")}
-        R10 = X[X.fall10.notna()]
+            res[per] = {col: rate_part(Y, col, "b_" + col) for col in ("fall",)}
+        R10 = X[X.fall.notna()]
         conc = {}
         if len(R10):
             conc = dict(market=float(R10.market.value_counts(normalize=True).iloc[0]), market_top=str(R10.market.value_counts().index[0]),
                         year=float(R10.date.dt.year.value_counts(normalize=True).iloc[0]), year_top=int(R10.date.dt.year.value_counts().index[0]),
                         month=float(R10.date.dt.strftime("%Y-%m").value_counts(normalize=True).iloc[0]), month_top=str(R10.date.dt.strftime("%Y-%m").value_counts().index[0]))
-        b, c = res["build"]["fall10"], res["check"]["fall10"]
+        b, c = res["build"]["fall"], res["check"]["fall"]
         why = []
         if b["n"] < SL.MIN_CASES or c["n"] < SL.MIN_CASES:
             why.append("fewer than 30 cases in the build or the check years (%d / %d)" % (b["n"], c["n"]))
@@ -139,19 +139,17 @@ def main():
             if conc and conc[key] > HF.MAX_SHARE:
                 why.append("%.0f%% of its cases in one %s (%s)" % (conc[key] * 100, lab, conc[key + "_top"]))
         # how many trading days the falls took among past cases that did fall (quartiles; none when fewer than 30 cases)
-        dq = {}
-        for col, dcol in (("fall10", "d10"), ("fall20", "d20")):
-            dv = X.loc[X[col] == 1, dcol].dropna().values
-            dq[col] = [float(np.percentile(dv, q)) for q in (25, 50, 75)] if len(dv) >= SL.MIN_CASES else None
+        dv = X.loc[X.fall == 1, "dfall"].dropna().values
+        dq = [float(np.percentile(dv, q)) for q in (25, 50, 75)] if len(dv) >= SL.MIN_CASES else None
         rules[k] = dict(name=HF.FALL_RULES[k]["name"], short=HF.FALL_RULES[k]["short"], conditions=[t for _, t, _ in HF.FALL_RULES[k]["conds"]],
-                        results=res, concentration=conc, pending=int(X.fall10.isna().sum()), passed=not why, why_not=why, days_q=dq)
+                        results=res, concentration=conc, pending=int(X.fall.isna().sum()), passed=not why, why_not=why, days_q=dq)
         fall_paths[k] = paths_block(X, cut)
 
     # ---- 3. estimated rates for a fall: every declustered resolved case of the six rules (one row per stock-day, all its rule flags)
     idx = sorted(set().union(*[set(X.index) for X in cases.values()]))
     R = A.loc[idx]
     models = {}
-    for col in ("fall10", "fall20"):
+    for col in ("fall",):
         br = {k: (float(cases[k][(cases[k].date < cut) & cases[k][col].notna()][col].mean()) if len(cases[k][(cases[k].date < cut) & cases[k][col].notna()]) else None) for k in HF.FALL_ORDER}
         models[col] = HF.fit_and_check(R, col, cut, br)
         models[col]["build_rates"] = br
@@ -163,15 +161,15 @@ def main():
         months=HF.MONTHS, vb_edges=[float(x) for x in edges],
         up_paths=up, base_paths=base_paths,
         fall=dict(rules=rules, order=HF.FALL_ORDER, passed=[k for k in HF.FALL_ORDER if rules[k]["passed"]], base=base_fall, paths=fall_paths, models=models,
-                  bar=dict(edge_min=HF.EDGE_MIN, max_share=HF.MAX_SHARE, min_cases=SL.MIN_CASES, m1=HF.M1, m3=HF.M3, fall1=HF.FALL1, fall3=HF.FALL3, gap=HF.FALL_GAP)),
+                  bar=dict(edge_min=HF.EDGE_MIN, max_share=HF.MAX_SHARE, min_cases=SL.MIN_CASES, horizon=HF.M2, fall=HF.FALL, gap=HF.FALL_GAP)),
         stock_days=int(len(P)), stocks=int(P.sym.nunique()), forecast=fcast)
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     json.dump(rnd(out), open(a.out, "w"), separators=(",", ":"))
     for k in HF.FALL_ORDER:
         r = rules[k]["results"]
-        print("%-10s pass=%-5s 10%%/1m build %s (n %d, base %s) check %s (n %d, base %s) | >20%%/3m all %s | %s" % (
-            k, rules[k]["passed"], r["build"]["fall10"]["rate"], r["build"]["fall10"]["n"], r["build"]["fall10"]["matched"],
-            r["check"]["fall10"]["rate"], r["check"]["fall10"]["n"], r["check"]["fall10"]["matched"], r["all"]["fall20"]["rate"], "; ".join(rules[k]["why_not"])))
+        print("%-10s pass=%-5s fall of 20%%/2m: build %s (n %d, base %s) check %s (n %d, base %s) all %s | %s" % (
+            k, rules[k]["passed"], r["build"]["fall"]["rate"], r["build"]["fall"]["n"], r["build"]["fall"]["matched"],
+            r["check"]["fall"]["rate"], r["check"]["fall"]["n"], r["check"]["fall"]["matched"], r["all"]["fall"]["rate"], "; ".join(rules[k]["why_not"])))
     print("fall models:", {c: (m["kind"], round(m["brier_model"], 4), round(m["brier_setup"], 4)) for c, m in models.items()})
     for h, m in fcast["h"].items():
         print("forecast h=%s: loss A %.5f / B %.5f vs no-signal %.5f (gain A %+.2f%%, B %+.2f%%), middle-half coverage A %.1f%% B %.1f%% none %.1f%%, side right A %.1f%% B %.1f%%, n %d/%d" % (

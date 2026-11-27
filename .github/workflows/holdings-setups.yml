@@ -1,7 +1,7 @@
 name: Update holdings setup tables
 
 # Rebuilds the two holdings tables on the My holdings tab ("Rise setups in your holdings (+20% within 42 trading days)" and
-# "Fall patterns in your holdings (−10% within a month, −20% within three)"). Writes ONLY data/holdings_setups.json, data/holdings_log.json and
+# "Fall patterns in your holdings (−20% within two months)"). Writes ONLY data/holdings_setups.json, data/holdings_log.json and
 # data/holdings_study.json; it reads the existing setups files and never writes to them.
 #   * daily, Tuesday to Saturday, after the "Setups before 20% rises" rebuild (06:00 Stockholm): runs at 04:20 and 05:20 UTC
 #     (06:20 Stockholm in summer and in winter); the script skips the run that is too early (before 06:15 local) or that comes

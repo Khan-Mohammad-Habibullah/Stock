@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Shared pieces for the two holdings tables on the My holdings tab ("Rise setups in your holdings (+20% within 42 trading days)" and
-"Fall patterns in your holdings (−10% within a month, −20% within three)"). New module: it only READS the existing setups modules (setups_lib, setups_model), never changes them.
+"Fall patterns in your holdings (−20% within two months)"). New module: it only READS the existing setups modules (setups_lib, setups_model), never changes them.
 
-Fall setups: six fixed rules, written down before testing (see FALL_RULES). What counts as a fall:
-  * fall of 10% in 1 month: the lowest close in the next 21 trading days is at least 10% below the setup-day close;
-  * fall of more than 20% in 3 months: the lowest close in the next 63 trading days is more than 20% below the setup-day close.
+Fall setups: six fixed rules, written down before testing (see FALL_RULES). What counts as a fall: the lowest close in the next 42 trading days
+(two months) is at least 20% below the setup-day close. (The rules were first tested against two other outcomes, a 10% fall within a month and a
+fall of more than 20% within three; the outcome was simplified afterwards, so the test of this one is less independent.)
 """
 import math
 
@@ -14,9 +14,9 @@ import pandas as pd
 import setups_lib as SL
 import setups_model as SM
 
-M1, M3 = 21, 63                 # trading days in one and three months
-FALL1, FALL3 = 0.10, 0.20
-FALL_GAP = M3                   # one case per stock and fall rule every 63 trading days
+M2 = 42                         # trading days in two months
+FALL = 0.20                     # the fall that counts: a close at least 20% under the setup-day close within two months
+FALL_GAP = M2                   # one case per stock and fall rule every 42 trading days
 MONTHS = [21 * m for m in range(1, 7)]   # month 1..6 = 21..126 trading days after the setup day
 WINDOW = 10                     # a holding is listed when a setup happened on one of its last 10 completed trading days
 EDGE_MIN = 0.05                 # a fall rule must beat the same-volatility base rate by 5 points in the build AND the check years
@@ -75,32 +75,24 @@ def fall_level(df):
 
 
 def outcomes(df):
-    """Adds the fall outcomes and the month-by-month price changes (NaN until known)."""
+    """Adds the fall outcome (a close at least 20% under the setup-day close within 42 trading days) and the month-by-month price changes (NaN until known)."""
     c = df.c.values.astype(float)
     n = len(c)
     rev = pd.Series(c[::-1])
-    out = {}
-    for h, thr, name in ((M1, -FALL1, "fall10"), (M3, -FALL3, "fall20")):
-        mn = rev.shift(1).rolling(h, min_periods=1).min().values[::-1] / c - 1     # lowest close of the next <=h sessions
-        avail = np.minimum(np.arange(n)[::-1], h)
-        hit = (mn <= thr) if name == "fall10" else (mn < thr)
-        done = avail >= h
-        v = np.where(done | hit, hit.astype(float), np.nan)
-        v[-1] = np.nan
-        out[name] = v
-        out[name + "_min"] = np.where(avail > 0, mn, np.nan)
-    f10, f20 = out["fall10"], out["fall20"]
-    both = np.where((f10 == 1) & (f20 == 1), 1.0, np.where((f10 == 0) | (f20 == 0), 0.0, np.nan))
-    df["fall10"], df["fall20"], df["fall_both"] = f10, f20, both
-    # trading days from the setup day to the first close that is 10% (within 21 days) / more than 20% (within 63 days) lower; NaN when it never happens
+    mn = rev.shift(1).rolling(M2, min_periods=1).min().values[::-1] / c - 1       # lowest close of the next <=42 sessions
+    avail = np.minimum(np.arange(n)[::-1], M2)
+    hit = mn <= -FALL
+    done = avail >= M2
+    v = np.where(done | hit, hit.astype(float), np.nan)
+    v[-1] = np.nan
+    df["fall"] = v
+    # trading days from the setup day to the first close that is 20% or more lower (within 42 days); NaN when it never happens
     from numpy.lib.stride_tricks import sliding_window_view
-    for h, thr, name, strict in ((M1, -FALL1, "d10", False), (M3, -FALL3, "d20", True)):
-        pad = np.concatenate([c[1:], np.full(h, np.nan)])
-        win = sliding_window_view(pad, h)[:n]                       # row i: the closes of days i+1 .. i+h
-        with np.errstate(invalid="ignore"):
-            hit = (win < c[:, None] * (1 + thr)) if strict else (win <= c[:, None] * (1 + thr))
-        first = np.where(hit.any(axis=1), hit.argmax(axis=1) + 1, np.nan)
-        df[name] = first
+    pad = np.concatenate([c[1:], np.full(M2, np.nan)])
+    win = sliding_window_view(pad, M2)[:n]                         # row i: the closes of days i+1 .. i+42
+    with np.errstate(invalid="ignore"):
+        h2 = win <= c[:, None] * (1 - FALL)
+    df["dfall"] = np.where(h2.any(axis=1), h2.argmax(axis=1) + 1, np.nan)
     for m, h in enumerate(MONTHS, start=1):
         fwd = np.full(n, np.nan)
         if n > h:
