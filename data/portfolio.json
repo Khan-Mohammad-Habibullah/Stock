@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-25 18:13",
- "source": "Nordnet export of 2026-11-25 18:13",
+ "updated": "2026-11-27 15:35",
+ "source": "Nordnet export of 2026-11-27 15:35",
  "positions": [
   {
    "sym": "NYSE:BMNR",
@@ -109,7 +109,7 @@
   },
   {
    "sym": "XETR:QDVE",
-   "qty": 25,
+   "qty": 15,
    "name": "iShares S&P 500 IT UCITS",
    "market": "US ETF",
    "cur": "EUR"
@@ -158,7 +158,7 @@
   },
   {
    "sym": "XETR:EXV8",
-   "qty": 10,
+   "qty": 6,
    "name": "iShares STOXX Europe 600 Construction UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
@@ -214,7 +214,7 @@
   },
   {
    "sym": "XETR:ASWE",
-   "qty": 59,
+   "qty": 29,
    "name": "HANetf Saturna Al-Kawthar UCITS",
    "market": "Europe ETF",
    "cur": "EUR"
@@ -298,7 +298,7 @@
   },
   {
    "sym": "OMXSTO:SECT_B",
-   "qty": 16,
+   "qty": 20,
    "name": "Sectra B",
    "market": "Sweden",
    "cur": "SEK"
@@ -417,7 +417,7 @@
   },
   {
    "sym": "OMXSTO:SOBI",
-   "qty": 12,
+   "qty": 15,
    "name": "Swedish Orphan Biovitrum",
    "market": "Sweden",
    "cur": "SEK"
@@ -473,7 +473,7 @@
   },
   {
    "sym": "OMXSTO:CAMX",
-   "qty": 5,
+   "qty": 6,
    "name": "Camurus",
    "market": "Sweden",
    "cur": "SEK"
@@ -722,6 +722,34 @@
    "name": "Vestas Wind Systems",
    "market": "Denmark",
    "cur": "DKK"
+  },
+  {
+   "sym": "TSX:CCO",
+   "qty": 5,
+   "name": "Cameco",
+   "market": "Canada",
+   "cur": "CAD"
+  },
+  {
+   "sym": "XETR:MTE",
+   "qty": 2,
+   "name": "Micron Technology",
+   "market": "Germany",
+   "cur": "EUR"
+  },
+  {
+   "sym": "XETR:1170",
+   "qty": 3,
+   "name": "Arista Networks",
+   "market": "Germany",
+   "cur": "EUR"
+  },
+  {
+   "sym": "XETR:AMD",
+   "qty": 3,
+   "name": "Advanced Micro Devices",
+   "market": "Germany",
+   "cur": "EUR"
   }
  ],
  "former": [
@@ -1125,29 +1153,42 @@
   "Lam Research": "XETR:LAR0",
   "Agnico Eagle": "TSX:AEM",
   "Franco-Nevada": "TSX:FNV",
-  "Vestas Wind Systems": "OMXCOP:VWS"
+  "Vestas Wind Systems": "OMXCOP:VWS",
+  "Cameco": "TSX:CCO",
+  "Micron Technology": "XETR:MTE",
+  "Arista Networks": "XETR:1170",
+  "Advanced Micro Devices": "XETR:AMD"
  },
  "last_inbox": {
-  "file": "holdings-202611251813.json",
-  "exported": "2026-11-25 18:13",
-  "read": 115,
-  "added": [],
+  "file": "holdings-202611271535.json",
+  "exported": "2026-11-27 15:35",
+  "read": 118,
+  "added": [
+   "Cameco",
+   "Micron Technology",
+   "Arista Networks",
+   "Advanced Micro Devices"
+  ],
   "sold": [],
   "back": [],
-  "changed": 1,
-  "auto_matched": [],
+  "changed": 6,
+  "auto_matched": [
+   "Cameco -> TSX:CCO",
+   "Micron Technology -> XETR:MTE",
+   "Arista Networks -> XETR:1170",
+   "Advanced Micro Devices -> XETR:AMD"
+  ],
   "unmatched": [
-   "Procter & Gamble (several possible matches: NYSE:PG, XETR:PRG)",
-   "Borregaard (several possible matches: OSL:BRG, OMXSTO:BRGO)",
-   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
-   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
-   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
-   "Röko B (no listed stock with that name has a matching price)",
+   "Revenio Group (several possible matches: XETR:R0V, OMXHEX:REG1V)",
    "Emerson Electric (several possible matches: XETR:EMR, NYSE:EMR)",
-   "Palo Alto Networks (several possible matches: XETR:5AP, NASDAQ:PANW)",
-   "Arista Networks (several possible matches: XETR:1170, NYSE:ANET)",
-   "Advanced Micro Devices (several possible matches: XETR:AMD, NASDAQ:AMD)",
-   "Micron Technology (several possible matches: NASDAQ:MU, XETR:MTE)"
+   "Norsk Hydro (several possible matches: OSL:NHY, OMXSTO:NHYO)",
+   "Röko B (no listed stock with that name has a matching price)",
+   "Nordic Semiconductor (several possible matches: OSL:NOD, OMXSTO:NODO)",
+   "Borregaard (several possible matches: OMXSTO:BRGO, OSL:BRG)",
+   "Union Pacific (several possible matches: NYSE:UNP, XETR:UNP)",
+   "Procter & Gamble (several possible matches: XETR:PRG, NYSE:PG)",
+   "Fortum (several possible matches: OMXHEX:FORTUM, XETR:FOT)",
+   "Palo Alto Networks (several possible matches: XETR:5AP, NASDAQ:PANW)"
   ],
   "refused": null
  }
