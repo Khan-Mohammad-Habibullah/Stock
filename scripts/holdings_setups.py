@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Daily rebuild of the two holdings tables on the My holdings tab -> data/holdings_setups.json and data/holdings_log.json (NEW files).
 
-  * "Holdings – setups as of the latest close": which of my stock holdings had one of the twelve setups of "Setups before 20% rises"
+  * "Rise setups in your holdings (+20% within 42 trading days)": which of my stock holdings had one of the twelve setups of "Setups before 20% rises"
     on one of their last 10 completed trading days, with the same levels, estimate, target, typical date and deadline as Table C.
-  * "Holdings – setups before a fall": the same for the fall rules that passed the test in data/holdings_study.json.
+  * "Fall patterns in your holdings (−10% within a month, −20% within three)": the same for the fall rules that passed the test in data/holdings_study.json.
 
 Readings: TradingView's screener (type, latest close, RSI, MACD, averages, ATR, 52-week high, volume, market value, next earnings) for every
 holding; the history behind the rules from the same adjusted Yahoo daily bars as the rest of the board. A holding whose latest Yahoo close

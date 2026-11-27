@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""index.html: insert the two holdings tables ("Holdings – setups as of the latest close" and "Holdings – setups before a fall") on the
+"""index.html: insert the two holdings tables ("Rise setups in your holdings (+20% within 42 trading days)" and "Fall patterns in your holdings (−10% within a month, −20% within three)") on the
 My holdings tab, just before "Companies you own twice", as ONE self-contained block (its own HTML, CSS and JavaScript, IDs and classes prefixed hsx-).
 Nothing else in the page is edited. Running it again replaces the block.
 """
@@ -34,7 +34,7 @@ BLOCK = BEGIN + r'''
     #hsx-up details summary, #hsx-fall details summary { cursor: pointer; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
   </style>
   <div class="hsx-block" id="hsx-up">
-    <h3 class="h3">Holdings &ndash; setups as of the latest close</h3>
+    <h3 class="h3">Rise setups in your holdings (+20% within 42 trading days)</h3>
     <p class="hs-note" id="hsx-up-note">Loading&hellip;</p>
     <p class="hs-note hsx-warn" id="hsx-up-warn" hidden></p>
     <div class="scr-tabs" id="hsx-up-tabs" role="group" aria-label="Market for the holdings setups table"></div>
@@ -48,7 +48,7 @@ BLOCK = BEGIN + r'''
     <p class="hs-note" id="hsx-up-stamp"></p>
   </div>
   <div class="hsx-block" id="hsx-fall">
-    <h3 class="h3">Holdings &ndash; setups before a fall</h3>
+    <h3 class="h3">Fall patterns in your holdings (&minus;10% within a month, &minus;20% within three)</h3>
     <p class="hs-note" id="hsx-fall-note">Loading&hellip;</p>
     <div class="scr-tabs" id="hsx-fall-tabs" role="group" aria-label="Market for the holdings fall table"></div>
     <div class="ctl"><select id="hsx-fall-cnt" aria-label="How many of the rule's conditions are met"></select>

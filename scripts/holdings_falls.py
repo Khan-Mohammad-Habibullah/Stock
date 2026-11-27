@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Shared pieces for the two holdings tables on the My holdings tab ("Holdings – setups as of the latest close" and
-"Holdings – setups before a fall"). New module: it only READS the existing setups modules (setups_lib, setups_model), never changes them.
+"""Shared pieces for the two holdings tables on the My holdings tab ("Rise setups in your holdings (+20% within 42 trading days)" and
+"Fall patterns in your holdings (−10% within a month, −20% within three)"). New module: it only READS the existing setups modules (setups_lib, setups_model), never changes them.
 
 Fall setups: six fixed rules, written down before testing (see FALL_RULES). What counts as a fall:
   * fall of 10% in 1 month: the lowest close in the next 21 trading days is at least 10% below the setup-day close;
