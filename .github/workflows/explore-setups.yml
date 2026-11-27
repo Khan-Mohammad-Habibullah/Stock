@@ -5,7 +5,7 @@ name: Explore more setups (one-off)
 on:
   push:
     branches: [setups-explore]
-    paths: ["scripts/explore_setups.py", ".github/workflows/explore-setups.yml"]
+    paths: ["scripts/explore_setups.py", "scripts/explore_check.py", ".github/workflows/explore-setups.yml"]
   workflow_dispatch: {}
 
 permissions:
@@ -43,13 +43,15 @@ jobs:
           path: cache
           key: explore-data-v1
       - name: Run the exploration
-        run: python3 scripts/explore_setups.py --dump cache/study_data.json.gz --out data/explore_results.json
+        run: |
+          python3 scripts/explore_setups.py --dump cache/study_data.json.gz --out data/explore_results.json
+          python3 -W ignore scripts/explore_check.py --dump cache/study_data.json.gz --out data/explore_check.txt
       - name: Commit results to this branch
         if: always()
         run: |
           git config user.name "setups-bot"
           git config user.email "actions@users.noreply.github.com"
-          for f in data/explore_results.json data/explore_results.txt data/explore_results_error.txt; do [ -f "$f" ] && git add -f "$f"; done
+          for f in data/explore_results.json data/explore_results.txt data/explore_results_error.txt data/explore_check.txt; do [ -f "$f" ] && git add -f "$f"; done
           if git diff --cached --quiet; then echo "Nothing to commit."; exit 0; fi
           git commit -q -m "Exploration results ($(date -u +%F))"
           git push -q origin HEAD:setups-explore
