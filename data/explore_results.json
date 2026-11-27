@@ -1,0 +1,6104 @@
+{
+"built": "2026-11-27T09:49+00:00",
+"rise": 0.2,
+"horizon": 42,
+"study_from": "2021-11-26",
+"split": "2024-07-01",
+"stocks": 476,
+"data_built": "2026-11-27T09:48+00:00",
+"base": {
+"all": 0.13422638603333403,
+"train": 0.1287110807470889,
+"test": 0.14038176184549372
+},
+"conditions": [
+"above 200-day",
+"below 200-day",
+"50-day above 200-day",
+"50-day rising >2% in 10 days",
+"200-day rising",
+"200-day falling",
+"within 5% of 52-week high",
+"20%+ below 52-week high",
+"40%+ below 52-week high",
+"60%+ below 52-week high",
+"within 5% of 52-week low",
+"close above 20-day high",
+"close above 40-day high",
+"close above 52-week high",
+"close above previous day's high",
+"close in top 20% of day's range",
+"volume 1.5x+ average",
+"volume 2.5x+ average",
+"volume 4x+ average",
+"volume dried up (10-day avg <0.8x)",
+"RSI(14) under 30",
+"RSI(14) 30-50",
+"RSI(14) over 70",
+"RSI(14) crossed up through 30",
+"RSI(2) under 10",
+"MACD histogram rising",
+"MACD crossed up below zero",
+"gap up 4%+",
+"gap down 4%+",
+"up 5%+ on the day",
+"down 15%+ in 5 days",
+"down 25%+ in 20 days",
+"up 15%+ in 20 days",
+"top 10% 6-month return in market",
+"bottom 10% 6-month return in market",
+"relative strength at 1-year high",
+"daily range 3%+ of price",
+"daily range 5%+ of price",
+"Bollinger squeeze (narrowest 10%)",
+"breakout from inside/NR7 day",
+"50-day crossed above 200-day",
+"close crossed above 200-day",
+"close crossed above 50-day",
+"higher low (10-day low above prior low)",
+"bullish engulfing",
+"after 4+ down days",
+"market: under 20% of stocks above 50-day",
+"market: under 35% of stocks above 50-day",
+"market: 10%+ below its 1-year high",
+"market: above its 200-day",
+"market: below its 200-day"
+],
+"combos_tested": 9408,
+"current": [
+{
+"n": 1924,
+"hits": 255,
+"rate": 0.13253638253638253,
+"matched": 0.15531104766337556,
+"n_train": 882,
+"rate_train": 0.13038548752834467,
+"n_test": 1042,
+"rate_test": 0.1343570057581574,
+"matched_test": 0.154129023223118,
+"stocks": 436,
+"weeks": 246,
+"top_month": "2026-01",
+"top_month_share": 0.036382536382536385,
+"median_best": 0.07577806781229235,
+"lower95": 0.11811483771289673,
+"lift": -0.022774665126993027,
+"name": "Base breakout on high volume",
+"kind": "current"
+},
+{
+"n": 1987,
+"hits": 357,
+"rate": 0.17966784096628083,
+"matched": 0.15341154630438444,
+"n_train": 996,
+"rate_train": 0.16666666666666666,
+"n_test": 991,
+"rate_test": 0.1927346115035318,
+"matched_test": 0.15931578329002868,
+"stocks": 447,
+"weeks": 241,
+"top_month": "2023-03",
+"top_month_share": 0.04579768495218923,
+"median_best": 0.09187616493158157,
+"lower95": 0.1634103629502914,
+"lift": 0.026256294661896384,
+"name": "Pullback to a rising 50-day average",
+"kind": "current"
+},
+{
+"n": 1181,
+"hits": 181,
+"rate": 0.15325994919559696,
+"matched": 0.10984012755670529,
+"n_train": 626,
+"rate_train": 0.15495207667731628,
+"n_test": 555,
+"rate_test": 0.15135135135135136,
+"matched_test": 0.10383300742195915,
+"stocks": 422,
+"weeks": 226,
+"top_month": "2022-12",
+"top_month_share": 0.04403048264182896,
+"median_best": 0.07773162481682672,
+"lower95": 0.1338410507823583,
+"lift": 0.04341982163889167,
+"name": "Squeeze breakout",
+"kind": "current"
+},
+{
+"n": 627,
+"hits": 191,
+"rate": 0.30462519936204147,
+"matched": 0.23827578409204433,
+"n_train": 441,
+"rate_train": 0.30385487528344673,
+"n_test": 186,
+"rate_test": 0.3064516129032258,
+"matched_test": 0.2357576071269468,
+"stocks": 208,
+"weeks": 195,
+"top_month": "2022-09",
+"top_month_share": 0.09409888357256778,
+"median_best": 0.1217970618380595,
+"lower95": 0.2698792337414883,
+"lift": 0.06634941526999713,
+"name": "Oversold reversal",
+"kind": "current"
+},
+{
+"n": 2439,
+"hits": 285,
+"rate": 0.11685116851168512,
+"matched": 0.13196315842672302,
+"n_train": 1059,
+"rate_train": 0.11237016052880075,
+"n_test": 1380,
+"rate_test": 0.12028985507246377,
+"matched_test": 0.13164898323343094,
+"stocks": 462,
+"weeks": 247,
+"top_month": "2026-01",
+"top_month_share": 0.03895038950389504,
+"median_best": 0.0666737171126075,
+"lower95": 0.10470027252127474,
+"lift": -0.015111989915037899,
+"name": "52-week-high breakout",
+"kind": "current"
+}
+],
+"named": [
+{
+"n": 40,
+"hits": 6,
+"rate": 0.15,
+"matched": 0.326736172468634,
+"n_train": 26,
+"rate_train": 0.11538461538461539,
+"n_test": 14,
+"rate_test": 0.21428571428571427,
+"matched_test": 0.326736172468634,
+"stocks": 38,
+"weeks": 34,
+"top_month": "2022-03",
+"top_month_share": 0.075,
+"median_best": 0.10285000251641974,
+"lower95": 0.07061091708507436,
+"lift": -0.17673617246863402,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 0.0
+},
+"Denmark": {
+"n": 7,
+"rate": 0.2857142857142857
+},
+"Finland": {
+"n": 3,
+"rate": 0.0
+},
+"Germany": {
+"n": 7,
+"rate": 0.14285714285714285
+},
+"Norway": {
+"n": 9,
+"rate": 0.0
+},
+"Sweden": {
+"n": 4,
+"rate": 0.25
+},
+"USA": {
+"n": 7,
+"rate": 0.2857142857142857
+}
+},
+"name": "Capitulation bounce",
+"idea": "Down 15%+ in five days on heavy volume, then a strong close above the previous day's high",
+"conditions": [
+"down 15%+ in 5 days",
+"close above previous day's high",
+"volume 1.5x+ average",
+"close in top 20% of day's range"
+],
+"kind": "named"
+},
+{
+"n": 320,
+"hits": 153,
+"rate": 0.478125,
+"matched": 0.24230646511661097,
+"n_train": 268,
+"rate_train": 0.4664179104477612,
+"n_test": 52,
+"rate_test": 0.5384615384615384,
+"matched_test": 0.25137915827244794,
+"stocks": 168,
+"weeks": 35,
+"top_month": "2022-09",
+"top_month_share": 0.234375,
+"median_best": 0.19302088604873324,
+"lower95": 0.4239782600779513,
+"lift": 0.23581853488338905,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.8333333333333334
+},
+"Denmark": {
+"n": 70,
+"rate": 0.5428571428571428
+},
+"Finland": {
+"n": 51,
+"rate": 0.3333333333333333
+},
+"Germany": {
+"n": 65,
+"rate": 0.46153846153846156
+},
+"Norway": {
+"n": 35,
+"rate": 0.42857142857142855
+},
+"Sweden": {
+"n": 53,
+"rate": 0.5283018867924528
+},
+"USA": {
+"n": 40,
+"rate": 0.5
+}
+},
+"name": "Washout: market and stock oversold",
+"idea": "Fewer than 20% of the market's stocks above their 50-day, and this stock 40%+ off its high turns up",
+"conditions": [
+"market: under 20% of stocks above 50-day",
+"40%+ below 52-week high",
+"close above previous day's high"
+],
+"kind": "named"
+},
+{
+"n": 1556,
+"hits": 393,
+"rate": 0.2525706940874036,
+"matched": 0.17780774719332548,
+"n_train": 1153,
+"rate_train": 0.22549869904596703,
+"n_test": 403,
+"rate_test": 0.33002481389578164,
+"matched_test": 0.18485512868556944,
+"stocks": 465,
+"weeks": 52,
+"top_month": "2022-06",
+"top_month_share": 0.16966580976863754,
+"median_best": 0.11835324191502483,
+"lower95": 0.23160929256585885,
+"lift": 0.07476294689407814,
+"per_market": {
+"Canada": {
+"n": 111,
+"rate": 0.12612612612612611
+},
+"Denmark": {
+"n": 269,
+"rate": 0.31226765799256506
+},
+"Finland": {
+"n": 250,
+"rate": 0.156
+},
+"Germany": {
+"n": 255,
+"rate": 0.23921568627450981
+},
+"Norway": {
+"n": 157,
+"rate": 0.35668789808917195
+},
+"Sweden": {
+"n": 292,
+"rate": 0.2773972602739726
+},
+"USA": {
+"n": 222,
+"rate": 0.26126126126126126
+}
+},
+"name": "Washout: any stock turning up",
+"idea": "Fewer than 20% of the market's stocks above their 50-day; stock closes above the previous day's high with RSI under 40",
+"conditions": [
+"market: under 20% of stocks above 50-day",
+"close above previous day's high",
+"RSI(14) 30-50"
+],
+"kind": "named"
+},
+{
+"n": 494,
+"hits": 187,
+"rate": 0.3785425101214575,
+"matched": 0.23906300017773144,
+"n_train": 461,
+"rate_train": 0.36225596529284165,
+"n_test": 33,
+"rate_test": 0.6060606060606061,
+"matched_test": 0.26963667411362163,
+"stocks": 174,
+"weeks": 55,
+"top_month": "2022-09",
+"top_month_share": 0.18421052631578946,
+"median_best": 0.15736530871184962,
+"lower95": 0.33686316045743714,
+"lift": 0.13947950994372607,
+"per_market": {
+"Canada": {
+"n": 16,
+"rate": 0.5
+},
+"Denmark": {
+"n": 104,
+"rate": 0.41346153846153844
+},
+"Finland": {
+"n": 82,
+"rate": 0.2804878048780488
+},
+"Germany": {
+"n": 109,
+"rate": 0.3486238532110092
+},
+"Norway": {
+"n": 30,
+"rate": 0.36666666666666664
+},
+"Sweden": {
+"n": 87,
+"rate": 0.367816091954023
+},
+"USA": {
+"n": 66,
+"rate": 0.48484848484848486
+}
+},
+"name": "Market down 10%+, stock down 40%+, momentum turning",
+"idea": "Market 10%+ off its high, stock 40%+ off its high, MACD histogram rising",
+"conditions": [
+"market: 10%+ below its 1-year high",
+"40%+ below 52-week high",
+"MACD histogram rising",
+"close above previous day's high"
+],
+"kind": "named"
+},
+{
+"n": 268,
+"hits": 43,
+"rate": 0.16044776119402984,
+"matched": 0.2633605935391294,
+"n_train": 113,
+"rate_train": 0.19469026548672566,
+"n_test": 155,
+"rate_test": 0.13548387096774195,
+"matched_test": 0.2666417714705485,
+"stocks": 171,
+"weeks": 141,
+"top_month": "2025-02",
+"top_month_share": 0.05223880597014925,
+"median_best": 0.08487659652297519,
+"lower95": 0.12135279578397311,
+"lift": -0.10291283234509954,
+"per_market": {
+"Canada": {
+"n": 17,
+"rate": 0.17647058823529413
+},
+"Denmark": {
+"n": 36,
+"rate": 0.16666666666666666
+},
+"Finland": {
+"n": 42,
+"rate": 0.07142857142857142
+},
+"Germany": {
+"n": 31,
+"rate": 0.1935483870967742
+},
+"Norway": {
+"n": 41,
+"rate": 0.21951219512195122
+},
+"Sweden": {
+"n": 50,
+"rate": 0.14
+},
+"USA": {
+"n": 51,
+"rate": 0.17647058823529413
+}
+},
+"name": "Earnings-style gap up in uptrend",
+"idea": "Gap up 4%+ on 2.5x volume, strong close, above the 200-day",
+"conditions": [
+"gap up 4%+",
+"volume 2.5x+ average",
+"close in top 20% of day's range",
+"above 200-day"
+],
+"kind": "named"
+},
+{
+"n": 108,
+"hits": 39,
+"rate": 0.3611111111111111,
+"matched": 0.27412683918179,
+"n_train": 74,
+"rate_train": 0.3918918918918919,
+"n_test": 34,
+"rate_test": 0.29411764705882354,
+"matched_test": 0.2728925386442744,
+"stocks": 69,
+"weeks": 83,
+"top_month": "2022-11",
+"top_month_share": 0.08333333333333333,
+"median_best": 0.14677512973941975,
+"lower95": 0.2767340307537134,
+"lift": 0.08698427192932112,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 22,
+"rate": 0.36363636363636365
+},
+"Finland": {
+"n": 11,
+"rate": 0.18181818181818182
+},
+"Germany": {
+"n": 21,
+"rate": 0.42857142857142855
+},
+"Norway": {
+"n": 22,
+"rate": 0.36363636363636365
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 13,
+"rate": 0.15384615384615385
+}
+},
+"name": "Earnings-style gap up after a deep fall",
+"idea": "Gap up 4%+ on 2.5x volume in a stock 40%+ below its high",
+"conditions": [
+"gap up 4%+",
+"volume 2.5x+ average",
+"40%+ below 52-week high"
+],
+"kind": "named"
+},
+{
+"n": 1578,
+"hits": 170,
+"rate": 0.10773130544993663,
+"matched": 0.13229455310094368,
+"n_train": 904,
+"rate_train": 0.1006637168141593,
+"n_test": 674,
+"rate_test": 0.1172106824925816,
+"matched_test": 0.13444145031833207,
+"stocks": 471,
+"weeks": 244,
+"top_month": "2022-12",
+"top_month_share": 0.060202788339670466,
+"median_best": 0.06729714489659755,
+"lower95": 0.09337533909223496,
+"lift": -0.02456324765100705,
+"per_market": {
+"Canada": {
+"n": 211,
+"rate": 0.0947867298578199
+},
+"Denmark": {
+"n": 229,
+"rate": 0.1222707423580786
+},
+"Finland": {
+"n": 215,
+"rate": 0.06976744186046512
+},
+"Germany": {
+"n": 232,
+"rate": 0.1206896551724138
+},
+"Norway": {
+"n": 196,
+"rate": 0.14285714285714285
+},
+"Sweden": {
+"n": 262,
+"rate": 0.08778625954198473
+},
+"USA": {
+"n": 233,
+"rate": 0.12017167381974249
+}
+},
+"name": "Golden cross",
+"idea": "50-day average crosses above the 200-day",
+"conditions": [
+"50-day crossed above 200-day"
+],
+"kind": "named"
+},
+{
+"n": 263,
+"hits": 56,
+"rate": 0.21292775665399238,
+"matched": 0.18295565643134487,
+"n_train": 197,
+"rate_train": 0.2182741116751269,
+"n_test": 66,
+"rate_test": 0.19696969696969696,
+"matched_test": 0.1783694383909518,
+"stocks": 200,
+"weeks": 121,
+"top_month": "2022-12",
+"top_month_share": 0.14068441064638784,
+"median_best": 0.10046074821983653,
+"lower95": 0.16776768328636563,
+"lift": 0.029972100222647513,
+"per_market": {
+"Canada": {
+"n": 17,
+"rate": 0.29411764705882354
+},
+"Denmark": {
+"n": 48,
+"rate": 0.20833333333333334
+},
+"Finland": {
+"n": 44,
+"rate": 0.09090909090909091
+},
+"Germany": {
+"n": 49,
+"rate": 0.22448979591836735
+},
+"Norway": {
+"n": 40,
+"rate": 0.25
+},
+"Sweden": {
+"n": 36,
+"rate": 0.19444444444444445
+},
+"USA": {
+"n": 29,
+"rate": 0.3103448275862069
+}
+},
+"name": "Golden cross after a deep fall",
+"idea": "Golden cross in a stock still 20%+ below its 52-week high",
+"conditions": [
+"50-day crossed above 200-day",
+"20%+ below 52-week high"
+],
+"kind": "named"
+},
+{
+"n": 1592,
+"hits": 202,
+"rate": 0.12688442211055276,
+"matched": 0.1643785271228726,
+"n_train": 852,
+"rate_train": 0.1068075117370892,
+"n_test": 740,
+"rate_test": 0.15,
+"matched_test": 0.16211012848193215,
+"stocks": 461,
+"weeks": 250,
+"top_month": "2022-11",
+"top_month_share": 0.032035175879396985,
+"median_best": 0.06916891460291019,
+"lower95": 0.11142736078700337,
+"lift": -0.03749410501231984,
+"per_market": {
+"Canada": {
+"n": 189,
+"rate": 0.13227513227513227
+},
+"Denmark": {
+"n": 278,
+"rate": 0.14028776978417265
+},
+"Finland": {
+"n": 223,
+"rate": 0.1031390134529148
+},
+"Germany": {
+"n": 242,
+"rate": 0.1322314049586777
+},
+"Norway": {
+"n": 216,
+"rate": 0.14351851851851852
+},
+"Sweden": {
+"n": 231,
+"rate": 0.08225108225108226
+},
+"USA": {
+"n": 213,
+"rate": 0.15492957746478872
+}
+},
+"name": "200-day reclaim on volume",
+"idea": "Close crosses above the 200-day on 1.5x volume",
+"conditions": [
+"close crossed above 200-day",
+"volume 1.5x+ average"
+],
+"kind": "named"
+},
+{
+"n": 78,
+"hits": 29,
+"rate": 0.3717948717948718,
+"matched": 0.2579816796598474,
+"n_train": 54,
+"rate_train": 0.3888888888888889,
+"n_test": 24,
+"rate_test": 0.3333333333333333,
+"matched_test": 0.2453333387495825,
+"stocks": 59,
+"weeks": 56,
+"top_month": "2022-11",
+"top_month_share": 0.15384615384615385,
+"median_best": 0.15426681357016148,
+"lower95": 0.2729339852422717,
+"lift": 0.11381319213502439,
+"per_market": {
+"Canada": {
+"n": 7,
+"rate": 0.5714285714285714
+},
+"Denmark": {
+"n": 15,
+"rate": 0.13333333333333333
+},
+"Finland": {
+"n": 10,
+"rate": 0.2
+},
+"Germany": {
+"n": 14,
+"rate": 0.5
+},
+"Norway": {
+"n": 14,
+"rate": 0.42857142857142855
+},
+"Sweden": {
+"n": 10,
+"rate": 0.4
+},
+"USA": {
+"n": 8,
+"rate": 0.5
+}
+},
+"name": "200-day reclaim after a deep fall",
+"idea": "Close crosses above the 200-day in a stock 40%+ below its high",
+"conditions": [
+"close crossed above 200-day",
+"40%+ below 52-week high"
+],
+"kind": "named"
+},
+{
+"n": 930,
+"hits": 228,
+"rate": 0.24516129032258063,
+"matched": 0.17698596019760068,
+"n_train": 502,
+"rate_train": 0.24302788844621515,
+"n_test": 428,
+"rate_test": 0.24766355140186916,
+"matched_test": 0.18361973845401558,
+"stocks": 326,
+"weeks": 219,
+"top_month": "2024-04",
+"top_month_share": 0.035483870967741936,
+"median_best": 0.10257561937403847,
+"lower95": 0.21859840553741186,
+"lift": 0.06817533012497995,
+"per_market": {
+"Canada": {
+"n": 135,
+"rate": 0.28888888888888886
+},
+"Denmark": {
+"n": 130,
+"rate": 0.19230769230769232
+},
+"Finland": {
+"n": 116,
+"rate": 0.25
+},
+"Germany": {
+"n": 134,
+"rate": 0.20149253731343283
+},
+"Norway": {
+"n": 139,
+"rate": 0.302158273381295
+},
+"Sweden": {
+"n": 139,
+"rate": 0.17266187050359713
+},
+"USA": {
+"n": 137,
+"rate": 0.30656934306569344
+}
+},
+"name": "Momentum leader pulls back",
+"idea": "Top 10% 6-month return in its market, RSI 30-50, 50-day rising",
+"conditions": [
+"top 10% 6-month return in market",
+"RSI(14) 30-50",
+"50-day rising >2% in 10 days"
+],
+"kind": "named"
+},
+{
+"n": 1227,
+"hits": 252,
+"rate": 0.20537897310513448,
+"matched": 0.1810890031862837,
+"n_train": 645,
+"rate_train": 0.19069767441860466,
+"n_test": 582,
+"rate_test": 0.22164948453608246,
+"matched_test": 0.18135651298794492,
+"stocks": 365,
+"weeks": 248,
+"top_month": "2025-10",
+"top_month_share": 0.03015484922575387,
+"median_best": 0.08773872128425109,
+"lower95": 0.18371075882452675,
+"lift": 0.024289969918850768,
+"per_market": {
+"Canada": {
+"n": 151,
+"rate": 0.2582781456953642
+},
+"Denmark": {
+"n": 193,
+"rate": 0.19689119170984457
+},
+"Finland": {
+"n": 188,
+"rate": 0.19148936170212766
+},
+"Germany": {
+"n": 163,
+"rate": 0.20245398773006135
+},
+"Norway": {
+"n": 197,
+"rate": 0.20304568527918782
+},
+"Sweden": {
+"n": 181,
+"rate": 0.13259668508287292
+},
+"USA": {
+"n": 154,
+"rate": 0.2727272727272727
+}
+},
+"name": "Momentum leader breaks out",
+"idea": "Top 10% 6-month return, close above 20-day high on 1.5x volume",
+"conditions": [
+"top 10% 6-month return in market",
+"close above 20-day high",
+"volume 1.5x+ average"
+],
+"kind": "named"
+},
+{
+"n": 1423,
+"hits": 221,
+"rate": 0.15530569219957835,
+"matched": 0.15466736472345946,
+"n_train": 695,
+"rate_train": 0.1510791366906475,
+"n_test": 728,
+"rate_test": 0.15934065934065933,
+"matched_test": 0.15789284651969612,
+"stocks": 416,
+"weeks": 250,
+"top_month": "2024-02",
+"top_month_share": 0.035839775122979624,
+"median_best": 0.08239095315024225,
+"lower95": 0.13741716758731476,
+"lift": 0.0006383274761188884,
+"per_market": {
+"Canada": {
+"n": 190,
+"rate": 0.19473684210526315
+},
+"Denmark": {
+"n": 252,
+"rate": 0.09126984126984126
+},
+"Finland": {
+"n": 193,
+"rate": 0.16580310880829016
+},
+"Germany": {
+"n": 209,
+"rate": 0.14354066985645933
+},
+"Norway": {
+"n": 202,
+"rate": 0.15346534653465346
+},
+"Sweden": {
+"n": 181,
+"rate": 0.12154696132596685
+},
+"USA": {
+"n": 196,
+"rate": 0.23469387755102042
+}
+},
+"name": "Relative-strength new high",
+"idea": "Stock-vs-market line at a 1-year high on 1.5x volume, 50-day above 200-day",
+"conditions": [
+"relative strength at 1-year high",
+"volume 1.5x+ average",
+"50-day above 200-day"
+],
+"kind": "named"
+},
+{
+"n": 715,
+"hits": 234,
+"rate": 0.32727272727272727,
+"matched": 0.23277406354101182,
+"n_train": 506,
+"rate_train": 0.3142292490118577,
+"n_test": 209,
+"rate_test": 0.3588516746411483,
+"matched_test": 0.22546902535351154,
+"stocks": 210,
+"weeks": 185,
+"top_month": "2022-10",
+"top_month_share": 0.09230769230769231,
+"median_best": 0.13680691000278622,
+"lower95": 0.2938818283443126,
+"lift": 0.09449866373171545,
+"per_market": {
+"Canada": {
+"n": 42,
+"rate": 0.5714285714285714
+},
+"Denmark": {
+"n": 158,
+"rate": 0.3227848101265823
+},
+"Finland": {
+"n": 119,
+"rate": 0.16806722689075632
+},
+"Germany": {
+"n": 130,
+"rate": 0.3153846153846154
+},
+"Norway": {
+"n": 90,
+"rate": 0.4111111111111111
+},
+"Sweden": {
+"n": 104,
+"rate": 0.2980769230769231
+},
+"USA": {
+"n": 72,
+"rate": 0.4166666666666667
+}
+},
+"name": "MACD cross below zero after a deep fall",
+"idea": "MACD crosses up while still below zero, stock 40%+ off its high",
+"conditions": [
+"MACD crossed up below zero",
+"40%+ below 52-week high"
+],
+"kind": "named"
+},
+{
+"n": 6230,
+"hits": 781,
+"rate": 0.12536115569823436,
+"matched": 0.12343567756398706,
+"n_train": 3087,
+"rate_train": 0.11208292840945902,
+"n_test": 3143,
+"rate_test": 0.13840279987273305,
+"matched_test": 0.12451781727057167,
+"stocks": 475,
+"weeks": 253,
+"top_month": "2024-04",
+"top_month_share": 0.027768860353130018,
+"median_best": 0.07649459328620789,
+"lower95": 0.11736874254947437,
+"lift": 0.001925478134247302,
+"per_market": {
+"Canada": {
+"n": 1082,
+"rate": 0.11182994454713494
+},
+"Denmark": {
+"n": 770,
+"rate": 0.13766233766233765
+},
+"Finland": {
+"n": 677,
+"rate": 0.1255539143279173
+},
+"Germany": {
+"n": 870,
+"rate": 0.12183908045977011
+},
+"Norway": {
+"n": 950,
+"rate": 0.13894736842105262
+},
+"Sweden": {
+"n": 872,
+"rate": 0.08371559633027523
+},
+"USA": {
+"n": 1009,
+"rate": 0.1565906838453915
+}
+},
+"name": "RSI(2) dip in uptrend",
+"idea": "2-day RSI under 10 while above the 200-day",
+"conditions": [
+"RSI(2) under 10",
+"above 200-day"
+],
+"kind": "named"
+},
+{
+"n": 1275,
+"hits": 220,
+"rate": 0.17254901960784313,
+"matched": 0.14762002538155858,
+"n_train": 818,
+"rate_train": 0.1821515892420538,
+"n_test": 457,
+"rate_test": 0.15536105032822758,
+"matched_test": 0.1376091015048212,
+"stocks": 421,
+"weeks": 229,
+"top_month": "2022-09",
+"top_month_share": 0.08705882352941176,
+"median_best": 0.08848657445077301,
+"lower95": 0.15279956430453803,
+"lift": 0.024928994226284557,
+"per_market": {
+"Canada": {
+"n": 140,
+"rate": 0.10714285714285714
+},
+"Denmark": {
+"n": 207,
+"rate": 0.1932367149758454
+},
+"Finland": {
+"n": 227,
+"rate": 0.13656387665198239
+},
+"Germany": {
+"n": 239,
+"rate": 0.16317991631799164
+},
+"Norway": {
+"n": 140,
+"rate": 0.17857142857142858
+},
+"Sweden": {
+"n": 180,
+"rate": 0.17222222222222222
+},
+"USA": {
+"n": 142,
+"rate": 0.2746478873239437
+}
+},
+"name": "RSI back above 30 at a 52-week low",
+"idea": "RSI(14) crosses up through 30 within 5% of the 52-week low",
+"conditions": [
+"RSI(14) crossed up through 30",
+"within 5% of 52-week low"
+],
+"kind": "named"
+},
+{
+"n": 510,
+"hits": 105,
+"rate": 0.20588235294117646,
+"matched": 0.2420589458595311,
+"n_train": 264,
+"rate_train": 0.23863636363636365,
+"n_test": 246,
+"rate_test": 0.17073170731707318,
+"matched_test": 0.23926606242723444,
+"stocks": 235,
+"weeks": 199,
+"top_month": "2024-02",
+"top_month_share": 0.0392156862745098,
+"median_best": 0.09149340943062911,
+"lower95": 0.17305039358846633,
+"lift": -0.03617659291835465,
+"per_market": {
+"Canada": {
+"n": 18,
+"rate": 0.1111111111111111
+},
+"Denmark": {
+"n": 130,
+"rate": 0.24615384615384617
+},
+"Finland": {
+"n": 106,
+"rate": 0.12264150943396226
+},
+"Germany": {
+"n": 47,
+"rate": 0.23404255319148937
+},
+"Norway": {
+"n": 109,
+"rate": 0.22018348623853212
+},
+"Sweden": {
+"n": 71,
+"rate": 0.2112676056338028
+},
+"USA": {
+"n": 29,
+"rate": 0.27586206896551724
+}
+},
+"name": "Volume thrust",
+"idea": "Up 5%+ on 4x volume with a strong close",
+"conditions": [
+"up 5%+ on the day",
+"volume 4x+ average",
+"close in top 20% of day's range"
+],
+"kind": "named"
+},
+{
+"n": 387,
+"hits": 119,
+"rate": 0.30749354005167956,
+"matched": 0.2301314290039256,
+"n_train": 285,
+"rate_train": 0.3087719298245614,
+"n_test": 102,
+"rate_test": 0.30392156862745096,
+"matched_test": 0.22360675963692836,
+"stocks": 163,
+"weeks": 145,
+"top_month": "2022-11",
+"top_month_share": 0.11886304909560723,
+"median_best": 0.13003802281368815,
+"lower95": 0.26359716265360944,
+"lift": 0.07736211104775395,
+"per_market": {
+"Canada": {
+"n": 22,
+"rate": 0.4090909090909091
+},
+"Denmark": {
+"n": 82,
+"rate": 0.2682926829268293
+},
+"Finland": {
+"n": 59,
+"rate": 0.2542372881355932
+},
+"Germany": {
+"n": 74,
+"rate": 0.25675675675675674
+},
+"Norway": {
+"n": 54,
+"rate": 0.37037037037037035
+},
+"Sweden": {
+"n": 54,
+"rate": 0.25925925925925924
+},
+"USA": {
+"n": 42,
+"rate": 0.47619047619047616
+}
+},
+"name": "Higher low and 50-day reclaim after a deep fall",
+"idea": "Stock 40%+ off its high makes a higher low and closes back above the 50-day",
+"conditions": [
+"40%+ below 52-week high",
+"higher low (10-day low above prior low)",
+"close crossed above 50-day"
+],
+"kind": "named"
+},
+{
+"n": 204,
+"hits": 81,
+"rate": 0.39705882352941174,
+"matched": 0.3111267573873439,
+"n_train": 120,
+"rate_train": 0.4,
+"n_test": 84,
+"rate_test": 0.39285714285714285,
+"matched_test": 0.3132159997185621,
+"stocks": 94,
+"weeks": 113,
+"top_month": "2022-03",
+"top_month_share": 0.09313725490196079,
+"median_best": 0.14462744830173602,
+"lower95": 0.3324139294925941,
+"lift": 0.08593206614206783,
+"per_market": {
+"Canada": {
+"n": 20,
+"rate": 0.45
+},
+"Denmark": {
+"n": 33,
+"rate": 0.30303030303030304
+},
+"Finland": {
+"n": 22,
+"rate": 0.36363636363636365
+},
+"Germany": {
+"n": 29,
+"rate": 0.4827586206896552
+},
+"Norway": {
+"n": 42,
+"rate": 0.2857142857142857
+},
+"Sweden": {
+"n": 22,
+"rate": 0.4090909090909091
+},
+"USA": {
+"n": 36,
+"rate": 0.5277777777777778
+}
+},
+"name": "High-volatility breakout",
+"idea": "Daily range 5%+ of price, close above 40-day high on 1.5x volume",
+"conditions": [
+"daily range 5%+ of price",
+"close above 40-day high",
+"volume 1.5x+ average"
+],
+"kind": "named"
+},
+{
+"n": 528,
+"hits": 156,
+"rate": 0.29545454545454547,
+"matched": 0.19023580325211895,
+"n_train": 316,
+"rate_train": 0.2689873417721519,
+"n_test": 212,
+"rate_test": 0.33490566037735847,
+"matched_test": 0.18785851798350792,
+"stocks": 211,
+"weeks": 195,
+"top_month": "2022-07",
+"top_month_share": 0.06628787878787878,
+"median_best": 0.11422557581211623,
+"lower95": 0.258127724198415,
+"lift": 0.10521874220242652,
+"per_market": {
+"Canada": {
+"n": 81,
+"rate": 0.41975308641975306
+},
+"Denmark": {
+"n": 84,
+"rate": 0.25
+},
+"Finland": {
+"n": 48,
+"rate": 0.2708333333333333
+},
+"Germany": {
+"n": 70,
+"rate": 0.2857142857142857
+},
+"Norway": {
+"n": 108,
+"rate": 0.2222222222222222
+},
+"Sweden": {
+"n": 74,
+"rate": 0.24324324324324326
+},
+"USA": {
+"n": 63,
+"rate": 0.4126984126984127
+}
+},
+"name": "Squeeze in a volatile stock",
+"idea": "Bollinger squeeze, close above 20-day high, daily range 3%+",
+"conditions": [
+"Bollinger squeeze (narrowest 10%)",
+"close above 20-day high",
+"daily range 3%+ of price"
+],
+"kind": "named"
+},
+{
+"n": 280,
+"hits": 45,
+"rate": 0.16071428571428573,
+"matched": 0.1387055018934144,
+"n_train": 161,
+"rate_train": 0.19254658385093168,
+"n_test": 119,
+"rate_test": 0.11764705882352941,
+"matched_test": 0.1161691959838789,
+"stocks": 182,
+"weeks": 130,
+"top_month": "2022-09",
+"top_month_share": 0.09642857142857143,
+"median_best": 0.08219546197121663,
+"lower95": 0.12233344891574822,
+"lift": 0.02200878382087132,
+"per_market": {
+"Canada": {
+"n": 22,
+"rate": 0.045454545454545456
+},
+"Denmark": {
+"n": 55,
+"rate": 0.10909090909090909
+},
+"Finland": {
+"n": 65,
+"rate": 0.07692307692307693
+},
+"Germany": {
+"n": 46,
+"rate": 0.2826086956521739
+},
+"Norway": {
+"n": 29,
+"rate": 0.1724137931034483
+},
+"Sweden": {
+"n": 41,
+"rate": 0.21951219512195122
+},
+"USA": {
+"n": 22,
+"rate": 0.2727272727272727
+}
+},
+"name": "Bullish engulfing at a 52-week low",
+"idea": "Bullish engulfing candle within 5% of the 52-week low on 1.5x volume",
+"conditions": [
+"bullish engulfing",
+"within 5% of 52-week low",
+"volume 1.5x+ average"
+],
+"kind": "named"
+},
+{
+"n": 2069,
+"hits": 274,
+"rate": 0.13243112614789754,
+"matched": 0.1322897839038707,
+"n_train": 1010,
+"rate_train": 0.10693069306930693,
+"n_test": 1059,
+"rate_test": 0.15675165250236073,
+"matched_test": 0.1364453145167141,
+"stocks": 456,
+"weeks": 245,
+"top_month": "2025-11",
+"top_month_share": 0.030932817786370227,
+"median_best": 0.07636400126150411,
+"lower95": 0.11850427480935538,
+"lift": 0.00014134224402684303,
+"per_market": {
+"Canada": {
+"n": 408,
+"rate": 0.11764705882352941
+},
+"Denmark": {
+"n": 207,
+"rate": 0.13043478260869565
+},
+"Finland": {
+"n": 215,
+"rate": 0.11162790697674418
+},
+"Germany": {
+"n": 274,
+"rate": 0.10948905109489052
+},
+"Norway": {
+"n": 285,
+"rate": 0.1649122807017544
+},
+"Sweden": {
+"n": 278,
+"rate": 0.10071942446043165
+},
+"USA": {
+"n": 402,
+"rate": 0.17412935323383086
+}
+},
+"name": "Four down days then up, in uptrend",
+"idea": "After 4+ down closes, closes above the previous high while above the 200-day",
+"conditions": [
+"after 4+ down days",
+"close above previous day's high",
+"above 200-day"
+],
+"kind": "named"
+},
+{
+"n": 4150,
+"hits": 446,
+"rate": 0.10746987951807228,
+"matched": 0.12554363830311022,
+"n_train": 2046,
+"rate_train": 0.0884652981427175,
+"n_test": 2104,
+"rate_test": 0.12595057034220533,
+"matched_test": 0.12564234581042605,
+"stocks": 473,
+"weeks": 256,
+"top_month": "2024-08",
+"top_month_share": 0.02746987951807229,
+"median_best": 0.06472001364601843,
+"lower95": 0.09840731915884816,
+"lift": -0.018073758785037933,
+"per_market": {
+"Canada": {
+"n": 655,
+"rate": 0.09312977099236641
+},
+"Denmark": {
+"n": 625,
+"rate": 0.1056
+},
+"Finland": {
+"n": 498,
+"rate": 0.09236947791164658
+},
+"Germany": {
+"n": 572,
+"rate": 0.10314685314685315
+},
+"Norway": {
+"n": 658,
+"rate": 0.12613981762917933
+},
+"Sweden": {
+"n": 534,
+"rate": 0.08426966292134831
+},
+"USA": {
+"n": 608,
+"rate": 0.14144736842105263
+}
+},
+"name": "NR7 breakout in uptrend",
+"idea": "Breakout from an inside, narrowest-in-7-days bar, above the 200-day",
+"conditions": [
+"breakout from inside/NR7 day",
+"above 200-day"
+],
+"kind": "named"
+},
+{
+"n": 450,
+"hits": 160,
+"rate": 0.35555555555555557,
+"matched": 0.23528305027091886,
+"n_train": 360,
+"rate_train": 0.3416666666666667,
+"n_test": 90,
+"rate_test": 0.4111111111111111,
+"matched_test": 0.23794856899628336,
+"stocks": 186,
+"weeks": 71,
+"top_month": "2022-09",
+"top_month_share": 0.17555555555555555,
+"median_best": 0.1481305087246867,
+"lower95": 0.3127209420447141,
+"lift": 0.1202725052846367,
+"per_market": {
+"Canada": {
+"n": 30,
+"rate": 0.6333333333333333
+},
+"Denmark": {
+"n": 91,
+"rate": 0.37362637362637363
+},
+"Finland": {
+"n": 83,
+"rate": 0.21686746987951808
+},
+"Germany": {
+"n": 80,
+"rate": 0.225
+},
+"Norway": {
+"n": 45,
+"rate": 0.4444444444444444
+},
+"Sweden": {
+"n": 73,
+"rate": 0.3698630136986301
+},
+"USA": {
+"n": 48,
+"rate": 0.5
+}
+},
+"name": "Oversold reversal + market washout",
+"idea": "Your oversold reversal, only when under 35% of the market's stocks are above their 50-day",
+"conditions": [
+"40%+ below 52-week high",
+"RSI(14) 30-50",
+"MACD histogram rising",
+"close above previous day's high",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "named"
+},
+{
+"n": 385,
+"hits": 155,
+"rate": 0.4025974025974026,
+"matched": 0.29100949106638113,
+"n_train": 288,
+"rate_train": 0.3611111111111111,
+"n_test": 97,
+"rate_test": 0.5257731958762887,
+"matched_test": 0.2957638788024964,
+"stocks": 141,
+"weeks": 133,
+"top_month": "2022-05",
+"top_month_share": 0.09610389610389611,
+"median_best": 0.1561140647655872,
+"lower95": 0.3548042304248356,
+"lift": 0.11158791153102149,
+"per_market": {
+"Canada": {
+"n": 35,
+"rate": 0.6
+},
+"Denmark": {
+"n": 79,
+"rate": 0.3670886075949367
+},
+"Finland": {
+"n": 44,
+"rate": 0.22727272727272727
+},
+"Germany": {
+"n": 57,
+"rate": 0.42105263157894735
+},
+"Norway": {
+"n": 64,
+"rate": 0.359375
+},
+"Sweden": {
+"n": 58,
+"rate": 0.39655172413793105
+},
+"USA": {
+"n": 48,
+"rate": 0.5208333333333334
+}
+},
+"name": "Oversold reversal + volatile stock",
+"idea": "Your oversold reversal, only when the daily range is 5%+ of the price",
+"conditions": [
+"40%+ below 52-week high",
+"RSI(14) 30-50",
+"MACD histogram rising",
+"close above previous day's high",
+"daily range 5%+ of price"
+],
+"kind": "named"
+},
+{
+"n": 146,
+"hits": 65,
+"rate": 0.4452054794520548,
+"matched": 0.2743266235868632,
+"n_train": 115,
+"rate_train": 0.43478260869565216,
+"n_test": 31,
+"rate_test": 0.4838709677419355,
+"matched_test": 0.2568135966444267,
+"stocks": 59,
+"weeks": 87,
+"top_month": "2022-09",
+"top_month_share": 0.0958904109589041,
+"median_best": 0.1696820832334851,
+"lower95": 0.3670211374202465,
+"lift": 0.17087885586519158,
+"per_market": {
+"Canada": {
+"n": 8,
+"rate": 0.625
+},
+"Denmark": {
+"n": 37,
+"rate": 0.5675675675675675
+},
+"Finland": {
+"n": 29,
+"rate": 0.27586206896551724
+},
+"Germany": {
+"n": 23,
+"rate": 0.4782608695652174
+},
+"Norway": {
+"n": 25,
+"rate": 0.32
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 11,
+"rate": 0.5454545454545454
+}
+},
+"name": "Oversold reversal, 60%+ off the high",
+"idea": "Your oversold reversal with a deeper fall",
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) 30-50",
+"MACD histogram rising",
+"close above previous day's high"
+],
+"kind": "named"
+}
+],
+"search": [
+{
+"n": 87,
+"hits": 54,
+"rate": 0.6206896551724138,
+"matched": 0.2829056131427367,
+"n_train": 74,
+"rate_train": 0.6216216216216216,
+"n_test": 13,
+"rate_test": 0.6153846153846154,
+"matched_test": 0.2700489340218862,
+"stocks": 49,
+"weeks": 27,
+"top_month": "2022-09",
+"top_month_share": 0.3333333333333333,
+"median_best": 0.24207427536231907,
+"lower95": 0.5156742657309596,
+"lift": 0.3377840420296771,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 25,
+"rate": 0.64
+},
+"Finland": {
+"n": 10,
+"rate": 0.6
+},
+"Germany": {
+"n": 18,
+"rate": 0.5555555555555556
+},
+"Norway": {
+"n": 10,
+"rate": 0.6
+},
+"Sweden": {
+"n": 13,
+"rate": 0.6923076923076923
+},
+"USA": {
+"n": 7,
+"rate": 0.42857142857142855
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"daily range 5%+ of price",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6926174496644295,
+"raw_train_days": 745
+},
+{
+"n": 85,
+"hits": 55,
+"rate": 0.6470588235294118,
+"matched": 0.27644924312911556,
+"n_train": 72,
+"rate_train": 0.6666666666666666,
+"n_test": 13,
+"rate_test": 0.5384615384615384,
+"matched_test": 0.2511419667064915,
+"stocks": 50,
+"weeks": 25,
+"top_month": "2022-09",
+"top_month_share": 0.35294117647058826,
+"median_best": 0.24907119188673543,
+"lower95": 0.5411230239742643,
+"lift": 0.37060958040029623,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 1.0
+},
+"Denmark": {
+"n": 25,
+"rate": 0.76
+},
+"Finland": {
+"n": 11,
+"rate": 0.5454545454545454
+},
+"Germany": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"Norway": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"Sweden": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"USA": {
+"n": 7,
+"rate": 0.5714285714285714
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"MACD histogram rising",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.686541737649063,
+"raw_train_days": 587
+},
+{
+"n": 96,
+"hits": 56,
+"rate": 0.5833333333333334,
+"matched": 0.2721389216098135,
+"n_train": 84,
+"rate_train": 0.5595238095238095,
+"n_test": 12,
+"rate_test": 0.75,
+"matched_test": 0.22521075216983308,
+"stocks": 56,
+"weeks": 25,
+"top_month": "2022-09",
+"top_month_share": 0.3645833333333333,
+"median_best": 0.22935775073159137,
+"lower95": 0.4833678546626702,
+"lift": 0.31119441172351986,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 28,
+"rate": 0.6071428571428571
+},
+"Finland": {
+"n": 11,
+"rate": 0.5454545454545454
+},
+"Germany": {
+"n": 22,
+"rate": 0.5
+},
+"Norway": {
+"n": 11,
+"rate": 0.6363636363636364
+},
+"Sweden": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"market: under 20% of stocks above 50-day",
+"market: 10%+ below its 1-year high"
+],
+"kind": "search",
+"raw_train_rate": 0.68359375,
+"raw_train_days": 1024
+},
+{
+"n": 103,
+"hits": 59,
+"rate": 0.5728155339805825,
+"matched": 0.2693066824665944,
+"n_train": 84,
+"rate_train": 0.5714285714285714,
+"n_test": 19,
+"rate_test": 0.5789473684210527,
+"matched_test": 0.23940706714250476,
+"stocks": 58,
+"weeks": 28,
+"top_month": "2022-09",
+"top_month_share": 0.33980582524271846,
+"median_best": 0.22913887653772047,
+"lower95": 0.476361241327509,
+"lift": 0.3035088515139881,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 29,
+"rate": 0.5862068965517241
+},
+"Finland": {
+"n": 16,
+"rate": 0.5
+},
+"Germany": {
+"n": 22,
+"rate": 0.5
+},
+"Norway": {
+"n": 11,
+"rate": 0.7272727272727273
+},
+"Sweden": {
+"n": 13,
+"rate": 0.6153846153846154
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"below 200-day",
+"60%+ below 52-week high",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6781609195402298,
+"raw_train_days": 1044
+},
+{
+"n": 100,
+"hits": 58,
+"rate": 0.58,
+"matched": 0.2697230696556643,
+"n_train": 84,
+"rate_train": 0.5714285714285714,
+"n_test": 16,
+"rate_test": 0.625,
+"matched_test": 0.23238149026240323,
+"stocks": 57,
+"weeks": 27,
+"top_month": "2022-09",
+"top_month_share": 0.35,
+"median_best": 0.22935775073159137,
+"lower95": 0.48206307998895265,
+"lift": 0.3102769303443357,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 29,
+"rate": 0.5862068965517241
+},
+"Finland": {
+"n": 13,
+"rate": 0.5384615384615384
+},
+"Germany": {
+"n": 22,
+"rate": 0.5
+},
+"Norway": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"Sweden": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"market: under 20% of stocks above 50-day",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6761904761904762,
+"raw_train_days": 1050
+},
+{
+"n": 101,
+"hits": 58,
+"rate": 0.5742574257425742,
+"matched": 0.2696383303072106,
+"n_train": 82,
+"rate_train": 0.573170731707317,
+"n_test": 19,
+"rate_test": 0.5789473684210527,
+"matched_test": 0.23940706714250476,
+"stocks": 56,
+"weeks": 28,
+"top_month": "2022-09",
+"top_month_share": 0.32673267326732675,
+"median_best": 0.22913887653772047,
+"lower95": 0.47684837141099295,
+"lift": 0.3046190954353636,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 29,
+"rate": 0.5862068965517241
+},
+"Finland": {
+"n": 16,
+"rate": 0.5
+},
+"Germany": {
+"n": 21,
+"rate": 0.5238095238095238
+},
+"Norway": {
+"n": 10,
+"rate": 0.7
+},
+"Sweden": {
+"n": 13,
+"rate": 0.6153846153846154
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6757281553398058,
+"raw_train_days": 1030
+},
+{
+"n": 104,
+"hits": 59,
+"rate": 0.5673076923076923,
+"matched": 0.26985888910122935,
+"n_train": 85,
+"rate_train": 0.5647058823529412,
+"n_test": 19,
+"rate_test": 0.5789473684210527,
+"matched_test": 0.23940706714250476,
+"stocks": 58,
+"weeks": 29,
+"top_month": "2022-09",
+"top_month_share": 0.33653846153846156,
+"median_best": 0.22710862322183833,
+"lower95": 0.4713684691351153,
+"lift": 0.29744880320646294,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 29,
+"rate": 0.5862068965517241
+},
+"Finland": {
+"n": 16,
+"rate": 0.5
+},
+"Germany": {
+"n": 22,
+"rate": 0.5
+},
+"Norway": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"Sweden": {
+"n": 13,
+"rate": 0.6153846153846154
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6752136752136753,
+"raw_train_days": 1053
+},
+{
+"n": 92,
+"hits": 51,
+"rate": 0.5543478260869565,
+"matched": 0.2659373468694129,
+"n_train": 75,
+"rate_train": 0.5466666666666666,
+"n_test": 17,
+"rate_test": 0.5882352941176471,
+"matched_test": 0.2291330547511954,
+"stocks": 57,
+"weeks": 27,
+"top_month": "2022-09",
+"top_month_share": 0.33695652173913043,
+"median_best": 0.22710862322183833,
+"lower95": 0.45263522635441744,
+"lift": 0.28841047921754365,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 25,
+"rate": 0.56
+},
+"Finland": {
+"n": 15,
+"rate": 0.5333333333333333
+},
+"Germany": {
+"n": 19,
+"rate": 0.42105263157894735
+},
+"Norway": {
+"n": 11,
+"rate": 0.6363636363636364
+},
+"Sweden": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"USA": {
+"n": 6,
+"rate": 0.3333333333333333
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"within 5% of 52-week low",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6748251748251748,
+"raw_train_days": 572
+},
+{
+"n": 90,
+"hits": 53,
+"rate": 0.5888888888888889,
+"matched": 0.2705386566780338,
+"n_train": 72,
+"rate_train": 0.5972222222222222,
+"n_test": 18,
+"rate_test": 0.5555555555555556,
+"matched_test": 0.23813040034751687,
+"stocks": 53,
+"weeks": 29,
+"top_month": "2022-09",
+"top_month_share": 0.3,
+"median_best": 0.23949420379263076,
+"lower95": 0.48563048727714275,
+"lift": 0.3183502322108551,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 25,
+"rate": 0.6
+},
+"Finland": {
+"n": 15,
+"rate": 0.5333333333333333
+},
+"Germany": {
+"n": 16,
+"rate": 0.5625
+},
+"Norway": {
+"n": 10,
+"rate": 0.6
+},
+"Sweden": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"bottom 10% 6-month return in market",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6666666666666666,
+"raw_train_days": 786
+},
+{
+"n": 65,
+"hits": 37,
+"rate": 0.5692307692307692,
+"matched": 0.26318059819647593,
+"n_train": 57,
+"rate_train": 0.5789473684210527,
+"n_test": 8,
+"rate_test": 0.5,
+"matched_test": 0.2384525736321494,
+"stocks": 41,
+"weeks": 31,
+"top_month": "2022-09",
+"top_month_share": 0.18461538461538463,
+"median_best": 0.24474708171206228,
+"lower95": 0.44832757984982086,
+"lift": 0.3060501710342933,
+"per_market": {
+"Canada": {
+"n": 2,
+"rate": 1.0
+},
+"Denmark": {
+"n": 17,
+"rate": 0.5882352941176471
+},
+"Finland": {
+"n": 10,
+"rate": 0.4
+},
+"Germany": {
+"n": 11,
+"rate": 0.6363636363636364
+},
+"Norway": {
+"n": 15,
+"rate": 0.6
+},
+"Sweden": {
+"n": 5,
+"rate": 0.4
+},
+"USA": {
+"n": 5,
+"rate": 0.6
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.654054054054054,
+"raw_train_days": 370
+},
+{
+"n": 84,
+"hits": 48,
+"rate": 0.5714285714285714,
+"matched": 0.2796916542960592,
+"n_train": 73,
+"rate_train": 0.547945205479452,
+"n_test": 11,
+"rate_test": 0.7272727272727273,
+"matched_test": 0.2515476144472713,
+"stocks": 47,
+"weeks": 25,
+"top_month": "2022-09",
+"top_month_share": 0.30952380952380953,
+"median_best": 0.21308720170328366,
+"lower95": 0.4647675967027547,
+"lift": 0.2917369171325122,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 25,
+"rate": 0.64
+},
+"Finland": {
+"n": 10,
+"rate": 0.5
+},
+"Germany": {
+"n": 18,
+"rate": 0.3888888888888889
+},
+"Norway": {
+"n": 11,
+"rate": 0.7272727272727273
+},
+"Sweden": {
+"n": 10,
+"rate": 0.6
+},
+"USA": {
+"n": 6,
+"rate": 0.3333333333333333
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) 30-50",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6521739130434783,
+"raw_train_days": 690
+},
+{
+"n": 110,
+"hits": 54,
+"rate": 0.4909090909090909,
+"matched": 0.2687227223720495,
+"n_train": 92,
+"rate_train": 0.5,
+"n_test": 18,
+"rate_test": 0.4444444444444444,
+"matched_test": 0.24368773513024886,
+"stocks": 59,
+"weeks": 44,
+"top_month": "2022-09",
+"top_month_share": 0.2636363636363636,
+"median_best": 0.19827553531327968,
+"lower95": 0.3993812926379583,
+"lift": 0.22218636853704138,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 0.3333333333333333
+},
+"Denmark": {
+"n": 30,
+"rate": 0.7
+},
+"Finland": {
+"n": 19,
+"rate": 0.3684210526315789
+},
+"Germany": {
+"n": 19,
+"rate": 0.42105263157894735
+},
+"Norway": {
+"n": 19,
+"rate": 0.47368421052631576
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 7,
+"rate": 0.2857142857142857
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume 1.5x+ average",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6430594900849859,
+"raw_train_days": 353
+},
+{
+"n": 80,
+"hits": 48,
+"rate": 0.6,
+"matched": 0.2559880770716262,
+"n_train": 71,
+"rate_train": 0.5915492957746479,
+"n_test": 9,
+"rate_test": 0.6666666666666666,
+"matched_test": 0.2173227670465368,
+"stocks": 57,
+"weeks": 35,
+"top_month": "2022-09",
+"top_month_share": 0.35,
+"median_best": 0.2725735188592294,
+"lower95": 0.49045264548149986,
+"lift": 0.3440119229283738,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 1.0
+},
+"Denmark": {
+"n": 27,
+"rate": 0.7037037037037037
+},
+"Finland": {
+"n": 10,
+"rate": 0.5
+},
+"Germany": {
+"n": 14,
+"rate": 0.35714285714285715
+},
+"Norway": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Sweden": {
+"n": 11,
+"rate": 0.5454545454545454
+},
+"USA": {
+"n": 9,
+"rate": 0.6666666666666666
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) under 30",
+"market: 10%+ below its 1-year high"
+],
+"kind": "search",
+"raw_train_rate": 0.62882096069869,
+"raw_train_days": 458
+},
+{
+"n": 71,
+"hits": 43,
+"rate": 0.6056338028169014,
+"matched": 0.2751016199231865,
+"n_train": 67,
+"rate_train": 0.582089552238806,
+"n_test": 4,
+"rate_test": 1.0,
+"matched_test": 0.25642335763775437,
+"stocks": 39,
+"weeks": 37,
+"top_month": "2022-11",
+"top_month_share": 0.14084507042253522,
+"median_best": 0.22097759674134432,
+"lower95": 0.4893555588836079,
+"lift": 0.3305321828937149,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 1.0
+},
+"Denmark": {
+"n": 20,
+"rate": 0.75
+},
+"Finland": {
+"n": 10,
+"rate": 0.3
+},
+"Germany": {
+"n": 15,
+"rate": 0.6666666666666666
+},
+"Norway": {
+"n": 9,
+"rate": 0.6666666666666666
+},
+"Sweden": {
+"n": 6,
+"rate": 0.5
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"market: 10%+ below its 1-year high"
+],
+"kind": "search",
+"raw_train_rate": 0.6248331108144193,
+"raw_train_days": 749
+},
+{
+"n": 108,
+"hits": 52,
+"rate": 0.48148148148148145,
+"matched": 0.26954654360708485,
+"n_train": 95,
+"rate_train": 0.4421052631578947,
+"n_test": 13,
+"rate_test": 0.7692307692307693,
+"matched_test": 0.2264643242789395,
+"stocks": 59,
+"weeks": 34,
+"top_month": "2022-09",
+"top_month_share": 0.26851851851851855,
+"median_best": 0.1940494357750806,
+"lower95": 0.3895121132367203,
+"lift": 0.2119349378743966,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 1.0
+},
+"Denmark": {
+"n": 34,
+"rate": 0.5882352941176471
+},
+"Finland": {
+"n": 13,
+"rate": 0.3076923076923077
+},
+"Germany": {
+"n": 22,
+"rate": 0.4090909090909091
+},
+"Norway": {
+"n": 11,
+"rate": 0.45454545454545453
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 10,
+"rate": 0.3
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"market: under 35% of stocks above 50-day",
+"market: 10%+ below its 1-year high"
+],
+"kind": "search",
+"raw_train_rate": 0.6212841854934602,
+"raw_train_days": 1682
+},
+{
+"n": 97,
+"hits": 50,
+"rate": 0.5154639175257731,
+"matched": 0.2786991557986615,
+"n_train": 81,
+"rate_train": 0.4567901234567901,
+"n_test": 16,
+"rate_test": 0.8125,
+"matched_test": 0.2735140509531703,
+"stocks": 74,
+"weeks": 31,
+"top_month": "2022-09",
+"top_month_share": 0.1958762886597938,
+"median_best": 0.2101169044761524,
+"lower95": 0.41732951901522114,
+"lift": 0.23676476172711164,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 0.4
+},
+"Denmark": {
+"n": 15,
+"rate": 0.6
+},
+"Finland": {
+"n": 16,
+"rate": 0.5
+},
+"Germany": {
+"n": 23,
+"rate": 0.5217391304347826
+},
+"Norway": {
+"n": 8,
+"rate": 0.125
+},
+"Sweden": {
+"n": 18,
+"rate": 0.7222222222222222
+},
+"USA": {
+"n": 12,
+"rate": 0.4166666666666667
+}
+},
+"conditions": [
+"down 25%+ in 20 days",
+"bottom 10% 6-month return in market",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6175115207373272,
+"raw_train_days": 434
+},
+{
+"n": 99,
+"hits": 50,
+"rate": 0.5050505050505051,
+"matched": 0.2573483866683133,
+"n_train": 81,
+"rate_train": 0.5185185185185185,
+"n_test": 18,
+"rate_test": 0.4444444444444444,
+"matched_test": 0.25619172619226593,
+"stocks": 62,
+"weeks": 39,
+"top_month": "2022-09",
+"top_month_share": 0.2828282828282828,
+"median_best": 0.2050620469345128,
+"lower95": 0.40822998685489836,
+"lift": 0.2477021183821918,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 0.3333333333333333
+},
+"Denmark": {
+"n": 29,
+"rate": 0.6551724137931034
+},
+"Finland": {
+"n": 14,
+"rate": 0.21428571428571427
+},
+"Germany": {
+"n": 16,
+"rate": 0.375
+},
+"Norway": {
+"n": 15,
+"rate": 0.6666666666666666
+},
+"Sweden": {
+"n": 14,
+"rate": 0.5714285714285714
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) under 30",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6144859813084113,
+"raw_train_days": 428
+},
+{
+"n": 125,
+"hits": 60,
+"rate": 0.48,
+"matched": 0.2819198279335625,
+"n_train": 106,
+"rate_train": 0.4811320754716981,
+"n_test": 19,
+"rate_test": 0.47368421052631576,
+"matched_test": 0.26461766631997835,
+"stocks": 58,
+"weeks": 45,
+"top_month": "2022-09",
+"top_month_share": 0.216,
+"median_best": 0.1970174648451184,
+"lower95": 0.39432615338057314,
+"lift": 0.19808017206643747,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 0.8
+},
+"Denmark": {
+"n": 32,
+"rate": 0.53125
+},
+"Finland": {
+"n": 16,
+"rate": 0.4375
+},
+"Germany": {
+"n": 22,
+"rate": 0.45454545454545453
+},
+"Norway": {
+"n": 25,
+"rate": 0.48
+},
+"Sweden": {
+"n": 15,
+"rate": 0.5333333333333333
+},
+"USA": {
+"n": 10,
+"rate": 0.2
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"daily range 5%+ of price",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6130653266331658,
+"raw_train_days": 1393
+},
+{
+"n": 116,
+"hits": 51,
+"rate": 0.4396551724137931,
+"matched": 0.2688246807505478,
+"n_train": 97,
+"rate_train": 0.41237113402061853,
+"n_test": 19,
+"rate_test": 0.5789473684210527,
+"matched_test": 0.2500292987133651,
+"stocks": 61,
+"weeks": 38,
+"top_month": "2022-09",
+"top_month_share": 0.25,
+"median_best": 0.18039837197395903,
+"lower95": 0.35270242864397283,
+"lift": 0.17083049166324532,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.8333333333333334
+},
+"Denmark": {
+"n": 38,
+"rate": 0.5263157894736842
+},
+"Finland": {
+"n": 15,
+"rate": 0.26666666666666666
+},
+"Germany": {
+"n": 22,
+"rate": 0.4090909090909091
+},
+"Norway": {
+"n": 12,
+"rate": 0.4166666666666667
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 10,
+"rate": 0.2
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"market: under 35% of stocks above 50-day",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6067665002773156,
+"raw_train_days": 1803
+},
+{
+"n": 70,
+"hits": 38,
+"rate": 0.5428571428571428,
+"matched": 0.28727533253163323,
+"n_train": 64,
+"rate_train": 0.546875,
+"n_test": 6,
+"rate_test": 0.5,
+"matched_test": 0.25276523358163133,
+"stocks": 40,
+"weeks": 34,
+"top_month": "2022-10",
+"top_month_share": 0.21428571428571427,
+"median_best": 0.21684971936512842,
+"lower95": 0.4269805339664774,
+"lift": 0.2555818103255096,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.75
+},
+"Denmark": {
+"n": 20,
+"rate": 0.5
+},
+"Finland": {
+"n": 6,
+"rate": 0.3333333333333333
+},
+"Germany": {
+"n": 12,
+"rate": 0.6666666666666666
+},
+"Norway": {
+"n": 16,
+"rate": 0.5
+},
+"Sweden": {
+"n": 6,
+"rate": 0.5
+},
+"USA": {
+"n": 6,
+"rate": 0.6666666666666666
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"higher low (10-day low above prior low)",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.6038543897216274,
+"raw_train_days": 467
+},
+{
+"n": 120,
+"hits": 67,
+"rate": 0.5583333333333333,
+"matched": 0.2735951147817977,
+"n_train": 67,
+"rate_train": 0.40298507462686567,
+"n_test": 53,
+"rate_test": 0.7547169811320755,
+"matched_test": 0.267576151384894,
+"stocks": 90,
+"weeks": 26,
+"top_month": "2025-04",
+"top_month_share": 0.26666666666666666,
+"median_best": 0.22719865543874163,
+"lower95": 0.4690436082030291,
+"lift": 0.28473821855153564,
+"per_market": {
+"Canada": {
+"n": 10,
+"rate": 0.6
+},
+"Denmark": {
+"n": 20,
+"rate": 0.55
+},
+"Finland": {
+"n": 11,
+"rate": 0.36363636363636365
+},
+"Germany": {
+"n": 36,
+"rate": 0.6666666666666666
+},
+"Norway": {
+"n": 19,
+"rate": 0.5263157894736842
+},
+"Sweden": {
+"n": 13,
+"rate": 0.38461538461538464
+},
+"USA": {
+"n": 11,
+"rate": 0.6363636363636364
+}
+},
+"conditions": [
+"50-day rising >2% in 10 days",
+"daily range 5%+ of price",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5994152046783626,
+"raw_train_days": 342
+},
+{
+"n": 107,
+"hits": 63,
+"rate": 0.5887850467289719,
+"matched": 0.27104542997196096,
+"n_train": 97,
+"rate_train": 0.5773195876288659,
+"n_test": 10,
+"rate_test": 0.7,
+"matched_test": 0.21765322131429782,
+"stocks": 58,
+"weeks": 43,
+"top_month": "2022-09",
+"top_month_share": 0.2523364485981308,
+"median_best": 0.24705882352941178,
+"lower95": 0.4940515755657606,
+"lift": 0.31773961675701096,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.75
+},
+"Denmark": {
+"n": 32,
+"rate": 0.6875
+},
+"Finland": {
+"n": 17,
+"rate": 0.47058823529411764
+},
+"Germany": {
+"n": 23,
+"rate": 0.5652173913043478
+},
+"Norway": {
+"n": 7,
+"rate": 0.7142857142857143
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 11,
+"rate": 0.5454545454545454
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume 1.5x+ average",
+"market: 10%+ below its 1-year high"
+],
+"kind": "search",
+"raw_train_rate": 0.5968063872255489,
+"raw_train_days": 501
+},
+{
+"n": 148,
+"hits": 76,
+"rate": 0.5135135135135135,
+"matched": 0.2757281713044702,
+"n_train": 124,
+"rate_train": 0.47580645161290325,
+"n_test": 24,
+"rate_test": 0.7083333333333334,
+"matched_test": 0.28584138812402743,
+"stocks": 104,
+"weeks": 31,
+"top_month": "2022-09",
+"top_month_share": 0.23648648648648649,
+"median_best": 0.2088239420147988,
+"lower95": 0.43366999139609475,
+"lift": 0.2377853422090433,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.3333333333333333
+},
+"Denmark": {
+"n": 25,
+"rate": 0.56
+},
+"Finland": {
+"n": 17,
+"rate": 0.5882352941176471
+},
+"Germany": {
+"n": 37,
+"rate": 0.5945945945945946
+},
+"Norway": {
+"n": 19,
+"rate": 0.42105263157894735
+},
+"Sweden": {
+"n": 30,
+"rate": 0.4666666666666667
+},
+"USA": {
+"n": 14,
+"rate": 0.42857142857142855
+}
+},
+"conditions": [
+"40%+ below 52-week high",
+"down 25%+ in 20 days",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.595879556259905,
+"raw_train_days": 631
+},
+{
+"n": 144,
+"hits": 59,
+"rate": 0.4097222222222222,
+"matched": 0.26940199074920773,
+"n_train": 119,
+"rate_train": 0.3949579831932773,
+"n_test": 25,
+"rate_test": 0.48,
+"matched_test": 0.25644746295751786,
+"stocks": 65,
+"weeks": 51,
+"top_month": "2022-09",
+"top_month_share": 0.2013888888888889,
+"median_best": 0.16748943590044907,
+"lower95": 0.33275935999749184,
+"lift": 0.14032023147301448,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 38,
+"rate": 0.5
+},
+"Finland": {
+"n": 21,
+"rate": 0.23809523809523808
+},
+"Germany": {
+"n": 25,
+"rate": 0.4
+},
+"Norway": {
+"n": 27,
+"rate": 0.4074074074074074
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"USA": {
+"n": 12,
+"rate": 0.25
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"daily range 3%+ of price",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5950540958268934,
+"raw_train_days": 1941
+},
+{
+"n": 145,
+"hits": 60,
+"rate": 0.41379310344827586,
+"matched": 0.2680289614890499,
+"n_train": 120,
+"rate_train": 0.4,
+"n_test": 25,
+"rate_test": 0.48,
+"matched_test": 0.2540174958827983,
+"stocks": 65,
+"weeks": 51,
+"top_month": "2022-09",
+"top_month_share": 0.2,
+"median_best": 0.16993762857982553,
+"lower95": 0.336862322438135,
+"lift": 0.14576414195922593,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 38,
+"rate": 0.5
+},
+"Finland": {
+"n": 22,
+"rate": 0.2727272727272727
+},
+"Germany": {
+"n": 25,
+"rate": 0.4
+},
+"Norway": {
+"n": 27,
+"rate": 0.4074074074074074
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"USA": {
+"n": 12,
+"rate": 0.25
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5949562532166752,
+"raw_train_days": 1943
+},
+{
+"n": 139,
+"hits": 57,
+"rate": 0.41007194244604317,
+"matched": 0.26627504799930446,
+"n_train": 114,
+"rate_train": 0.39473684210526316,
+"n_test": 25,
+"rate_test": 0.48,
+"matched_test": 0.2540174958827983,
+"stocks": 63,
+"weeks": 50,
+"top_month": "2022-09",
+"top_month_share": 0.19424460431654678,
+"median_best": 0.1650412432210726,
+"lower95": 0.33179421791116376,
+"lift": 0.1437968944467387,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 38,
+"rate": 0.5263157894736842
+},
+"Finland": {
+"n": 22,
+"rate": 0.2727272727272727
+},
+"Germany": {
+"n": 23,
+"rate": 0.391304347826087
+},
+"Norway": {
+"n": 23,
+"rate": 0.34782608695652173
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"USA": {
+"n": 12,
+"rate": 0.25
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5948502364687336,
+"raw_train_days": 1903
+},
+{
+"n": 141,
+"hits": 56,
+"rate": 0.3971631205673759,
+"matched": 0.2656241099426804,
+"n_train": 116,
+"rate_train": 0.3793103448275862,
+"n_test": 25,
+"rate_test": 0.48,
+"matched_test": 0.2540174958827983,
+"stocks": 65,
+"weeks": 50,
+"top_month": "2022-09",
+"top_month_share": 0.20567375886524822,
+"median_best": 0.1624149659863945,
+"lower95": 0.3201558187006704,
+"lift": 0.13153901062469553,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 38,
+"rate": 0.5
+},
+"Finland": {
+"n": 22,
+"rate": 0.2727272727272727
+},
+"Germany": {
+"n": 24,
+"rate": 0.375
+},
+"Norway": {
+"n": 24,
+"rate": 0.3333333333333333
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"USA": {
+"n": 12,
+"rate": 0.25
+}
+},
+"conditions": [
+"below 200-day",
+"60%+ below 52-week high",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5944531658817374,
+"raw_train_days": 1911
+},
+{
+"n": 163,
+"hits": 87,
+"rate": 0.5337423312883436,
+"matched": 0.2799166128474873,
+"n_train": 133,
+"rate_train": 0.48120300751879697,
+"n_test": 30,
+"rate_test": 0.7666666666666667,
+"matched_test": 0.2781185755101701,
+"stocks": 112,
+"weeks": 27,
+"top_month": "2022-09",
+"top_month_share": 0.2331288343558282,
+"median_best": 0.21481651727572193,
+"lower95": 0.45726370693149515,
+"lift": 0.2538257184408563,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.3333333333333333
+},
+"Denmark": {
+"n": 25,
+"rate": 0.48
+},
+"Finland": {
+"n": 21,
+"rate": 0.47619047619047616
+},
+"Germany": {
+"n": 33,
+"rate": 0.5454545454545454
+},
+"Norway": {
+"n": 26,
+"rate": 0.5
+},
+"Sweden": {
+"n": 28,
+"rate": 0.6428571428571429
+},
+"USA": {
+"n": 24,
+"rate": 0.5833333333333334
+}
+},
+"conditions": [
+"40%+ below 52-week high",
+"down 15%+ in 5 days",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5942492012779552,
+"raw_train_days": 313
+},
+{
+"n": 127,
+"hits": 56,
+"rate": 0.4409448818897638,
+"matched": 0.26421129493082346,
+"n_train": 104,
+"rate_train": 0.4423076923076923,
+"n_test": 23,
+"rate_test": 0.43478260869565216,
+"matched_test": 0.2541975277404111,
+"stocks": 64,
+"weeks": 48,
+"top_month": "2022-09",
+"top_month_share": 0.2125984251968504,
+"median_best": 0.17543084401237286,
+"lower95": 0.3575859849966562,
+"lift": 0.17673358695894031,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 38,
+"rate": 0.5526315789473685
+},
+"Finland": {
+"n": 20,
+"rate": 0.25
+},
+"Germany": {
+"n": 20,
+"rate": 0.35
+},
+"Norway": {
+"n": 20,
+"rate": 0.45
+},
+"Sweden": {
+"n": 14,
+"rate": 0.5714285714285714
+},
+"USA": {
+"n": 9,
+"rate": 0.2222222222222222
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"within 5% of 52-week low",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5928571428571429,
+"raw_train_days": 980
+},
+{
+"n": 158,
+"hits": 79,
+"rate": 0.5,
+"matched": 0.2632223788439905,
+"n_train": 124,
+"rate_train": 0.45161290322580644,
+"n_test": 34,
+"rate_test": 0.6764705882352942,
+"matched_test": 0.26341728421567173,
+"stocks": 119,
+"weeks": 29,
+"top_month": "2022-09",
+"top_month_share": 0.20253164556962025,
+"median_best": 0.20098378546305018,
+"lower95": 0.42296625811981226,
+"lift": 0.23677762115600948,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 0.4
+},
+"Denmark": {
+"n": 26,
+"rate": 0.5
+},
+"Finland": {
+"n": 18,
+"rate": 0.5
+},
+"Germany": {
+"n": 44,
+"rate": 0.5909090909090909
+},
+"Norway": {
+"n": 16,
+"rate": 0.25
+},
+"Sweden": {
+"n": 36,
+"rate": 0.5277777777777778
+},
+"USA": {
+"n": 13,
+"rate": 0.46153846153846156
+}
+},
+"conditions": [
+"within 5% of 52-week low",
+"down 25%+ in 20 days",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5922131147540983,
+"raw_train_days": 488
+},
+{
+"n": 89,
+"hits": 46,
+"rate": 0.5168539325842697,
+"matched": 0.2794768565935346,
+"n_train": 74,
+"rate_train": 0.5135135135135135,
+"n_test": 15,
+"rate_test": 0.5333333333333333,
+"matched_test": 0.257990729319769,
+"stocks": 48,
+"weeks": 36,
+"top_month": "2022-10",
+"top_month_share": 0.16853932584269662,
+"median_best": 0.20081668368091,
+"lower95": 0.41450403725039653,
+"lift": 0.2373770759907351,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.75
+},
+"Denmark": {
+"n": 25,
+"rate": 0.64
+},
+"Finland": {
+"n": 14,
+"rate": 0.21428571428571427
+},
+"Germany": {
+"n": 16,
+"rate": 0.5
+},
+"Norway": {
+"n": 14,
+"rate": 0.5
+},
+"Sweden": {
+"n": 9,
+"rate": 0.5555555555555556
+},
+"USA": {
+"n": 7,
+"rate": 0.5714285714285714
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"close above previous day's high",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.591715976331361,
+"raw_train_days": 338
+},
+{
+"n": 101,
+"hits": 51,
+"rate": 0.504950495049505,
+"matched": 0.2724533359164721,
+"n_train": 87,
+"rate_train": 0.5172413793103449,
+"n_test": 14,
+"rate_test": 0.42857142857142855,
+"matched_test": 0.22557406521306406,
+"stocks": 54,
+"weeks": 34,
+"top_month": "2022-09",
+"top_month_share": 0.27722772277227725,
+"median_best": 0.20052194290583736,
+"lower95": 0.40906319132283897,
+"lift": 0.23249715913303287,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.75
+},
+"Denmark": {
+"n": 29,
+"rate": 0.6206896551724138
+},
+"Finland": {
+"n": 14,
+"rate": 0.2857142857142857
+},
+"Germany": {
+"n": 18,
+"rate": 0.3888888888888889
+},
+"Norway": {
+"n": 16,
+"rate": 0.5625
+},
+"Sweden": {
+"n": 10,
+"rate": 0.6
+},
+"USA": {
+"n": 10,
+"rate": 0.4
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"close in top 20% of day's range",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.589873417721519,
+"raw_train_days": 395
+},
+{
+"n": 74,
+"hits": 31,
+"rate": 0.4189189189189189,
+"matched": 0.2893222374532748,
+"n_train": 62,
+"rate_train": 0.41935483870967744,
+"n_test": 12,
+"rate_test": 0.4166666666666667,
+"matched_test": 0.29137856615385266,
+"stocks": 45,
+"weeks": 38,
+"top_month": "2022-09",
+"top_month_share": 0.24324324324324326,
+"median_best": 0.1790395115551373,
+"lower95": 0.3132415706072719,
+"lift": 0.12959668146564413,
+"per_market": {
+"Canada": {
+"n": 2,
+"rate": 0.5
+},
+"Denmark": {
+"n": 21,
+"rate": 0.5238095238095238
+},
+"Finland": {
+"n": 9,
+"rate": 0.2222222222222222
+},
+"Germany": {
+"n": 11,
+"rate": 0.36363636363636365
+},
+"Norway": {
+"n": 13,
+"rate": 0.5384615384615384
+},
+"Sweden": {
+"n": 11,
+"rate": 0.45454545454545453
+},
+"USA": {
+"n": 7,
+"rate": 0.14285714285714285
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"down 25%+ in 20 days",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5862944162436549,
+"raw_train_days": 394
+},
+{
+"n": 152,
+"hits": 75,
+"rate": 0.4934210526315789,
+"matched": 0.2681516919409266,
+"n_train": 122,
+"rate_train": 0.4672131147540984,
+"n_test": 30,
+"rate_test": 0.6,
+"matched_test": 0.269072957563875,
+"stocks": 114,
+"weeks": 30,
+"top_month": "2022-09",
+"top_month_share": 0.19736842105263158,
+"median_best": 0.19611268553062455,
+"lower95": 0.41508719576899217,
+"lift": 0.22526936069065234,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.5
+},
+"Denmark": {
+"n": 27,
+"rate": 0.48148148148148145
+},
+"Finland": {
+"n": 19,
+"rate": 0.47368421052631576
+},
+"Germany": {
+"n": 39,
+"rate": 0.5641025641025641
+},
+"Norway": {
+"n": 16,
+"rate": 0.4375
+},
+"Sweden": {
+"n": 35,
+"rate": 0.45714285714285713
+},
+"USA": {
+"n": 12,
+"rate": 0.5
+}
+},
+"conditions": [
+"200-day falling",
+"down 25%+ in 20 days",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5859649122807018,
+"raw_train_days": 570
+},
+{
+"n": 125,
+"hits": 60,
+"rate": 0.48,
+"matched": 0.27146306786736907,
+"n_train": 103,
+"rate_train": 0.4854368932038835,
+"n_test": 22,
+"rate_test": 0.45454545454545453,
+"matched_test": 0.25517415635805274,
+"stocks": 63,
+"weeks": 44,
+"top_month": "2022-09",
+"top_month_share": 0.24,
+"median_best": 0.1741393651560279,
+"lower95": 0.39432615338057314,
+"lift": 0.20853693213263091,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 34,
+"rate": 0.6176470588235294
+},
+"Finland": {
+"n": 20,
+"rate": 0.35
+},
+"Germany": {
+"n": 19,
+"rate": 0.3684210526315789
+},
+"Norway": {
+"n": 20,
+"rate": 0.35
+},
+"Sweden": {
+"n": 15,
+"rate": 0.5333333333333333
+},
+"USA": {
+"n": 11,
+"rate": 0.5454545454545454
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"MACD histogram rising",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5847047434656341,
+"raw_train_days": 1033
+},
+{
+"n": 122,
+"hits": 54,
+"rate": 0.4426229508196721,
+"matched": 0.2714867327715356,
+"n_train": 104,
+"rate_train": 0.4230769230769231,
+"n_test": 18,
+"rate_test": 0.5555555555555556,
+"matched_test": 0.25380586382893294,
+"stocks": 59,
+"weeks": 49,
+"top_month": "2022-09",
+"top_month_share": 0.1885245901639344,
+"median_best": 0.17583614290596628,
+"lower95": 0.3575736806790091,
+"lift": 0.1711362180481365,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.8333333333333334
+},
+"Denmark": {
+"n": 32,
+"rate": 0.53125
+},
+"Finland": {
+"n": 19,
+"rate": 0.3157894736842105
+},
+"Germany": {
+"n": 21,
+"rate": 0.38095238095238093
+},
+"Norway": {
+"n": 22,
+"rate": 0.36363636363636365
+},
+"Sweden": {
+"n": 12,
+"rate": 0.4166666666666667
+},
+"USA": {
+"n": 10,
+"rate": 0.5
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) 30-50",
+"market: under 35% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5839080459770115,
+"raw_train_days": 1305
+},
+{
+"n": 133,
+"hits": 69,
+"rate": 0.518796992481203,
+"matched": 0.2798495292481911,
+"n_train": 110,
+"rate_train": 0.5363636363636364,
+"n_test": 23,
+"rate_test": 0.43478260869565216,
+"matched_test": 0.2980053982086908,
+"stocks": 102,
+"weeks": 25,
+"top_month": "2022-03",
+"top_month_share": 0.17293233082706766,
+"median_best": 0.2076916730832692,
+"lower95": 0.4345513610645472,
+"lift": 0.23894746323301191,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.25
+},
+"Denmark": {
+"n": 17,
+"rate": 0.5882352941176471
+},
+"Finland": {
+"n": 17,
+"rate": 0.5294117647058824
+},
+"Germany": {
+"n": 35,
+"rate": 0.6285714285714286
+},
+"Norway": {
+"n": 20,
+"rate": 0.5
+},
+"Sweden": {
+"n": 28,
+"rate": 0.39285714285714285
+},
+"USA": {
+"n": 12,
+"rate": 0.5
+}
+},
+"conditions": [
+"MACD histogram rising",
+"down 25%+ in 20 days",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5825892857142857,
+"raw_train_days": 448
+},
+{
+"n": 196,
+"hits": 105,
+"rate": 0.5357142857142857,
+"matched": 0.2746253291022676,
+"n_train": 147,
+"rate_train": 0.47619047619047616,
+"n_test": 49,
+"rate_test": 0.7142857142857143,
+"matched_test": 0.27064668209970694,
+"stocks": 118,
+"weeks": 36,
+"top_month": "2022-09",
+"top_month_share": 0.20918367346938777,
+"median_best": 0.22364642531775492,
+"lower95": 0.4658774844056741,
+"lift": 0.2610889566120181,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.5454545454545454
+},
+"Denmark": {
+"n": 33,
+"rate": 0.5454545454545454
+},
+"Finland": {
+"n": 26,
+"rate": 0.46153846153846156
+},
+"Germany": {
+"n": 38,
+"rate": 0.5789473684210527
+},
+"Norway": {
+"n": 23,
+"rate": 0.5217391304347826
+},
+"Sweden": {
+"n": 37,
+"rate": 0.5135135135135135
+},
+"USA": {
+"n": 28,
+"rate": 0.5714285714285714
+}
+},
+"conditions": [
+"bottom 10% 6-month return in market",
+"daily range 5%+ of price",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5819344524380495,
+"raw_train_days": 1251
+},
+{
+"n": 206,
+"hits": 107,
+"rate": 0.5194174757281553,
+"matched": 0.2669112618026056,
+"n_train": 164,
+"rate_train": 0.4817073170731707,
+"n_test": 42,
+"rate_test": 0.6666666666666666,
+"matched_test": 0.26676732775029144,
+"stocks": 145,
+"weeks": 27,
+"top_month": "2022-09",
+"top_month_share": 0.17475728155339806,
+"median_best": 0.21443932971198887,
+"lower95": 0.4514601525363086,
+"lift": 0.2525062139255497,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.36363636363636365
+},
+"Denmark": {
+"n": 31,
+"rate": 0.5161290322580645
+},
+"Finland": {
+"n": 21,
+"rate": 0.47619047619047616
+},
+"Germany": {
+"n": 55,
+"rate": 0.6
+},
+"Norway": {
+"n": 25,
+"rate": 0.56
+},
+"Sweden": {
+"n": 46,
+"rate": 0.4782608695652174
+},
+"USA": {
+"n": 17,
+"rate": 0.47058823529411764
+}
+},
+"conditions": [
+"down 25%+ in 20 days",
+"market: under 20% of stocks above 50-day",
+"market: 10%+ below its 1-year high"
+],
+"kind": "search",
+"raw_train_rate": 0.5791505791505791,
+"raw_train_days": 777
+},
+{
+"n": 136,
+"hits": 68,
+"rate": 0.5,
+"matched": 0.2736134133796133,
+"n_train": 103,
+"rate_train": 0.4563106796116505,
+"n_test": 33,
+"rate_test": 0.6363636363636364,
+"matched_test": 0.2686329075628563,
+"stocks": 107,
+"weeks": 29,
+"top_month": "2022-09",
+"top_month_share": 0.18382352941176472,
+"median_best": 0.1986884376784558,
+"lower95": 0.4171279878870851,
+"lift": 0.2263865866203867,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.5
+},
+"Denmark": {
+"n": 16,
+"rate": 0.5
+},
+"Finland": {
+"n": 21,
+"rate": 0.38095238095238093
+},
+"Germany": {
+"n": 38,
+"rate": 0.631578947368421
+},
+"Norway": {
+"n": 14,
+"rate": 0.35714285714285715
+},
+"Sweden": {
+"n": 31,
+"rate": 0.45161290322580644
+},
+"USA": {
+"n": 10,
+"rate": 0.6
+}
+},
+"conditions": [
+"volume 1.5x+ average",
+"down 25%+ in 20 days",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.578125,
+"raw_train_days": 320
+}
+],
+"search_spread": [
+{
+"n": 71,
+"hits": 43,
+"rate": 0.6056338028169014,
+"matched": 0.2751016199231865,
+"n_train": 67,
+"rate_train": 0.582089552238806,
+"n_test": 4,
+"rate_test": 1.0,
+"matched_test": 0.25642335763775437,
+"stocks": 39,
+"weeks": 37,
+"top_month": "2022-11",
+"top_month_share": 0.14084507042253522,
+"median_best": 0.22097759674134432,
+"lower95": 0.4893555588836079,
+"lift": 0.3305321828937149,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 1.0
+},
+"Denmark": {
+"n": 20,
+"rate": 0.75
+},
+"Finland": {
+"n": 10,
+"rate": 0.3
+},
+"Germany": {
+"n": 15,
+"rate": 0.6666666666666666
+},
+"Norway": {
+"n": 9,
+"rate": 0.6666666666666666
+},
+"Sweden": {
+"n": 6,
+"rate": 0.5
+},
+"USA": {
+"n": 8,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"market: 10%+ below its 1-year high"
+],
+"kind": "search",
+"raw_train_rate": 0.6248331108144193,
+"raw_train_days": 749
+},
+{
+"n": 60,
+"hits": 31,
+"rate": 0.5166666666666667,
+"matched": 0.24486589134167797,
+"n_train": 43,
+"rate_train": 0.5348837209302325,
+"n_test": 17,
+"rate_test": 0.47058823529411764,
+"matched_test": 0.21486412363289648,
+"stocks": 50,
+"weeks": 46,
+"top_month": "2022-11",
+"top_month_share": 0.13333333333333333,
+"median_best": 0.2126661668112203,
+"lower95": 0.39307594850843575,
+"lift": 0.27180077532498875,
+"per_market": {
+"Canada": {
+"n": 3,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 13,
+"rate": 0.38461538461538464
+},
+"Finland": {
+"n": 8,
+"rate": 0.375
+},
+"Germany": {
+"n": 10,
+"rate": 0.6
+},
+"Norway": {
+"n": 11,
+"rate": 0.6363636363636364
+},
+"Sweden": {
+"n": 9,
+"rate": 0.4444444444444444
+},
+"USA": {
+"n": 6,
+"rate": 0.6666666666666666
+}
+},
+"conditions": [
+"above 200-day",
+"40%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)"
+],
+"kind": "search",
+"raw_train_rate": 0.5743707093821511,
+"raw_train_days": 437
+},
+{
+"n": 74,
+"hits": 41,
+"rate": 0.5540540540540541,
+"matched": 0.26690286665879487,
+"n_train": 67,
+"rate_train": 0.5522388059701493,
+"n_test": 7,
+"rate_test": 0.5714285714285714,
+"matched_test": 0.24254997682332474,
+"stocks": 43,
+"weeks": 41,
+"top_month": "2022-06",
+"top_month_share": 0.13513513513513514,
+"median_best": 0.2120895779234826,
+"lower95": 0.4409291962707845,
+"lift": 0.2871511873952592,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 1.0
+},
+"Denmark": {
+"n": 21,
+"rate": 0.6666666666666666
+},
+"Finland": {
+"n": 13,
+"rate": 0.38461538461538464
+},
+"Germany": {
+"n": 12,
+"rate": 0.5833333333333334
+},
+"Norway": {
+"n": 12,
+"rate": 0.5833333333333334
+},
+"Sweden": {
+"n": 5,
+"rate": 0.2
+},
+"USA": {
+"n": 7,
+"rate": 0.42857142857142855
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5628571428571428,
+"raw_train_days": 700
+},
+{
+"n": 114,
+"hits": 59,
+"rate": 0.5175438596491229,
+"matched": 0.26451120235029835,
+"n_train": 88,
+"rate_train": 0.5227272727272727,
+"n_test": 26,
+"rate_test": 0.5,
+"matched_test": 0.23530751601328428,
+"stocks": 49,
+"weeks": 74,
+"top_month": "2022-11",
+"top_month_share": 0.08771929824561403,
+"median_best": 0.2035838241285084,
+"lower95": 0.42674878617016127,
+"lift": 0.2530326572988245,
+"per_market": {
+"Canada": {
+"n": 7,
+"rate": 0.5714285714285714
+},
+"Denmark": {
+"n": 27,
+"rate": 0.5925925925925926
+},
+"Finland": {
+"n": 21,
+"rate": 0.38095238095238093
+},
+"Germany": {
+"n": 19,
+"rate": 0.5789473684210527
+},
+"Norway": {
+"n": 25,
+"rate": 0.56
+},
+"Sweden": {
+"n": 7,
+"rate": 0.2857142857142857
+},
+"USA": {
+"n": 8,
+"rate": 0.5
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"RSI(14) 30-50"
+],
+"kind": "search",
+"raw_train_rate": 0.5594405594405595,
+"raw_train_days": 858
+},
+{
+"n": 75,
+"hits": 36,
+"rate": 0.48,
+"matched": 0.2566006703094224,
+"n_train": 62,
+"rate_train": 0.4838709677419355,
+"n_test": 13,
+"rate_test": 0.46153846153846156,
+"matched_test": 0.21250934292783988,
+"stocks": 41,
+"weeks": 44,
+"top_month": "2022-12",
+"top_month_share": 0.13333333333333333,
+"median_best": 0.19557283267412462,
+"lower95": 0.37068921756788065,
+"lift": 0.22339932969057757,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 0.4
+},
+"Denmark": {
+"n": 16,
+"rate": 0.4375
+},
+"Finland": {
+"n": 13,
+"rate": 0.38461538461538464
+},
+"Germany": {
+"n": 10,
+"rate": 0.5
+},
+"Norway": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"Sweden": {
+"n": 7,
+"rate": 0.42857142857142855
+},
+"USA": {
+"n": 9,
+"rate": 0.7777777777777778
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"daily range 3%+ of price",
+"Bollinger squeeze (narrowest 10%)"
+],
+"kind": "search",
+"raw_train_rate": 0.5442477876106194,
+"raw_train_days": 452
+},
+{
+"n": 133,
+"hits": 66,
+"rate": 0.49624060150375937,
+"matched": 0.27832215824349515,
+"n_train": 119,
+"rate_train": 0.4957983193277311,
+"n_test": 14,
+"rate_test": 0.5,
+"matched_test": 0.24514420177193516,
+"stocks": 58,
+"weeks": 56,
+"top_month": "2022-09",
+"top_month_share": 0.13533834586466165,
+"median_best": 0.19948028125955375,
+"lower95": 0.41257294665911187,
+"lift": 0.21791844326026422,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.8333333333333334
+},
+"Denmark": {
+"n": 41,
+"rate": 0.4878048780487805
+},
+"Finland": {
+"n": 19,
+"rate": 0.3684210526315789
+},
+"Germany": {
+"n": 27,
+"rate": 0.5185185185185185
+},
+"Norway": {
+"n": 15,
+"rate": 0.5333333333333333
+},
+"Sweden": {
+"n": 12,
+"rate": 0.3333333333333333
+},
+"USA": {
+"n": 13,
+"rate": 0.6153846153846154
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) 30-50",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5372233400402414,
+"raw_train_days": 1988
+},
+{
+"n": 123,
+"hits": 53,
+"rate": 0.43089430894308944,
+"matched": 0.20209464313624115,
+"n_train": 88,
+"rate_train": 0.4318181818181818,
+"n_test": 35,
+"rate_test": 0.42857142857142855,
+"matched_test": 0.1688293120184149,
+"stocks": 96,
+"weeks": 36,
+"top_month": "2022-06",
+"top_month_share": 0.14634146341463414,
+"median_best": 0.16378839890854668,
+"lower95": 0.3467817606577312,
+"lift": 0.2287996658068483,
+"per_market": {
+"Canada": {
+"n": 10,
+"rate": 0.5
+},
+"Denmark": {
+"n": 27,
+"rate": 0.4444444444444444
+},
+"Finland": {
+"n": 17,
+"rate": 0.47058823529411764
+},
+"Germany": {
+"n": 18,
+"rate": 0.4444444444444444
+},
+"Norway": {
+"n": 13,
+"rate": 0.6923076923076923
+},
+"Sweden": {
+"n": 26,
+"rate": 0.19230769230769232
+},
+"USA": {
+"n": 12,
+"rate": 0.5
+}
+},
+"conditions": [
+"volume dried up (10-day avg <0.8x)",
+"bottom 10% 6-month return in market",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5360501567398119,
+"raw_train_days": 319
+},
+{
+"n": 131,
+"hits": 70,
+"rate": 0.5343511450381679,
+"matched": 0.26563838290034025,
+"n_train": 103,
+"rate_train": 0.5339805825242718,
+"n_test": 28,
+"rate_test": 0.5357142857142857,
+"matched_test": 0.2574807226926525,
+"stocks": 56,
+"weeks": 86,
+"top_month": "2022-11",
+"top_month_share": 0.09923664122137404,
+"median_best": 0.21344119477286871,
+"lower95": 0.44917171297563424,
+"lift": 0.2687127621378277,
+"per_market": {
+"Canada": {
+"n": 9,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 33,
+"rate": 0.6060606060606061
+},
+"Finland": {
+"n": 22,
+"rate": 0.36363636363636365
+},
+"Germany": {
+"n": 22,
+"rate": 0.6363636363636364
+},
+"Norway": {
+"n": 27,
+"rate": 0.5555555555555556
+},
+"Sweden": {
+"n": 9,
+"rate": 0.3333333333333333
+},
+"USA": {
+"n": 9,
+"rate": 0.4444444444444444
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"daily range 3%+ of price"
+],
+"kind": "search",
+"raw_train_rate": 0.5357675111773472,
+"raw_train_days": 1342
+},
+{
+"n": 80,
+"hits": 46,
+"rate": 0.575,
+"matched": 0.29934134542261537,
+"n_train": 69,
+"rate_train": 0.5507246376811594,
+"n_test": 11,
+"rate_test": 0.7272727272727273,
+"matched_test": 0.305390075307072,
+"stocks": 38,
+"weeks": 54,
+"top_month": "2022-07",
+"top_month_share": 0.1,
+"median_best": 0.24873252695178782,
+"lower95": 0.465690919708387,
+"lift": 0.2756586545773846,
+"per_market": {
+"Canada": {
+"n": 7,
+"rate": 0.7142857142857143
+},
+"Denmark": {
+"n": 18,
+"rate": 0.7222222222222222
+},
+"Finland": {
+"n": 8,
+"rate": 0.25
+},
+"Germany": {
+"n": 14,
+"rate": 0.7142857142857143
+},
+"Norway": {
+"n": 22,
+"rate": 0.5454545454545454
+},
+"Sweden": {
+"n": 6,
+"rate": 0.5
+},
+"USA": {
+"n": 5,
+"rate": 0.2
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"daily range 5%+ of price"
+],
+"kind": "search",
+"raw_train_rate": 0.534850640113798,
+"raw_train_days": 703
+},
+{
+"n": 155,
+"hits": 74,
+"rate": 0.4774193548387097,
+"matched": 0.2711442677271948,
+"n_train": 134,
+"rate_train": 0.4626865671641791,
+"n_test": 21,
+"rate_test": 0.5714285714285714,
+"matched_test": 0.25078715081024333,
+"stocks": 65,
+"weeks": 59,
+"top_month": "2022-09",
+"top_month_share": 0.14838709677419354,
+"median_best": 0.19430051813471505,
+"lower95": 0.40028508869414914,
+"lift": 0.20627508711151488,
+"per_market": {
+"Canada": {
+"n": 8,
+"rate": 0.75
+},
+"Denmark": {
+"n": 49,
+"rate": 0.5510204081632653
+},
+"Finland": {
+"n": 24,
+"rate": 0.375
+},
+"Germany": {
+"n": 28,
+"rate": 0.42857142857142855
+},
+"Norway": {
+"n": 15,
+"rate": 0.5333333333333333
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4
+},
+"USA": {
+"n": 16,
+"rate": 0.375
+}
+},
+"conditions": [
+"below 200-day",
+"60%+ below 52-week high",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5344548689744419,
+"raw_train_days": 3091
+},
+{
+"n": 156,
+"hits": 74,
+"rate": 0.47435897435897434,
+"matched": 0.27150062609092196,
+"n_train": 135,
+"rate_train": 0.45925925925925926,
+"n_test": 21,
+"rate_test": 0.5714285714285714,
+"matched_test": 0.25078715081024333,
+"stocks": 65,
+"weeks": 59,
+"top_month": "2022-09",
+"top_month_share": 0.14743589743589744,
+"median_best": 0.19272244491082502,
+"lower95": 0.3975605833265651,
+"lift": 0.20285834826805238,
+"per_market": {
+"Canada": {
+"n": 8,
+"rate": 0.75
+},
+"Denmark": {
+"n": 49,
+"rate": 0.5510204081632653
+},
+"Finland": {
+"n": 24,
+"rate": 0.375
+},
+"Germany": {
+"n": 28,
+"rate": 0.42857142857142855
+},
+"Norway": {
+"n": 16,
+"rate": 0.5
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4
+},
+"USA": {
+"n": 16,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5330551989730423,
+"raw_train_days": 3116
+},
+{
+"n": 66,
+"hits": 31,
+"rate": 0.4696969696969697,
+"matched": 0.2513169101109581,
+"n_train": 43,
+"rate_train": 0.5348837209302325,
+"n_test": 23,
+"rate_test": 0.34782608695652173,
+"matched_test": 0.24422632273515513,
+"stocks": 50,
+"weeks": 51,
+"top_month": "2022-12",
+"top_month_share": 0.09090909090909091,
+"median_best": 0.1811406117710448,
+"lower95": 0.35430230971911897,
+"lift": 0.21838005958601164,
+"per_market": {
+"Canada": {
+"n": 7,
+"rate": 0.7142857142857143
+},
+"Denmark": {
+"n": 15,
+"rate": 0.3333333333333333
+},
+"Finland": {
+"n": 9,
+"rate": 0.2222222222222222
+},
+"Germany": {
+"n": 9,
+"rate": 0.5555555555555556
+},
+"Norway": {
+"n": 10,
+"rate": 0.6
+},
+"Sweden": {
+"n": 8,
+"rate": 0.375
+},
+"USA": {
+"n": 8,
+"rate": 0.625
+}
+},
+"conditions": [
+"50-day above 200-day",
+"40%+ below 52-week high",
+"higher low (10-day low above prior low)"
+],
+"kind": "search",
+"raw_train_rate": 0.5328798185941043,
+"raw_train_days": 441
+},
+{
+"n": 155,
+"hits": 73,
+"rate": 0.47096774193548385,
+"matched": 0.27240668222767433,
+"n_train": 134,
+"rate_train": 0.4552238805970149,
+"n_test": 21,
+"rate_test": 0.5714285714285714,
+"matched_test": 0.25078715081024333,
+"stocks": 65,
+"weeks": 58,
+"top_month": "2022-09",
+"top_month_share": 0.14838709677419354,
+"median_best": 0.191144371686935,
+"lower95": 0.39404010770828635,
+"lift": 0.19856105970780952,
+"per_market": {
+"Canada": {
+"n": 8,
+"rate": 0.75
+},
+"Denmark": {
+"n": 49,
+"rate": 0.5510204081632653
+},
+"Finland": {
+"n": 23,
+"rate": 0.34782608695652173
+},
+"Germany": {
+"n": 28,
+"rate": 0.42857142857142855
+},
+"Norway": {
+"n": 16,
+"rate": 0.5
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4
+},
+"USA": {
+"n": 16,
+"rate": 0.375
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"daily range 3%+ of price",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5328185328185329,
+"raw_train_days": 3108
+},
+{
+"n": 153,
+"hits": 75,
+"rate": 0.49019607843137253,
+"matched": 0.2716987675112485,
+"n_train": 132,
+"rate_train": 0.4772727272727273,
+"n_test": 21,
+"rate_test": 0.5714285714285714,
+"matched_test": 0.25078715081024333,
+"stocks": 63,
+"weeks": 59,
+"top_month": "2022-09",
+"top_month_share": 0.13725490196078433,
+"median_best": 0.19484636038186154,
+"lower95": 0.41219888687175693,
+"lift": 0.21849731092012403,
+"per_market": {
+"Canada": {
+"n": 7,
+"rate": 0.8571428571428571
+},
+"Denmark": {
+"n": 49,
+"rate": 0.5714285714285714
+},
+"Finland": {
+"n": 24,
+"rate": 0.375
+},
+"Germany": {
+"n": 28,
+"rate": 0.4642857142857143
+},
+"Norway": {
+"n": 14,
+"rate": 0.5
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4
+},
+"USA": {
+"n": 16,
+"rate": 0.375
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5319909061383566,
+"raw_train_days": 3079
+},
+{
+"n": 148,
+"hits": 64,
+"rate": 0.43243243243243246,
+"matched": 0.2830128078460182,
+"n_train": 114,
+"rate_train": 0.43859649122807015,
+"n_test": 34,
+"rate_test": 0.4117647058823529,
+"matched_test": 0.2762305893865979,
+"stocks": 67,
+"weeks": 79,
+"top_month": "2022-09",
+"top_month_share": 0.13513513513513514,
+"median_best": 0.17249425982058364,
+"lower95": 0.35532292289793144,
+"lift": 0.14941962458641428,
+"per_market": {
+"Canada": {
+"n": 10,
+"rate": 0.5
+},
+"Denmark": {
+"n": 43,
+"rate": 0.4883720930232558
+},
+"Finland": {
+"n": 20,
+"rate": 0.25
+},
+"Germany": {
+"n": 25,
+"rate": 0.48
+},
+"Norway": {
+"n": 22,
+"rate": 0.36363636363636365
+},
+"Sweden": {
+"n": 16,
+"rate": 0.5625
+},
+"USA": {
+"n": 12,
+"rate": 0.3333333333333333
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"within 5% of 52-week low",
+"daily range 5%+ of price"
+],
+"kind": "search",
+"raw_train_rate": 0.5318257956448911,
+"raw_train_days": 1194
+},
+{
+"n": 74,
+"hits": 37,
+"rate": 0.5,
+"matched": 0.24869098700689768,
+"n_train": 50,
+"rate_train": 0.52,
+"n_test": 24,
+"rate_test": 0.4583333333333333,
+"matched_test": 0.2247644019447986,
+"stocks": 55,
+"weeks": 58,
+"top_month": "2023-03",
+"top_month_share": 0.13513513513513514,
+"median_best": 0.19789262941476704,
+"lower95": 0.38892400848268727,
+"lift": 0.2513090129931023,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.75
+},
+"Denmark": {
+"n": 16,
+"rate": 0.375
+},
+"Finland": {
+"n": 10,
+"rate": 0.4
+},
+"Germany": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"Norway": {
+"n": 14,
+"rate": 0.7142857142857143
+},
+"Sweden": {
+"n": 9,
+"rate": 0.2222222222222222
+},
+"USA": {
+"n": 8,
+"rate": 0.75
+}
+},
+"conditions": [
+"50-day above 200-day",
+"40%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)"
+],
+"kind": "search",
+"raw_train_rate": 0.5313351498637602,
+"raw_train_days": 367
+},
+{
+"n": 132,
+"hits": 70,
+"rate": 0.5303030303030303,
+"matched": 0.26168539145818726,
+"n_train": 103,
+"rate_train": 0.5242718446601942,
+"n_test": 29,
+"rate_test": 0.5517241379310345,
+"matched_test": 0.24596964405413416,
+"stocks": 56,
+"weeks": 88,
+"top_month": "2022-11",
+"top_month_share": 0.09848484848484848,
+"median_best": 0.21070859052537094,
+"lower95": 0.44551296355872966,
+"lift": 0.268617638844843,
+"per_market": {
+"Canada": {
+"n": 9,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 33,
+"rate": 0.6363636363636364
+},
+"Finland": {
+"n": 24,
+"rate": 0.3333333333333333
+},
+"Germany": {
+"n": 22,
+"rate": 0.6363636363636364
+},
+"Norway": {
+"n": 26,
+"rate": 0.5384615384615384
+},
+"Sweden": {
+"n": 9,
+"rate": 0.3333333333333333
+},
+"USA": {
+"n": 9,
+"rate": 0.4444444444444444
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)"
+],
+"kind": "search",
+"raw_train_rate": 0.5310245310245311,
+"raw_train_days": 1386
+},
+{
+"n": 75,
+"hits": 38,
+"rate": 0.5066666666666667,
+"matched": 0.24687339093181673,
+"n_train": 60,
+"rate_train": 0.5,
+"n_test": 15,
+"rate_test": 0.5333333333333333,
+"matched_test": 0.1844902296999177,
+"stocks": 41,
+"weeks": 45,
+"top_month": "2022-07",
+"top_month_share": 0.13333333333333333,
+"median_best": 0.20892746435213883,
+"lower95": 0.39598184412213266,
+"lift": 0.25979327573485,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 0.8
+},
+"Denmark": {
+"n": 17,
+"rate": 0.47058823529411764
+},
+"Finland": {
+"n": 14,
+"rate": 0.35714285714285715
+},
+"Germany": {
+"n": 9,
+"rate": 0.4444444444444444
+},
+"Norway": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"Sweden": {
+"n": 6,
+"rate": 0.5
+},
+"USA": {
+"n": 9,
+"rate": 0.7777777777777778
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) 30-50",
+"Bollinger squeeze (narrowest 10%)"
+],
+"kind": "search",
+"raw_train_rate": 0.5288753799392097,
+"raw_train_days": 329
+},
+{
+"n": 138,
+"hits": 61,
+"rate": 0.4420289855072464,
+"matched": 0.27011705206758047,
+"n_train": 108,
+"rate_train": 0.4444444444444444,
+"n_test": 30,
+"rate_test": 0.43333333333333335,
+"matched_test": 0.24488621739681898,
+"stocks": 58,
+"weeks": 76,
+"top_month": "2022-09",
+"top_month_share": 0.08695652173913043,
+"median_best": 0.175100799817682,
+"lower95": 0.361853233238639,
+"lift": 0.17191193343966593,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.7272727272727273
+},
+"Denmark": {
+"n": 36,
+"rate": 0.4166666666666667
+},
+"Finland": {
+"n": 22,
+"rate": 0.2727272727272727
+},
+"Germany": {
+"n": 22,
+"rate": 0.45454545454545453
+},
+"Norway": {
+"n": 23,
+"rate": 0.391304347826087
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 11,
+"rate": 0.6363636363636364
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"after 4+ down days"
+],
+"kind": "search",
+"raw_train_rate": 0.5240174672489083,
+"raw_train_days": 458
+},
+{
+"n": 133,
+"hits": 71,
+"rate": 0.5338345864661654,
+"matched": 0.26203144062939837,
+"n_train": 104,
+"rate_train": 0.5288461538461539,
+"n_test": 29,
+"rate_test": 0.5517241379310345,
+"matched_test": 0.24596964405413416,
+"stocks": 56,
+"weeks": 88,
+"top_month": "2022-11",
+"top_month_share": 0.09774436090225563,
+"median_best": 0.21344119477286871,
+"lower95": 0.44929587361127976,
+"lift": 0.27180314583676707,
+"per_market": {
+"Canada": {
+"n": 9,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 33,
+"rate": 0.6363636363636364
+},
+"Finland": {
+"n": 24,
+"rate": 0.3333333333333333
+},
+"Germany": {
+"n": 22,
+"rate": 0.6363636363636364
+},
+"Norway": {
+"n": 27,
+"rate": 0.5555555555555556
+},
+"Sweden": {
+"n": 9,
+"rate": 0.3333333333333333
+},
+"USA": {
+"n": 9,
+"rate": 0.4444444444444444
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)"
+],
+"kind": "search",
+"raw_train_rate": 0.5239774330042313,
+"raw_train_days": 1418
+},
+{
+"n": 137,
+"hits": 67,
+"rate": 0.48905109489051096,
+"matched": 0.27321422668714834,
+"n_train": 116,
+"rate_train": 0.4827586206896552,
+"n_test": 21,
+"rate_test": 0.5238095238095238,
+"matched_test": 0.25385139381102173,
+"stocks": 62,
+"weeks": 58,
+"top_month": "2022-06",
+"top_month_share": 0.1386861313868613,
+"median_best": 0.19430051813471505,
+"lower95": 0.40679171315004253,
+"lift": 0.21583686820336262,
+"per_market": {
+"Canada": {
+"n": 8,
+"rate": 0.75
+},
+"Denmark": {
+"n": 43,
+"rate": 0.5348837209302325
+},
+"Finland": {
+"n": 22,
+"rate": 0.36363636363636365
+},
+"Germany": {
+"n": 22,
+"rate": 0.5454545454545454
+},
+"Norway": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"Sweden": {
+"n": 15,
+"rate": 0.4
+},
+"USA": {
+"n": 14,
+"rate": 0.42857142857142855
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"bottom 10% 6-month return in market",
+"market: below its 200-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5230004144218815,
+"raw_train_days": 2413
+},
+{
+"n": 187,
+"hits": 91,
+"rate": 0.48663101604278075,
+"matched": 0.26983211666400875,
+"n_train": 141,
+"rate_train": 0.48936170212765956,
+"n_test": 46,
+"rate_test": 0.4782608695652174,
+"matched_test": 0.2587885917482489,
+"stocks": 70,
+"weeks": 103,
+"top_month": "2022-09",
+"top_month_share": 0.12834224598930483,
+"median_best": 0.19240506329113938,
+"lower95": 0.41598524950115756,
+"lift": 0.216798899378772,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.5454545454545454
+},
+"Denmark": {
+"n": 51,
+"rate": 0.5490196078431373
+},
+"Finland": {
+"n": 29,
+"rate": 0.3103448275862069
+},
+"Germany": {
+"n": 34,
+"rate": 0.5882352941176471
+},
+"Norway": {
+"n": 29,
+"rate": 0.3448275862068966
+},
+"Sweden": {
+"n": 18,
+"rate": 0.5555555555555556
+},
+"USA": {
+"n": 15,
+"rate": 0.5333333333333333
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume 1.5x+ average",
+"daily range 3%+ of price"
+],
+"kind": "search",
+"raw_train_rate": 0.51875,
+"raw_train_days": 800
+},
+{
+"n": 140,
+"hits": 63,
+"rate": 0.45,
+"matched": 0.276991051872342,
+"n_train": 111,
+"rate_train": 0.44144144144144143,
+"n_test": 29,
+"rate_test": 0.4827586206896552,
+"matched_test": 0.25542788491216606,
+"stocks": 59,
+"weeks": 74,
+"top_month": "2022-09",
+"top_month_share": 0.1,
+"median_best": 0.17998091275837313,
+"lower95": 0.3700223563402904,
+"lift": 0.173008948127658,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.7272727272727273
+},
+"Denmark": {
+"n": 36,
+"rate": 0.4444444444444444
+},
+"Finland": {
+"n": 20,
+"rate": 0.3
+},
+"Germany": {
+"n": 24,
+"rate": 0.4166666666666667
+},
+"Norway": {
+"n": 26,
+"rate": 0.38461538461538464
+},
+"Sweden": {
+"n": 12,
+"rate": 0.5
+},
+"USA": {
+"n": 11,
+"rate": 0.6363636363636364
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"daily range 3%+ of price",
+"after 4+ down days"
+],
+"kind": "search",
+"raw_train_rate": 0.5168067226890757,
+"raw_train_days": 476
+},
+{
+"n": 139,
+"hits": 61,
+"rate": 0.43884892086330934,
+"matched": 0.27051984455511136,
+"n_train": 110,
+"rate_train": 0.44545454545454544,
+"n_test": 29,
+"rate_test": 0.41379310344827586,
+"matched_test": 0.24428273973973386,
+"stocks": 60,
+"weeks": 74,
+"top_month": "2022-09",
+"top_month_share": 0.09352517985611511,
+"median_best": 0.17863570914326843,
+"lower95": 0.35909532617597445,
+"lift": 0.168329076308198,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.7272727272727273
+},
+"Denmark": {
+"n": 35,
+"rate": 0.4
+},
+"Finland": {
+"n": 22,
+"rate": 0.2727272727272727
+},
+"Germany": {
+"n": 24,
+"rate": 0.4166666666666667
+},
+"Norway": {
+"n": 23,
+"rate": 0.391304347826087
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 11,
+"rate": 0.7272727272727273
+}
+},
+"conditions": [
+"below 200-day",
+"60%+ below 52-week high",
+"after 4+ down days"
+],
+"kind": "search",
+"raw_train_rate": 0.5160599571734475,
+"raw_train_days": 467
+},
+{
+"n": 137,
+"hits": 67,
+"rate": 0.48905109489051096,
+"matched": 0.2744255494225001,
+"n_train": 104,
+"rate_train": 0.5,
+"n_test": 33,
+"rate_test": 0.45454545454545453,
+"matched_test": 0.25997181756797294,
+"stocks": 61,
+"weeks": 82,
+"top_month": "2022-09",
+"top_month_share": 0.11678832116788321,
+"median_best": 0.19056486654252014,
+"lower95": 0.40679171315004253,
+"lift": 0.21462554546801088,
+"per_market": {
+"Canada": {
+"n": 8,
+"rate": 0.625
+},
+"Denmark": {
+"n": 36,
+"rate": 0.5555555555555556
+},
+"Finland": {
+"n": 23,
+"rate": 0.391304347826087
+},
+"Germany": {
+"n": 21,
+"rate": 0.6190476190476191
+},
+"Norway": {
+"n": 24,
+"rate": 0.3333333333333333
+},
+"Sweden": {
+"n": 15,
+"rate": 0.3333333333333333
+},
+"USA": {
+"n": 10,
+"rate": 0.7
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume 1.5x+ average",
+"MACD histogram rising"
+],
+"kind": "search",
+"raw_train_rate": 0.5142857142857142,
+"raw_train_days": 385
+},
+{
+"n": 131,
+"hits": 68,
+"rate": 0.5190839694656488,
+"matched": 0.2615347966548784,
+"n_train": 102,
+"rate_train": 0.5098039215686274,
+"n_test": 29,
+"rate_test": 0.5517241379310345,
+"matched_test": 0.24596964405413416,
+"stocks": 56,
+"weeks": 86,
+"top_month": "2022-11",
+"top_month_share": 0.09923664122137404,
+"median_best": 0.20481927710843384,
+"lower95": 0.43420551822120274,
+"lift": 0.25754917281077044,
+"per_market": {
+"Canada": {
+"n": 9,
+"rate": 0.6666666666666666
+},
+"Denmark": {
+"n": 33,
+"rate": 0.6363636363636364
+},
+"Finland": {
+"n": 24,
+"rate": 0.3333333333333333
+},
+"Germany": {
+"n": 21,
+"rate": 0.6190476190476191
+},
+"Norway": {
+"n": 26,
+"rate": 0.5
+},
+"Sweden": {
+"n": 9,
+"rate": 0.3333333333333333
+},
+"USA": {
+"n": 9,
+"rate": 0.4444444444444444
+}
+},
+"conditions": [
+"below 200-day",
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)"
+],
+"kind": "search",
+"raw_train_rate": 0.5133928571428571,
+"raw_train_days": 1344
+},
+{
+"n": 123,
+"hits": 52,
+"rate": 0.42276422764227645,
+"matched": 0.2984878811220179,
+"n_train": 95,
+"rate_train": 0.43157894736842106,
+"n_test": 28,
+"rate_test": 0.39285714285714285,
+"matched_test": 0.3054340758628359,
+"stocks": 70,
+"weeks": 80,
+"top_month": "2022-11",
+"top_month_share": 0.13008130081300814,
+"median_best": 0.13803571428571426,
+"lower95": 0.33910082135330494,
+"lift": 0.12427634652025854,
+"per_market": {
+"Canada": {
+"n": 15,
+"rate": 0.4
+},
+"Denmark": {
+"n": 21,
+"rate": 0.5714285714285714
+},
+"Finland": {
+"n": 16,
+"rate": 0.0625
+},
+"Germany": {
+"n": 17,
+"rate": 0.5294117647058824
+},
+"Norway": {
+"n": 23,
+"rate": 0.391304347826087
+},
+"Sweden": {
+"n": 18,
+"rate": 0.4444444444444444
+},
+"USA": {
+"n": 13,
+"rate": 0.5384615384615384
+}
+},
+"conditions": [
+"50-day rising >2% in 10 days",
+"40%+ below 52-week high",
+"daily range 5%+ of price"
+],
+"kind": "search",
+"raw_train_rate": 0.5122591943957968,
+"raw_train_days": 1142
+},
+{
+"n": 143,
+"hits": 62,
+"rate": 0.43356643356643354,
+"matched": 0.270742348069832,
+"n_train": 113,
+"rate_train": 0.4336283185840708,
+"n_test": 30,
+"rate_test": 0.43333333333333335,
+"matched_test": 0.24488621739681898,
+"stocks": 60,
+"weeks": 77,
+"top_month": "2022-09",
+"top_month_share": 0.0979020979020979,
+"median_best": 0.17653859597236043,
+"lower95": 0.3551300031607188,
+"lift": 0.16282408549660154,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.7272727272727273
+},
+"Denmark": {
+"n": 36,
+"rate": 0.4166666666666667
+},
+"Finland": {
+"n": 22,
+"rate": 0.2727272727272727
+},
+"Germany": {
+"n": 24,
+"rate": 0.4166666666666667
+},
+"Norway": {
+"n": 26,
+"rate": 0.38461538461538464
+},
+"Sweden": {
+"n": 13,
+"rate": 0.46153846153846156
+},
+"USA": {
+"n": 11,
+"rate": 0.6363636363636364
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"after 4+ down days"
+],
+"kind": "search",
+"raw_train_rate": 0.511340206185567,
+"raw_train_days": 485
+},
+{
+"n": 90,
+"hits": 42,
+"rate": 0.4666666666666667,
+"matched": 0.2903723134395851,
+"n_train": 66,
+"rate_train": 0.48484848484848486,
+"n_test": 24,
+"rate_test": 0.4166666666666667,
+"matched_test": 0.28770355050497415,
+"stocks": 53,
+"weeks": 64,
+"top_month": "2022-09",
+"top_month_share": 0.13333333333333333,
+"median_best": 0.18832424655589197,
+"lower95": 0.3670825183252626,
+"lift": 0.1762943532270816,
+"per_market": {
+"Canada": {
+"n": 6,
+"rate": 0.5
+},
+"Denmark": {
+"n": 24,
+"rate": 0.5
+},
+"Finland": {
+"n": 13,
+"rate": 0.15384615384615385
+},
+"Germany": {
+"n": 10,
+"rate": 0.3
+},
+"Norway": {
+"n": 16,
+"rate": 0.5625
+},
+"Sweden": {
+"n": 12,
+"rate": 0.5833333333333334
+},
+"USA": {
+"n": 9,
+"rate": 0.6666666666666666
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"RSI(14) under 30",
+"down 25%+ in 20 days"
+],
+"kind": "search",
+"raw_train_rate": 0.5111111111111111,
+"raw_train_days": 405
+},
+{
+"n": 148,
+"hits": 66,
+"rate": 0.44594594594594594,
+"matched": 0.29091591537056,
+"n_train": 118,
+"rate_train": 0.4661016949152542,
+"n_test": 30,
+"rate_test": 0.36666666666666664,
+"matched_test": 0.2894776340542066,
+"stocks": 63,
+"weeks": 85,
+"top_month": "2022-09",
+"top_month_share": 0.12162162162162163,
+"median_best": 0.17000439686476554,
+"lower95": 0.36823785676382303,
+"lift": 0.15503003057538595,
+"per_market": {
+"Canada": {
+"n": 10,
+"rate": 0.5
+},
+"Denmark": {
+"n": 39,
+"rate": 0.46153846153846156
+},
+"Finland": {
+"n": 18,
+"rate": 0.2222222222222222
+},
+"Germany": {
+"n": 28,
+"rate": 0.5357142857142857
+},
+"Norway": {
+"n": 26,
+"rate": 0.38461538461538464
+},
+"Sweden": {
+"n": 15,
+"rate": 0.6
+},
+"USA": {
+"n": 12,
+"rate": 0.4166666666666667
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume 1.5x+ average",
+"daily range 5%+ of price"
+],
+"kind": "search",
+"raw_train_rate": 0.5110410094637224,
+"raw_train_days": 634
+},
+{
+"n": 101,
+"hits": 53,
+"rate": 0.5247524752475248,
+"matched": 0.2583828884966843,
+"n_train": 81,
+"rate_train": 0.5185185185185185,
+"n_test": 20,
+"rate_test": 0.55,
+"matched_test": 0.20792966149665837,
+"stocks": 44,
+"weeks": 66,
+"top_month": "2022-11",
+"top_month_share": 0.1188118811881188,
+"median_best": 0.20325854700854706,
+"lower95": 0.4282481191048321,
+"lift": 0.2663695867508405,
+"per_market": {
+"Canada": {
+"n": 4,
+"rate": 0.75
+},
+"Denmark": {
+"n": 23,
+"rate": 0.6521739130434783
+},
+"Finland": {
+"n": 19,
+"rate": 0.42105263157894735
+},
+"Germany": {
+"n": 19,
+"rate": 0.5263157894736842
+},
+"Norway": {
+"n": 22,
+"rate": 0.5
+},
+"Sweden": {
+"n": 7,
+"rate": 0.5714285714285714
+},
+"USA": {
+"n": 7,
+"rate": 0.2857142857142857
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume dried up (10-day avg <0.8x)",
+"MACD histogram rising"
+],
+"kind": "search",
+"raw_train_rate": 0.5100463678516228,
+"raw_train_days": 647
+},
+{
+"n": 351,
+"hits": 142,
+"rate": 0.4045584045584046,
+"matched": 0.21439344903127794,
+"n_train": 235,
+"rate_train": 0.3659574468085106,
+"n_test": 116,
+"rate_test": 0.4827586206896552,
+"matched_test": 0.19692053383766386,
+"stocks": 184,
+"weeks": 50,
+"top_month": "2022-09",
+"top_month_share": 0.14245014245014245,
+"median_best": 0.1682438941463138,
+"lower95": 0.3545132075578108,
+"lift": 0.19016495552712664,
+"per_market": {
+"Canada": {
+"n": 23,
+"rate": 0.6521739130434783
+},
+"Denmark": {
+"n": 47,
+"rate": 0.44680851063829785
+},
+"Finland": {
+"n": 69,
+"rate": 0.2898550724637681
+},
+"Germany": {
+"n": 65,
+"rate": 0.38461538461538464
+},
+"Norway": {
+"n": 26,
+"rate": 0.6153846153846154
+},
+"Sweden": {
+"n": 70,
+"rate": 0.37142857142857144
+},
+"USA": {
+"n": 51,
+"rate": 0.37254901960784315
+}
+},
+"conditions": [
+"200-day falling",
+"bottom 10% 6-month return in market",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5088633993743483,
+"raw_train_days": 1918
+},
+{
+"n": 189,
+"hits": 92,
+"rate": 0.48677248677248675,
+"matched": 0.26807961437015226,
+"n_train": 142,
+"rate_train": 0.49295774647887325,
+"n_test": 47,
+"rate_test": 0.46808510638297873,
+"matched_test": 0.2566357833763843,
+"stocks": 70,
+"weeks": 105,
+"top_month": "2022-09",
+"top_month_share": 0.12698412698412698,
+"median_best": 0.19240506329113938,
+"lower95": 0.41648929042225563,
+"lift": 0.21869287240233448,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.5454545454545454
+},
+"Denmark": {
+"n": 51,
+"rate": 0.5490196078431373
+},
+"Finland": {
+"n": 31,
+"rate": 0.3225806451612903
+},
+"Germany": {
+"n": 34,
+"rate": 0.5882352941176471
+},
+"Norway": {
+"n": 29,
+"rate": 0.3448275862068966
+},
+"Sweden": {
+"n": 18,
+"rate": 0.5555555555555556
+},
+"USA": {
+"n": 15,
+"rate": 0.5333333333333333
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"volume 1.5x+ average"
+],
+"kind": "search",
+"raw_train_rate": 0.5079171741778319,
+"raw_train_days": 821
+},
+{
+"n": 185,
+"hits": 89,
+"rate": 0.4810810810810811,
+"matched": 0.2681392759637386,
+"n_train": 138,
+"rate_train": 0.4855072463768116,
+"n_test": 47,
+"rate_test": 0.46808510638297873,
+"matched_test": 0.2566357833763843,
+"stocks": 70,
+"weeks": 103,
+"top_month": "2022-09",
+"top_month_share": 0.12972972972972974,
+"median_best": 0.1921629400044278,
+"lower95": 0.4102015764907947,
+"lift": 0.2129418051173425,
+"per_market": {
+"Canada": {
+"n": 11,
+"rate": 0.5454545454545454
+},
+"Denmark": {
+"n": 51,
+"rate": 0.5490196078431373
+},
+"Finland": {
+"n": 31,
+"rate": 0.3225806451612903
+},
+"Germany": {
+"n": 32,
+"rate": 0.5625
+},
+"Norway": {
+"n": 27,
+"rate": 0.3333333333333333
+},
+"Sweden": {
+"n": 18,
+"rate": 0.5555555555555556
+},
+"USA": {
+"n": 15,
+"rate": 0.5333333333333333
+}
+},
+"conditions": [
+"below 200-day",
+"60%+ below 52-week high",
+"volume 1.5x+ average"
+],
+"kind": "search",
+"raw_train_rate": 0.5075566750629723,
+"raw_train_days": 794
+},
+{
+"n": 184,
+"hits": 92,
+"rate": 0.5,
+"matched": 0.26683540954691276,
+"n_train": 137,
+"rate_train": 0.5109489051094891,
+"n_test": 47,
+"rate_test": 0.46808510638297873,
+"matched_test": 0.2566357833763843,
+"stocks": 70,
+"weeks": 104,
+"top_month": "2022-09",
+"top_month_share": 0.13043478260869565,
+"median_best": 0.2010397558898156,
+"lower95": 0.4284960248670839,
+"lift": 0.23316459045308724,
+"per_market": {
+"Canada": {
+"n": 10,
+"rate": 0.6
+},
+"Denmark": {
+"n": 51,
+"rate": 0.5686274509803921
+},
+"Finland": {
+"n": 31,
+"rate": 0.3225806451612903
+},
+"Germany": {
+"n": 33,
+"rate": 0.6060606060606061
+},
+"Norway": {
+"n": 26,
+"rate": 0.34615384615384615
+},
+"Sweden": {
+"n": 18,
+"rate": 0.5555555555555556
+},
+"USA": {
+"n": 15,
+"rate": 0.5333333333333333
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"volume 1.5x+ average"
+],
+"kind": "search",
+"raw_train_rate": 0.5074812967581047,
+"raw_train_days": 802
+},
+{
+"n": 79,
+"hits": 37,
+"rate": 0.46835443037974683,
+"matched": 0.24455359254502548,
+"n_train": 63,
+"rate_train": 0.47619047619047616,
+"n_test": 16,
+"rate_test": 0.4375,
+"matched_test": 0.1893523509349309,
+"stocks": 42,
+"weeks": 45,
+"top_month": "2022-12",
+"top_month_share": 0.12658227848101267,
+"median_best": 0.1953735542356987,
+"lower95": 0.36235600950357894,
+"lift": 0.22380083783472135,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 0.4
+},
+"Denmark": {
+"n": 18,
+"rate": 0.4444444444444444
+},
+"Finland": {
+"n": 16,
+"rate": 0.3125
+},
+"Germany": {
+"n": 10,
+"rate": 0.5
+},
+"Norway": {
+"n": 14,
+"rate": 0.5
+},
+"Sweden": {
+"n": 7,
+"rate": 0.42857142857142855
+},
+"USA": {
+"n": 9,
+"rate": 0.7777777777777778
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"Bollinger squeeze (narrowest 10%)"
+],
+"kind": "search",
+"raw_train_rate": 0.5070422535211268,
+"raw_train_days": 497
+},
+{
+"n": 192,
+"hits": 89,
+"rate": 0.4635416666666667,
+"matched": 0.28493931806434886,
+"n_train": 152,
+"rate_train": 0.46710526315789475,
+"n_test": 40,
+"rate_test": 0.45,
+"matched_test": 0.27798259109509155,
+"stocks": 68,
+"weeks": 95,
+"top_month": "2022-09",
+"top_month_share": 0.10416666666666667,
+"median_best": 0.19004811225355034,
+"lower95": 0.394411276429985,
+"lift": 0.17860234860231783,
+"per_market": {
+"Canada": {
+"n": 15,
+"rate": 0.6
+},
+"Denmark": {
+"n": 51,
+"rate": 0.49019607843137253
+},
+"Finland": {
+"n": 24,
+"rate": 0.25
+},
+"Germany": {
+"n": 31,
+"rate": 0.4838709677419355
+},
+"Norway": {
+"n": 34,
+"rate": 0.4411764705882353
+},
+"Sweden": {
+"n": 21,
+"rate": 0.6190476190476191
+},
+"USA": {
+"n": 16,
+"rate": 0.375
+}
+},
+"conditions": [
+"200-day falling",
+"60%+ below 52-week high",
+"daily range 5%+ of price"
+],
+"kind": "search",
+"raw_train_rate": 0.5064220183486239,
+"raw_train_days": 3270
+},
+{
+"n": 325,
+"hits": 123,
+"rate": 0.37846153846153846,
+"matched": 0.20831207716267902,
+"n_train": 221,
+"rate_train": 0.3574660633484163,
+"n_test": 104,
+"rate_test": 0.4230769230769231,
+"matched_test": 0.18592576644963982,
+"stocks": 178,
+"weeks": 48,
+"top_month": "2022-09",
+"top_month_share": 0.13846153846153847,
+"median_best": 0.1637858055380259,
+"lower95": 0.327440878403508,
+"lift": 0.17014946129885944,
+"per_market": {
+"Canada": {
+"n": 20,
+"rate": 0.6
+},
+"Denmark": {
+"n": 44,
+"rate": 0.4090909090909091
+},
+"Finland": {
+"n": 65,
+"rate": 0.27692307692307694
+},
+"Germany": {
+"n": 61,
+"rate": 0.36065573770491804
+},
+"Norway": {
+"n": 25,
+"rate": 0.56
+},
+"Sweden": {
+"n": 65,
+"rate": 0.3230769230769231
+},
+"USA": {
+"n": 45,
+"rate": 0.4
+}
+},
+"conditions": [
+"within 5% of 52-week low",
+"bottom 10% 6-month return in market",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5056518462697814,
+"raw_train_days": 1327
+},
+{
+"n": 284,
+"hits": 120,
+"rate": 0.4225352112676056,
+"matched": 0.2245394465969356,
+"n_train": 202,
+"rate_train": 0.41089108910891087,
+"n_test": 82,
+"rate_test": 0.45121951219512196,
+"matched_test": 0.2068107506332964,
+"stocks": 165,
+"weeks": 45,
+"top_month": "2022-09",
+"top_month_share": 0.13732394366197184,
+"median_best": 0.16545152950365039,
+"lower95": 0.3664942264447883,
+"lift": 0.19799576467067004,
+"per_market": {
+"Canada": {
+"n": 17,
+"rate": 0.47058823529411764
+},
+"Denmark": {
+"n": 41,
+"rate": 0.4878048780487805
+},
+"Finland": {
+"n": 49,
+"rate": 0.3469387755102041
+},
+"Germany": {
+"n": 51,
+"rate": 0.37254901960784315
+},
+"Norway": {
+"n": 23,
+"rate": 0.5652173913043478
+},
+"Sweden": {
+"n": 60,
+"rate": 0.38333333333333336
+},
+"USA": {
+"n": 43,
+"rate": 0.46511627906976744
+}
+},
+"conditions": [
+"MACD histogram rising",
+"bottom 10% 6-month return in market",
+"market: under 20% of stocks above 50-day"
+],
+"kind": "search",
+"raw_train_rate": 0.5053763440860215,
+"raw_train_days": 1116
+},
+{
+"n": 80,
+"hits": 37,
+"rate": 0.4625,
+"matched": 0.2455808747940706,
+"n_train": 64,
+"rate_train": 0.46875,
+"n_test": 16,
+"rate_test": 0.4375,
+"matched_test": 0.1893523509349309,
+"stocks": 43,
+"weeks": 47,
+"top_month": "2022-12",
+"top_month_share": 0.125,
+"median_best": 0.19355700354569672,
+"lower95": 0.3574781238878701,
+"lift": 0.21691912520592943,
+"per_market": {
+"Canada": {
+"n": 5,
+"rate": 0.4
+},
+"Denmark": {
+"n": 18,
+"rate": 0.4444444444444444
+},
+"Finland": {
+"n": 16,
+"rate": 0.3125
+},
+"Germany": {
+"n": 10,
+"rate": 0.5
+},
+"Norway": {
+"n": 15,
+"rate": 0.4666666666666667
+},
+"Sweden": {
+"n": 7,
+"rate": 0.42857142857142855
+},
+"USA": {
+"n": 9,
+"rate": 0.7777777777777778
+}
+},
+"conditions": [
+"60%+ below 52-week high",
+"Bollinger squeeze (narrowest 10%)"
+],
+"kind": "search",
+"raw_train_rate": 0.504950495049505,
+"raw_train_days": 505
+}
+]
+}
