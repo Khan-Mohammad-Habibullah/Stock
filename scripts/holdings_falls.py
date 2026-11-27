@@ -92,6 +92,15 @@ def outcomes(df):
     f10, f20 = out["fall10"], out["fall20"]
     both = np.where((f10 == 1) & (f20 == 1), 1.0, np.where((f10 == 0) | (f20 == 0), 0.0, np.nan))
     df["fall10"], df["fall20"], df["fall_both"] = f10, f20, both
+    # trading days from the setup day to the first close that is 10% (within 21 days) / more than 20% (within 63 days) lower; NaN when it never happens
+    from numpy.lib.stride_tricks import sliding_window_view
+    for h, thr, name, strict in ((M1, -FALL1, "d10", False), (M3, -FALL3, "d20", True)):
+        pad = np.concatenate([c[1:], np.full(h, np.nan)])
+        win = sliding_window_view(pad, h)[:n]                       # row i: the closes of days i+1 .. i+h
+        with np.errstate(invalid="ignore"):
+            hit = (win < c[:, None] * (1 + thr)) if strict else (win <= c[:, None] * (1 + thr))
+        first = np.where(hit.any(axis=1), hit.argmax(axis=1) + 1, np.nan)
+        df[name] = first
     for m, h in enumerate(MONTHS, start=1):
         fwd = np.full(n, np.nan)
         if n > h:

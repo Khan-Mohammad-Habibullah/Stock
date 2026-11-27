@@ -29,7 +29,7 @@ import setups_study as SS
 
 OUT = "data/holdings_study.json"
 MARKETS = [m["k"] for m in SD.MARKETS]
-KEEP = ["sym", "date", "c", "rv20", "atr", "from52h", "rsi", "vr", "breadth", "hit", "fall10", "fall20", "fall_both"] + ["m%d" % m for m in range(1, 7)]
+KEEP = ["sym", "date", "c", "rv20", "atr", "from52h", "rsi", "vr", "breadth", "hit", "fall10", "fall20", "fall_both", "d10", "d20"] + ["m%d" % m for m in range(1, 7)]
 
 
 def rnd(x, d=4):
@@ -138,8 +138,13 @@ def main():
         for key, lab in (("market", "market"), ("year", "year"), ("month", "calendar month")):
             if conc and conc[key] > HF.MAX_SHARE:
                 why.append("%.0f%% of its cases in one %s (%s)" % (conc[key] * 100, lab, conc[key + "_top"]))
+        # how many trading days the falls took among past cases that did fall (quartiles; none when fewer than 30 cases)
+        dq = {}
+        for col, dcol in (("fall10", "d10"), ("fall20", "d20")):
+            dv = X.loc[X[col] == 1, dcol].dropna().values
+            dq[col] = [float(np.percentile(dv, q)) for q in (25, 50, 75)] if len(dv) >= SL.MIN_CASES else None
         rules[k] = dict(name=HF.FALL_RULES[k]["name"], short=HF.FALL_RULES[k]["short"], conditions=[t for _, t, _ in HF.FALL_RULES[k]["conds"]],
-                        results=res, concentration=conc, pending=int(X.fall10.isna().sum()), passed=not why, why_not=why)
+                        results=res, concentration=conc, pending=int(X.fall10.isna().sum()), passed=not why, why_not=why, days_q=dq)
         fall_paths[k] = paths_block(X, cut)
 
     # ---- 3. estimated rates for a fall: every declustered resolved case of the six rules (one row per stock-day, all its rule flags)

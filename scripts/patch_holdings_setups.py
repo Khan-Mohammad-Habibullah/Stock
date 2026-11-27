@@ -50,15 +50,15 @@ BLOCK = BEGIN + r'''
   <div class="hsx-block" id="hsx-fall">
     <h3 class="h3">Fall patterns in your holdings (&minus;10% within a month, &minus;20% within three)</h3>
     <p class="hs-note" id="hsx-fall-note">Loading&hellip;</p>
+    <p class="hs-note hsx-warn" id="hsx-fall-warn" hidden></p>
     <div class="scr-tabs" id="hsx-fall-tabs" role="group" aria-label="Market for the holdings fall table"></div>
-    <div class="ctl"><select id="hsx-fall-cnt" aria-label="How many of the rule's conditions are met"></select>
-      <label class="hs-note" style="display:inline-flex;gap:6px;align-items:center;margin:0"><input type="checkbox" id="hsx-fall-failed"> Also show the rules that did not pass the test</label>
-      <span class="count" id="hsx-fall-shown"></span></div>
+    <div class="ctl"><select id="hsx-fall-cnt" aria-label="How many of the rule's conditions are met"></select><span class="count" id="hsx-fall-shown"></span></div>
     <div class="tbl-wrap" id="hsx-fall-wrap"><table class="hold scr" id="hsx-fall-t"><thead></thead><tbody></tbody></table></div>
     <p class="hs-note" id="hsx-fall-empty" hidden></p>
     <p class="hs-note" id="hsx-fall-live"></p>
     <p class="hs-note" id="hsx-fall-how"></p>
     <p class="hs-note" id="hsx-fall-check"></p>
+    <div id="hsx-fall-cov"></div>
     <div id="hsx-fall-test"></div>
     <p class="hs-note" id="hsx-fall-stamp"></p>
   </div>
@@ -66,7 +66,7 @@ BLOCK = BEGIN + r'''
   document.addEventListener('DOMContentLoaded', function () {
     'use strict';
     const $ = (id) => document.getElementById(id);
-    const HX = { d: null, st: null, su: null, live: new Map(), liveAt: null, up: { k: 'rate', dir: -1, open: null, mkt: 'All', cnt: 'all' }, fall: { k: 'e10', dir: -1, open: null, mkt: 'All', cnt: 'all', failed: false } };
+    const HX = { d: null, st: null, su: null, live: new Map(), liveAt: null, up: { k: 'rate', dir: -1, open: null, mkt: 'All', cnt: 'all' }, fall: { k: 'rate', dir: -1, open: null, mkt: 'All', cnt: 'all' } };
     const MKTS = ['All', 'USA', 'Sweden', 'Denmark', 'Germany', 'Finland', 'Norway', 'Canada'];
     const inM = (r, st) => st.mkt === 'All' || r.market === st.mkt;
     const NEW_WARN = 'The stock list is today’s 70 largest companies in each market. A company that fell 60% and kept falling usually dropped out of that list, so it is missing from this test. This makes the deep-fall setups (a, b, c, e) look better than they really were. Most of their cases also come from the 2022 bear market, and the washout setups (a, d) rest on a few market crashes. Expect real results to be lower than the historical success rate shown.';
@@ -266,20 +266,26 @@ BLOCK = BEGIN + r'''
     const FMODEL_TIP = 'Estimated from past cases with the same method as the upside estimate (fitted on the build years only, kept only if it beat the plain rule rate on the check years, never above the highest actual group rate, rounded to 5%).';
     const fallPaths = (r) => (HX.st && HX.st.fall.paths[r.best] ? HX.st.fall.paths[r.best].All.all : null);
     const estCell = (e) => (!e ? tdL(['—'], 'sm') : (() => { const x = tdL([pct(e.est), 'range ' + Math.round(e.lo * 100) + '–' + Math.round(e.hi * 100) + '%'], 'sm'); if (e.kind !== 'model') x.firstChild.append(' ', chip('rule average', 'n')); return x; })());
+    const fstat = (k, col) => (HX.st && HX.st.fall.rules[k] && HX.st.fall.rules[k].results.all[col]) || null;
+    const estCell2 = (e, k, col) => { if (!e) return tdL(['—'], 'sm'); const t = fstat(k, col); const x = tdL([pct(e.est), 'range ' + Math.round(e.lo * 100) + '–' + Math.round(e.hi * 100) + '%', t && t.n ? t.n.toLocaleString('en-GB') + ' past cases of ' + fname(k) : ''], 'sm'); if (e.kind !== 'model') x.firstChild.append(' ', chip('rule average', 'n', 'The model did not score better than the rule’s own historical rate on the check years, so that rate is shown.')); return x; };
+    const f10t = (r) => r.setup_close * (1 - 0.10), f20t = (r) => r.setup_close * (1 - 0.20);
     const FALL_COLS = [
       { k: 'name', label: 'Stock', val: (r) => r.name, cell: nameTd },
       { k: 'market', label: 'Market', cls: 'sec', val: (r) => r.market, cell: (r) => r.market },
-      { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—') },
-      { k: 'sd', label: 'Setup day', dir: -1, val: (r) => r.setup_day, cell: (r) => tdL([dT(r.setup_day), r.days_since === 0 ? 'latest close' : r.days_since + ' trading days ago'], 'sm') },
-      { k: 'rules', label: 'Matching fall setups (historical success rate: 10% in 1 month · more than 20% in 3 months)', cls: 'sm', val: (r) => r.rules.length, cell: (r) => { const x = el('td', 'sm'); r.rules.forEach((m) => { const d = el('span', 'hsx-ml', fname(m.rule) + ' · ' + pct(m.rate10, 1) + ' · ' + pct(m.rate20, 1) + ' of ' + m.n + (m.today ? '' : ' · not on the latest close') + ' '); if (m.passed === false) d.appendChild(chip('did not pass the test', 'n', 'Shown for information only: this rule was no better than any stock with the same volatility.')); x.appendChild(d); }); return x; } },
-      { k: 'e10', label: 'Estimated rate: fall of 10% in 1 month', cls: 'sm', dir: -1, val: (r) => (r.est10 ? r.est10.est : null), cell: (r) => (r.any_passed === false ? tdL(['—', 'its rules did not pass the test'], 'sm') : estCell(r.est10)), tip: FMODEL_TIP },
-      { k: 'e20', label: 'Estimated rate: fall of more than 20% in 3 months', cls: 'sm', dir: -1, val: (r) => (r.est20 ? r.est20.est : null), cell: (r) => (r.any_passed === false ? tdL(['—', 'its rules did not pass the test'], 'sm') : estCell(r.est20)), tip: FMODEL_TIP },
-      { k: 'lvl', label: 'Level where the setup no longer holds (distance)', cls: 'sm', val: (r) => r.level, cell: (r) => tdL([px(r.level, r.cur), sg(nowPx(r) / r.level - 1) + ' from it']), tip: 'The highest close of the 10 sessions up to the setup day. A close above it means the setup no longer holds.' },
-      { k: 'since', label: 'This stock since the setup day', cls: 'num', val: (r) => nowPx(r) / r.setup_close - 1, cell: (r) => tdL([sg(nowPx(r) / r.setup_close - 1), 'from ' + px(r.setup_close, r.cur)], 'num') },
+      { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—'), tip: 'Share of the whole portfolio’s value (percent only).' },
+      { k: 'sd', label: 'Setup day', dir: -1, val: (r) => r.setup_day, cell: (r) => tdL([dT(r.setup_day), r.days_since === 0 ? 'latest close' : r.days_since + ' trading day' + (r.days_since === 1 ? '' : 's') + ' ago'], 'sm'), tip: 'The first day within the last 10 completed trading days on which a fall setup started. Target, deadline and typical date count from it.' },
+      { k: 'rules', label: 'Matching fall setups (historical rate: 10% fall in 1 month · more than 20% in 3 months)', cls: 'sm', dir: -1, val: (r) => r.rules.length, cell: (r) => { const x = el('td', 'sm'); r.rules.forEach((m) => { const d = el('span', 'hsx-ml', fname(m.rule) + ' · ' + pct(m.rate10, 1) + ' · ' + pct(m.rate20, 1) + ' of ' + m.n + (m.run_start < r.setup_day ? ' · since ' + dT(m.run_start, false) : '') + (m.today ? '' : ' · not on the latest close') + ' '); if (m.passed === false) d.appendChild(chip('did not pass the test', 'n', 'Shown for information only: this rule was no better than any stock with the same volatility.')); x.appendChild(d); }); return x; }, tip: 'Every fall setup the stock matched in the last 10 trading days, highest historical rate first.' },
+      { k: 'rate', label: 'Highest historical rate of a 10% fall in 1 month', cls: 'sm', dir: -1, val: (r) => { const t = fstat(r.best, 'fall10'); return t && t.n >= 30 ? t.rate : null; }, cell: (r) => { const t = fstat(r.best, 'fall10'); return tdL(t && t.n >= 30 ? [pct(t.hits / t.n, 1) + ' of ' + t.n, 'same-volatility base ' + pct(t.matched, 1)] : ['too few cases'], 'sm'); }, tip: 'From the latest monthly study of the fall rules, all markets together.' },
+      { k: 'e10', label: 'Estimated rate: fall of 10% in 1 month', cls: 'sm', dir: -1, val: (r) => (r.est10 ? r.est10.est : null), cell: (r) => estCell2(r.est10, r.best, 'fall10'), tip: FMODEL_TIP },
+      { k: 'e20', label: 'Estimated rate: fall of more than 20% in 3 months', cls: 'sm', dir: -1, val: (r) => (r.est20 ? r.est20.est : null), cell: (r) => estCell2(r.est20, r.best, 'fall20'), tip: FMODEL_TIP },
+      { k: 'tgt', label: 'Target price (fall of 10% · more than 20%)', cls: 'num sm', val: (r) => f10t(r), cell: (r) => { const p = nowPx(r); return tdL([px(f10t(r), r.cur) + ' · ' + px(f20t(r), r.cur), p <= f10t(r) ? 'already 10% under the setup-day close' : 'needs ' + sg(f10t(r) / p - 1) + ' from now for 10%'], 'num sm'); }, tip: 'The close on the setup day minus 10%, and minus 20%.' },
+      { k: 'typ', label: 'Typical date if the fall comes', cls: 'sm', val: (r) => (r.typ10 ? r.typ10[1] : null), cell: (r) => (r.typ10 ? tdL([dT(r.typ10[1]) + ' (10%)', dT(r.typ10[0], false) + ' – ' + dT(r.typ10[2], false), r.typ20 ? dT(r.typ20[1], false) + ' (more than 20%)' : ''], 'sm') : tdL(['—'], 'sm')), tip: 'Among past cases of this rule that did fall 10% within a month, half got there by this date (the range holds the middle half). The same for the fall of more than 20%. It is not a forecast that this stock will fall.' },
+      { k: 'dl', label: 'Deadline', cls: 'sm', val: (r) => r.deadline, cell: (r) => { const n = daysLeft(r); const x = tdL([dT(r.deadline), n == null ? '' : n <= 0 ? 'passed' : n + ' trading days left'], 'sm'); if (n != null && n < 10) x.classList.add('hsx-am'); return x; }, tip: 'Setup day plus 63 trading days (three months) on the stock’s exchange. After that the setup counts as missed.' },
+      { k: 'since', label: 'This stock since the setup day', cls: 'num', dir: -1, val: (r) => nowPx(r) / r.setup_close - 1, cell: (r) => tdL([sg(nowPx(r) / r.setup_close - 1), 'from ' + px(r.setup_close, r.cur)], 'num') },
     ].concat(FC_COLS).concat([
       { k: 'px', label: 'Price now', cls: 'num sec', val: (r) => nowPx(r), cell: (r) => px(nowPx(r), r.cur) },
-      { k: 'dl', label: 'Deadline', cls: 'sm', val: (r) => r.deadline, cell: (r) => { const n = daysLeft(r); const x = tdL([dT(r.deadline), n == null ? '' : n <= 0 ? 'passed' : n + ' trading days left'], 'sm'); if (n != null && n < 10) x.classList.add('hsx-am'); return x; }, tip: 'Setup day plus 63 trading days (three months) on the stock’s exchange.' },
-      { k: 'st', label: 'Status', val: (r) => r.status, cell: (r) => { const x = el('td'); const p = nowPx(r); x.appendChild(r.status === 'fell10' ? chip('Fell 10% within a month', 'e2') : p > r.level ? chip('Above its level', 'n', 'The price is above the level where the setup no longer holds.') : r.status === 'still' ? chip('Still matching', 'e1') : chip('No longer matching', 'n')); return x; } },
+      { k: 'inv', label: 'Invalidation level (distance)', cls: 'sm', val: (r) => r.level, cell: (r) => (r.level == null ? '—' : px(r.level, r.cur) + ' (' + sg(nowPx(r) / r.level - 1) + ')'), tip: 'The highest close of the 10 sessions up to the setup day. A close above it means the setup no longer holds; the row is flagged at once.' },
+      { k: 'st', label: 'Status', val: (r) => r.status, cell: (r) => { const x = el('td'); const p = nowPx(r); x.appendChild(r.status === 'fell10' ? chip('Fell 10% within a month', 'e2', 'A close at least 10% under the setup-day close within 21 trading days.') : p > r.level ? chip('Above invalidation', 'n', 'The price is above the level where the setup no longer holds.') : r.status === 'still' ? chip('Still matching', 'e1', 'The latest close still meets every condition of at least one listed fall setup.') : chip('No longer matching', 'n', 'The latest close no longer meets every condition; the row stays while the setup day is within the last 10 trading days.')); return x; } },
     ]);
     const fallFoot = (c) => (c.k === 'name' ? el('td', null, 'All stocks, any day') : /^m\d$/.test(c.k) && HX.st ? monthCell(HX.st.base_paths.All, +c.k.slice(1), 'below') : el('td'));
     const fallDetail = (r) => {
@@ -297,7 +303,7 @@ BLOCK = BEGIN + r'''
       w.appendChild(readings(r));
       return w;
     };
-    const fallRows = () => (HX.d ? ((HX.fall.failed ? HX.d.fall_all : HX.d.fall) || []).filter((r) => inM(r, HX.fall)) : []);
+    const fallRows = () => (HX.d ? (HX.d.fall_all || []).filter((r) => inM(r, HX.fall)).map((r) => Object.assign(r, { _cls: (r.level != null && nowPx(r) > r.level && r.status !== 'fell10') ? 'hsx-below' : '' })) : []);
     const drawFall = table('hsx-fall-t', HX.fall, { cols: () => (HX.fall.cnt === 'all' ? FALL_COLS : nearCols('fall')), rows: () => (HX.fall.cnt === 'all' ? fallRows() : nearRows('fall')),
       detail: (r) => (r._near ? nearDetail('fall')(r) : fallDetail(r)), foot: null, footOn: () => false });
 
@@ -318,8 +324,7 @@ BLOCK = BEGIN + r'''
     }
     tabs('up'); tabs('fall');
     $('hsx-up-cnt').addEventListener('change', (e) => { HX.up.cnt = e.target.value; HX.up.open = null; HX.up.k = e.target.value === 'all' ? 'rate' : 'nrate'; HX.up.dir = -1; paint(); });
-    $('hsx-fall-cnt').addEventListener('change', (e) => { HX.fall.cnt = e.target.value; HX.fall.open = null; HX.fall.k = e.target.value === 'all' ? 'e10' : 'nrate'; HX.fall.dir = -1; paint(); });
-    $('hsx-fall-failed').addEventListener('change', (e) => { HX.fall.failed = e.target.checked; HX.fall.open = null; paint(); });
+    $('hsx-fall-cnt').addEventListener('change', (e) => { HX.fall.cnt = e.target.value; HX.fall.open = null; HX.fall.k = e.target.value === 'all' ? 'rate' : 'nrate'; HX.fall.dir = -1; paint(); });
 
     function fcCheck(st) {
       const f = st && st.forecast; if (!f) return '';
@@ -369,16 +374,15 @@ BLOCK = BEGIN + r'''
       // fall table
       const passed = d.fall_passed || [];
       const tested = st ? st.fall.order.length : 6;
-      $('hsx-fall-note').textContent = passed.length
-        ? 'Your stock holdings that showed one of the fall setups that passed the test on one of their last ' + d.window + ' completed trading days. A fall of 10% in 1 month: the lowest close in the next 21 trading days at least 10% under the setup-day close. A fall of more than 20% in 3 months: the lowest close in the next 63 trading days more than 20% under it.'
-        : 'No fall setup passed the test, so no holding is listed. ' + tested + ' fixed rules, written down before testing, were run on every stock and day; to be used here a rule had to beat the rate of a 10% fall within a month among days with the same volatility by at least 5 points in both the build years and the check years, with at least 30 cases in each and no single market, year or month holding more than half of its cases. None did, so the table stays empty rather than lowering the bar. The results are below; tick the box to see the holdings that match those rules anyway, marked as not passed.';
+      $('hsx-fall-note').textContent = 'Your stock holdings that showed one of the ' + tested + ' fall setups on one of their last ' + d.window + ' completed trading days, measured with the same kind of rules as the rise table. A fall of 10% in 1 month: the lowest close in the next 21 trading days at least 10% under the setup-day close. A fall of more than 20% in 3 months: the lowest close in the next 63 trading days more than 20% under it. Click a row for the conditions and the readings. Names are added and removed only at the daily rebuild; the price and the distances refresh every 5 minutes. The six forecast columns are a forecast for each stock from its latest close.';
+      $('hsx-fall-warn').hidden = !!passed.length;
+      $('hsx-fall-warn').textContent = '⚠ None of the ' + tested + ' fall setups passed the test, so every row is marked “did not pass the test”. The ' + tested + ' fixed rules were written down before testing and run on every stock and day; to be used a rule had to beat the rate of a 10% fall within a month among days with the same volatility by at least 5 points in both the build years and the check years, with at least 30 cases in each and no single market, year or month holding more than half of its cases. None did, so these patterns were no better than any stock with the same volatility and the rates in this table do not single anything out. The names are shown for information, not as a signal.';
       options('fall');
       const nf = drawFall();
       $('hsx-fall-wrap').hidden = !nf;
       $('hsx-fall-shown').textContent = nf + (nf === 1 ? ' holding shown' : ' holdings shown');
-      $('hsx-fall-empty').hidden = !!nf || (!passed.length && !HX.fall.failed);
+      $('hsx-fall-empty').hidden = !!nf;
       $('hsx-fall-empty').textContent = HX.fall.cnt === 'all' ? 'None of your holdings' + where(HX.fall) + ' had a fall setup in the last ' + d.window + ' trading days (' + d.checked + ' holdings checked, latest close ' + dT(latest) + ').' : 'None of your holdings' + where(HX.fall) + ' meets exactly ' + HX.fall.cnt + ' of a rule’s conditions on the latest close.';
-      if (HX.fall.failed) $('hsx-fall-note').textContent += ' Shown for information: rules marked “did not pass the test” were no better than any stock with the same volatility, so their rates do not single anything out.';
       const lf = d.live_fall;
       $('hsx-fall-live').hidden = !passed.length && !lf.logged;
       $('hsx-fall-live').className = 'hs-note' + (lf.warn ? ' hsx-warn' : '');
@@ -397,7 +401,7 @@ BLOCK = BEGIN + r'''
         const wrap = el('div', 'tbl-wrap'); wrap.appendChild(t); det.appendChild(wrap);
         $('hsx-fall-test').replaceChildren(det);
       }
-      stamp('hsx-fall-stamp');
+      coverage($('hsx-fall-cov')); stamp('hsx-fall-stamp');
     }
     async function getJson(url) { const r = await fetch(url + '?t=' + Math.floor(Date.now() / 60000), { cache: 'no-cache' }); if (!r.ok) throw new Error(url + ' HTTP ' + r.status); return r.json(); }
     async function load() {

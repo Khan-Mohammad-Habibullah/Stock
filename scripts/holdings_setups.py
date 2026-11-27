@@ -316,6 +316,8 @@ def main():
         # ---- falls: the rules that passed the test (the table), and all six rules (shown only when asked for, marked as not passed)
         r10 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("rate"))
         r20 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall20", {}).get("rate"))
+        # typical dates: the quartiles of the trading days past cases of the rule took to fall, counted from this setup day
+        fall_dates = lambda k, col, mk_, d0: ([XC.trading_days_after(mk_, d0, max(1, int(round(q)))).isoformat() for q in dq_] if (dq_ := ((frules.get(k, {}).get("days_q") or {}).get(col))) else None)
         for allowed, sink in ((passed, rows_fall), (HF.FALL_ORDER if frules else [], rows_fall_all)):
             Wf = runs_in_window(df, allowed) if allowed else {}
             if not any(w["starts_in"] for w in Wf.values()):
@@ -335,6 +337,7 @@ def main():
                              rules=[dict(rule=k, passed=k in passed, rate10=r10(k), rate20=r20(k), n=frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("n"),
                                          run_start=dates[Wf[k]["run_start"]], days=[dates[i] for i in Wf[k]["days"]], today=Wf[k]["today"],
                                          conds=cond_list(HF.FALL_RULES, k, r_now, fall_value)) for k in ks],
+                             typ10=fall_dates(best, "fall10", mk, sd_date), typ20=fall_dates(best, "fall20", mk, sd_date),
                              est10=e10, est20=e20, level=fmt(lvl), deadline=XC.trading_days_after(mk, sd_date, HF.M3).isoformat(),
                              since=fmt(r_now.c / rsd.c - 1), min_since=(fmt(float(after.min())) if len(after) else None), status=status,
                              vb=(vbucket(edges, rsd.rv20) if edges else None)))
