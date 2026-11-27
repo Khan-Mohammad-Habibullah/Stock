@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """index.html: insert the two holdings tables ("Holdings – setups as of the latest close" and "Holdings – setups before a fall") on the
-My holdings tab, directly below "Every holding", as ONE self-contained block (its own HTML, CSS and JavaScript, IDs and classes prefixed hsx-).
+My holdings tab, just before "Companies you own twice", as ONE self-contained block (its own HTML, CSS and JavaScript, IDs and classes prefixed hsx-).
 Nothing else in the page is edited. Running it again replaces the block.
 """
 import re
 
 PAGE = "index.html"
 BEGIN, END = "<!-- BEGIN holdings setup tables (scripts/patch_holdings_setups.py) -->", "<!-- END holdings setup tables -->"
-ANCHOR = '  <section class="hs-card" id="monthly">'
+ANCHOR = '    <h3 class="h3" id="twice">Companies you own twice</h3>\n'
 
 BLOCK = BEGIN + r'''
   <style>
+    .hsx-block { display: grid; gap: var(--cds-gap-md); min-width: 0; padding-top: 16px; border-top: 1px solid var(--color-border-line); }
+    #hsx-fall { margin-bottom: 8px; }
     #hsx-up h3, #hsx-fall h3 { margin: 14px 0 2px; font-size: var(--cds-font-size-body, 1rem); }
     #hsx-up table td.sm, #hsx-fall table td.sm { white-space: normal; min-width: 8.5rem; }
     #hsx-up table td.mo, #hsx-fall table td.mo { white-space: nowrap; min-width: 6.5rem; }
@@ -31,10 +33,12 @@ BLOCK = BEGIN + r'''
     ul.hsx-chk .lv { color: var(--color-fg-muted); margin-left: auto; padding-left: 8px; }
     #hsx-up details summary, #hsx-fall details summary { cursor: pointer; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
   </style>
-  <section class="hs-card" id="hsx-up">
-    <h2>Holdings &ndash; setups as of the latest close</h2>
+  <div class="hsx-block" id="hsx-up">
+    <h3 class="h3">Holdings &ndash; setups as of the latest close</h3>
     <p class="hs-note" id="hsx-up-note">Loading&hellip;</p>
     <p class="hs-note hsx-warn" id="hsx-up-warn" hidden></p>
+    <div class="scr-tabs" id="hsx-up-tabs" role="group" aria-label="Market for the holdings setups table"></div>
+    <div class="ctl"><select id="hsx-up-cnt" aria-label="How many of the setup's conditions are met"></select><span class="count" id="hsx-up-shown"></span></div>
     <div class="tbl-wrap"><table class="hold scr" id="hsx-up-t"><thead></thead><tbody></tbody></table></div>
     <p class="hs-note" id="hsx-up-empty" hidden></p>
     <p class="hs-note" id="hsx-up-live"></p>
@@ -42,22 +46,28 @@ BLOCK = BEGIN + r'''
     <p class="hs-note" id="hsx-up-check"></p>
     <div id="hsx-up-cov"></div>
     <p class="hs-note" id="hsx-up-stamp"></p>
-  </section>
-  <section class="hs-card" id="hsx-fall">
-    <h2>Holdings &ndash; setups before a fall</h2>
+  </div>
+  <div class="hsx-block" id="hsx-fall">
+    <h3 class="h3">Holdings &ndash; setups before a fall</h3>
     <p class="hs-note" id="hsx-fall-note">Loading&hellip;</p>
+    <div class="scr-tabs" id="hsx-fall-tabs" role="group" aria-label="Market for the holdings fall table"></div>
+    <div class="ctl"><select id="hsx-fall-cnt" aria-label="How many of the rule's conditions are met"></select>
+      <label class="hs-note" style="display:inline-flex;gap:6px;align-items:center;margin:0"><input type="checkbox" id="hsx-fall-failed"> Also show the rules that did not pass the test</label>
+      <span class="count" id="hsx-fall-shown"></span></div>
     <div class="tbl-wrap" id="hsx-fall-wrap"><table class="hold scr" id="hsx-fall-t"><thead></thead><tbody></tbody></table></div>
     <p class="hs-note" id="hsx-fall-empty" hidden></p>
     <p class="hs-note" id="hsx-fall-live"></p>
     <p class="hs-note" id="hsx-fall-how"></p>
     <div id="hsx-fall-test"></div>
     <p class="hs-note" id="hsx-fall-stamp"></p>
-  </section>
+  </div>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
     'use strict';
     const $ = (id) => document.getElementById(id);
-    const HX = { d: null, st: null, su: null, live: new Map(), liveAt: null, up: { k: 'rate', dir: -1, open: null }, fall: { k: 'e10', dir: -1, open: null } };
+    const HX = { d: null, st: null, su: null, live: new Map(), liveAt: null, up: { k: 'rate', dir: -1, open: null, mkt: 'All', cnt: 'all' }, fall: { k: 'e10', dir: -1, open: null, mkt: 'All', cnt: 'all', failed: false } };
+    const MKTS = ['All', 'USA', 'Sweden', 'Denmark', 'Germany', 'Finland', 'Norway', 'Canada'];
+    const inM = (r, st) => st.mkt === 'All' || r.market === st.mkt;
     const NEW_WARN = 'The stock list is today’s 70 largest companies in each market. A company that fell 60% and kept falling usually dropped out of that list, so it is missing from this test. This makes the deep-fall setups (a, b, c, e) look better than they really were. Most of their cases also come from the 2022 bear market, and the washout setups (a, d) rest on a few market crashes. Expect real results to be lower than the historical success rate shown.';
     const pct = (v, d = 0) => (v == null ? '—' : (v * 100).toFixed(d) + '%');
     const sg = (v, d = 1) => (v == null ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v * 100).toFixed(d) + '%');
@@ -101,32 +111,77 @@ BLOCK = BEGIN + r'''
       ['52-week high (TradingView: highs; computed: closes)', px(r.tv.hi52), px(r.computed.hi52)], ['Volume vs average (TradingView 60-day; computed 50-day)', r.tv.vr == null ? '—' : r.tv.vr.toFixed(2) + '×', r.computed.vr == null ? '—' : r.computed.vr.toFixed(2) + '×']]);
 
     // small sortable table with click-to-open detail rows and an optional comparison row at the bottom
-    function table(id, st, cols, rows, detail, foot) {
+    function table(id, st, spec) {
       const t = $(id), head = t.querySelector('thead'), body = t.querySelector('tbody');
-      const tr = el('tr');
-      cols.forEach((c) => { const th = el('th', c.cls || null); th.dataset.k = c.k; if (c.tip) th.title = c.tip; const b = el('button', null, c.label); b.type = 'button'; b.addEventListener('click', () => { if (st.k === c.k) st.dir = -st.dir; else { st.k = c.k; st.dir = c.dir || 1; } draw(); }); th.appendChild(b); th.setAttribute('aria-sort', st.k === c.k ? (st.dir > 0 ? 'ascending' : 'descending') : 'none'); tr.appendChild(th); });
-      head.replaceChildren(tr);
       function draw() {
-        head.querySelectorAll('th').forEach((th) => th.setAttribute('aria-sort', th.dataset.k === st.k ? (st.dir > 0 ? 'ascending' : 'descending') : 'none'));
+        const cols = spec.cols();
+        const tr = el('tr');
+        cols.forEach((c) => { const th = el('th', c.cls || null); th.dataset.k = c.k; if (c.tip) th.title = c.tip; const b = el('button', null, c.label); b.type = 'button'; b.addEventListener('click', () => { if (st.k === c.k) st.dir = -st.dir; else { st.k = c.k; st.dir = c.dir || 1; } draw(); }); th.appendChild(b); th.setAttribute('aria-sort', st.k === c.k ? (st.dir > 0 ? 'ascending' : 'descending') : 'none'); tr.appendChild(th); });
+        head.replaceChildren(tr);
         const col = cols.find((c) => c.k === st.k) || cols[0];
-        const rs = rows().slice().sort((a, b) => cmp(col.val(a), col.val(b)) * st.dir);
+        const rs = spec.rows().slice().sort((a, b) => cmp(col.val(a), col.val(b)) * (cols.includes(col) && col.k === st.k ? st.dir : 1));
         const out = [];
         rs.forEach((r) => {
           const x = el('tr'); if (r._cls) x.className = r._cls; x.style.cursor = 'pointer';
           cols.forEach((c) => { const v = c.cell(r); x.appendChild(v instanceof HTMLElement ? v : el('td', c.cls || null, v)); });
           x.addEventListener('click', () => { st.open = st.open === r.sym ? null : r.sym; draw(); });
           out.push(x);
-          if (st.open === r.sym) { const d = el('tr', 'scr-detail'); const c = el('td'); c.colSpan = cols.length; c.appendChild(detail(r)); d.appendChild(c); out.push(d); }
+          if (st.open === r.sym) { const d = el('tr', 'scr-detail'); const c = el('td'); c.colSpan = cols.length; c.appendChild(spec.detail(r)); d.appendChild(c); out.push(d); }
         });
-        if (rs.length && foot) { const f = el('tr', 'hsx-foot'); cols.forEach((c) => f.appendChild(foot(c))); out.push(f); }
+        if (rs.length && spec.foot && spec.footOn()) { const f = el('tr', 'hsx-foot'); cols.forEach((c) => f.appendChild(spec.foot(c))); out.push(f); }
         body.replaceChildren(...out);
         return rs.length;
       }
       return draw;
     }
 
+    // ---- partial matches: k of a setup's (or a fall rule's) conditions met on the latest close
+    const condTexts = (kind, k) => (kind === 'up' ? (HX.su && HX.su.setups[k] ? HX.su.setups[k].conditions : []) : (HX.st && HX.st.fall.rules[k] ? HX.st.fall.rules[k].conditions : []));
+    const passedRule = (k) => !!(HX.d && (HX.d.fall_passed || []).includes(k));
+    const fRate = (k, col) => { const x = HX.st && HX.st.fall.rules[k]; const v = x && x.results.all[col]; return v && v.n >= 30 ? v.rate : null; };
+    const nearRows = (kind) => {
+      const st = HX[kind], k = +st.cnt;
+      return ((HX.d && HX.d.stocks) || []).filter((h) => inM(h, st)).map((h) => {
+        let ms = (kind === 'up' ? h.near_up : h.near_fall).filter((m) => m[1] === k).map((m) => ({ k: m[0], met: m[1], tot: m[2], bits: m[3], vals: m[4] }));
+        if (kind === 'fall' && !st.failed) ms = ms.filter((m) => passedRule(m.k));
+        if (!ms.length) return null;
+        const rk = (m) => (kind === 'up' ? rate(m.k) : fRate(m.k, 'fall10'));
+        ms.sort((a, b) => cmp(rk(b), rk(a)));
+        return Object.assign({}, h, { ms, _near: true, _best: rk(ms[0]), _cls: '' });
+      }).filter(Boolean);
+    };
+    const nearSetupsCell = (kind) => (r) => {
+      const x = el('td', 'sm');
+      r.ms.forEach((m) => {
+        const miss = condTexts(kind, m.k).filter((_, i) => m.bits[i] === '0');
+        const d = el('span', 'hsx-ml', (kind === 'up' ? sname(m.k) : fname(m.k)) + ' · ' + m.met + ' of ' + m.tot + ' · missing: ' + miss.join('; ') + ' ');
+        if (kind === 'up' && isNew(m.k)) d.appendChild(chip('⚠ new setup', 'am', NEW_WARN));
+        if (kind === 'fall' && !passedRule(m.k)) d.appendChild(chip('did not pass the test', 'n', 'Shown for information only: this rule was no better than any stock with the same volatility.'));
+        x.appendChild(d);
+      });
+      return x;
+    };
+    const nearCols = (kind) => [
+      { k: 'name', label: 'Stock', val: (r) => r.name, cell: nameTd },
+      { k: 'market', label: 'Market', cls: 'sec', val: (r) => r.market, cell: (r) => r.market },
+      { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—') },
+      { k: 'nset', label: (kind === 'up' ? 'Setups' : 'Fall rules') + ' with ' + HX[kind].cnt + ' condition' + (HX[kind].cnt === '1' ? '' : 's') + ' met on the latest close', cls: 'sm', dir: -1, val: (r) => r.ms.length, cell: nearSetupsCell(kind) },
+      { k: 'nrate', label: kind === 'up' ? 'Highest historical success rate if every condition were met' : 'Highest historical rate of a 10% fall in 1 month if every condition were met', cls: 'sm', dir: -1, val: (r) => r._best, cell: (r) => (r._best == null ? '—' : pct(r._best, 1)), tip: 'This rate applies only when every condition is met on the same day. A partial match is not a setup.' },
+      { k: 'px', label: 'Price now', cls: 'num sec', val: (r) => nowPx(r), cell: (r) => px(nowPx(r), r.cur) },
+      { k: 'ld', label: 'Latest close', cls: 'sec', val: (r) => r.last_date, cell: (r) => dT(r.last_date) },
+    ];
+    const nearDetail = (kind) => (r) => {
+      const w = box();
+      w.appendChild(para(r.name + ' · ' + r.market + ' · latest close ' + px(r.last_close, r.cur) + ' on ' + dT(r.last_date) + '. A partial match is not a setup: the historical rates apply only when every condition is met on the same day.'));
+      r.ms.forEach((m) => {
+        const h = para((kind === 'up' ? sname(m.k) + ' · historical success rate ' + (rate(m.k) == null ? 'too few cases' : pct(rate(m.k), 1)) : fname(m.k) + (passedRule(m.k) ? '' : ' · did not pass the test')) + ' · ' + m.met + ' of ' + m.tot + ' conditions met on the latest close:'); h.style.color = 'var(--color-fg)'; h.style.marginTop = '8px';
+        w.append(h, checklist(condTexts(kind, m.k).map((t, i) => ({ t, ok: m.bits[i] === '1', v: m.vals[i] }))));
+      });
+      return w;
+    };
+
     // ---- upside table
-    const upRows = () => (HX.d ? HX.d.up.map((r) => Object.assign(r, { _cls: (r.levels.invalid != null && nowPx(r) < r.levels.invalid && r.status !== 'reached') ? 'hsx-below' : '' })) : []);
+    const upRows = () => (HX.d ? HX.d.up.filter((r) => inM(r, HX.up)).map((r) => Object.assign(r, { _cls: (r.levels.invalid != null && nowPx(r) < r.levels.invalid && r.status !== 'reached') ? 'hsx-below' : '' })) : []);
     const upStatus = (r) => {
       const p = nowPx(r);
       if (r.status === 'reached' || (r.target != null && p >= r.target)) return chip('Reached +20%', 'b2', 'A close at or above the target since the setup day.');
@@ -165,7 +220,7 @@ BLOCK = BEGIN + r'''
       if (c.k === 'setups') return el('td', 'sm', 'comparison: every stock in the study list on every day');
       return el('td');
     };
-    const box = () => { const w = el('div'); w.style.maxWidth = '72rem'; w.style.position = 'sticky'; w.style.left = '0'; return w; };
+    function box() { const w = el('div'); w.style.maxWidth = '72rem'; w.style.position = 'sticky'; w.style.left = '0'; return w; }
     const upDetail = (r) => {
       const w = box();
       w.appendChild(para(r.name + ' · ' + r.market + ' · ' + r.size + ' cap · setup day ' + dT(r.setup_day) + ' at a close of ' + px(r.setup_close, r.cur) + ' · target ' + px(r.target, r.cur) + ' · deadline ' + dT(r.deadline) + ' · latest close ' + px(r.last_close, r.cur) + ' on ' + dT(r.last_date) + (r.earnings_next ? ' · next earnings ' + dT(r.earnings_next) + ' (TradingView)' : '') + '.'));
@@ -182,7 +237,8 @@ BLOCK = BEGIN + r'''
       w.appendChild(readings(r));
       return w;
     };
-    const drawUp = table('hsx-up-t', HX.up, UP_COLS, upRows, upDetail, upFoot);
+    const drawUp = table('hsx-up-t', HX.up, { cols: () => (HX.up.cnt === 'all' ? UP_COLS : nearCols('up')), rows: () => (HX.up.cnt === 'all' ? upRows() : nearRows('up')),
+      detail: (r) => (r._near ? nearDetail('up')(r) : upDetail(r)), foot: upFoot, footOn: () => HX.up.cnt === 'all' });
 
     // ---- fall table
     const FMODEL_TIP = 'Estimated from past cases with the same method as the upside estimate (fitted on the build years only, kept only if it beat the plain rule rate on the check years, never above the highest actual group rate, rounded to 5%).';
@@ -193,9 +249,9 @@ BLOCK = BEGIN + r'''
       { k: 'market', label: 'Market', cls: 'sec', val: (r) => r.market, cell: (r) => r.market },
       { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—') },
       { k: 'sd', label: 'Setup day', dir: -1, val: (r) => r.setup_day, cell: (r) => tdL([dT(r.setup_day), r.days_since === 0 ? 'latest close' : r.days_since + ' trading days ago'], 'sm') },
-      { k: 'rules', label: 'Matching fall setups (historical success rate: 10% in 1 month · more than 20% in 3 months)', cls: 'sm', val: (r) => r.rules.length, cell: (r) => { const x = el('td', 'sm'); r.rules.forEach((m) => x.appendChild(el('span', 'hsx-ml', fname(m.rule) + ' · ' + pct(m.rate10, 1) + ' · ' + pct(m.rate20, 1) + ' of ' + m.n + (m.today ? '' : ' · not on the latest close')))); return x; } },
-      { k: 'e10', label: 'Estimated rate: fall of 10% in 1 month', cls: 'sm', dir: -1, val: (r) => (r.est10 ? r.est10.est : null), cell: (r) => estCell(r.est10), tip: FMODEL_TIP },
-      { k: 'e20', label: 'Estimated rate: fall of more than 20% in 3 months', cls: 'sm', dir: -1, val: (r) => (r.est20 ? r.est20.est : null), cell: (r) => estCell(r.est20), tip: FMODEL_TIP },
+      { k: 'rules', label: 'Matching fall setups (historical success rate: 10% in 1 month · more than 20% in 3 months)', cls: 'sm', val: (r) => r.rules.length, cell: (r) => { const x = el('td', 'sm'); r.rules.forEach((m) => { const d = el('span', 'hsx-ml', fname(m.rule) + ' · ' + pct(m.rate10, 1) + ' · ' + pct(m.rate20, 1) + ' of ' + m.n + (m.today ? '' : ' · not on the latest close') + ' '); if (m.passed === false) d.appendChild(chip('did not pass the test', 'n', 'Shown for information only: this rule was no better than any stock with the same volatility.')); x.appendChild(d); }); return x; } },
+      { k: 'e10', label: 'Estimated rate: fall of 10% in 1 month', cls: 'sm', dir: -1, val: (r) => (r.est10 ? r.est10.est : null), cell: (r) => (r.any_passed === false ? tdL(['—', 'its rules did not pass the test'], 'sm') : estCell(r.est10)), tip: FMODEL_TIP },
+      { k: 'e20', label: 'Estimated rate: fall of more than 20% in 3 months', cls: 'sm', dir: -1, val: (r) => (r.est20 ? r.est20.est : null), cell: (r) => (r.any_passed === false ? tdL(['—', 'its rules did not pass the test'], 'sm') : estCell(r.est20)), tip: FMODEL_TIP },
       { k: 'lvl', label: 'Level where the setup no longer holds (distance)', cls: 'sm', val: (r) => r.level, cell: (r) => tdL([px(r.level, r.cur), sg(nowPx(r) / r.level - 1) + ' from it']), tip: 'The highest close of the 10 sessions up to the setup day. A close above it means the setup no longer holds.' },
       { k: 'since', label: 'This stock since the setup day', cls: 'num', val: (r) => nowPx(r) / r.setup_close - 1, cell: (r) => tdL([sg(nowPx(r) / r.setup_close - 1), 'from ' + px(r.setup_close, r.cur)], 'num') },
     ].concat(MONTHS.map((lab, m) => ({ k: 'm' + m, label: lab, cls: 'mo', val: (r) => { const s = (fallPaths(r) || [])[m]; return s && s.n >= 30 ? s.med : null; }, cell: (r) => monthCell(fallPaths(r), m, 'below'),
@@ -218,7 +274,29 @@ BLOCK = BEGIN + r'''
       w.appendChild(readings(r));
       return w;
     };
-    const drawFall = table('hsx-fall-t', HX.fall, FALL_COLS, () => (HX.d ? HX.d.fall : []), fallDetail, fallFoot);
+    const fallRows = () => (HX.d ? ((HX.fall.failed ? HX.d.fall_all : HX.d.fall) || []).filter((r) => inM(r, HX.fall)) : []);
+    const drawFall = table('hsx-fall-t', HX.fall, { cols: () => (HX.fall.cnt === 'all' ? FALL_COLS : nearCols('fall')), rows: () => (HX.fall.cnt === 'all' ? fallRows() : nearRows('fall')),
+      detail: (r) => (r._near ? nearDetail('fall')(r) : fallDetail(r)), foot: fallFoot, footOn: () => HX.fall.cnt === 'all' });
+
+    // ---- filters: market buttons (like Table C) and how many conditions are met
+    function options(kind) {
+      const st = HX[kind], sel = $('hsx-' + kind + '-cnt'), save = st.cnt;
+      const maxK = kind === 'up' ? 5 : 2;
+      const nAll = kind === 'up' ? upRows().length : fallRows().length;
+      const opts = [['all', (kind === 'up' ? 'All conditions met: a setup in the last ' : 'All conditions met: a fall setup in the last ') + HX.d.window + ' trading days (' + nAll + ')']];
+      for (let k = 1; k <= maxK; k += 1) { st.cnt = String(k); opts.push([String(k), k + ' condition' + (k === 1 ? '' : 's') + ' of the ' + (kind === 'up' ? 'setup' : 'rule') + ' met on the latest close (' + nearRows(kind).length + ')']); }
+      st.cnt = save;
+      sel.replaceChildren(...opts.map(([v, t]) => { const o = el('option', null, t); o.value = v; return o; }));
+      sel.value = st.cnt;
+    }
+    function tabs(kind) {
+      const box = $('hsx-' + kind + '-tabs');
+      MKTS.forEach((m) => { const b = el('button', null, m === 'All' ? 'All markets' : m); b.type = 'button'; b.dataset.m = m; b.addEventListener('click', () => { HX[kind].mkt = m; HX[kind].open = null; paint(); }); box.appendChild(b); });
+    }
+    tabs('up'); tabs('fall');
+    $('hsx-up-cnt').addEventListener('change', (e) => { HX.up.cnt = e.target.value; HX.up.open = null; HX.up.k = e.target.value === 'all' ? 'rate' : 'nrate'; HX.up.dir = -1; paint(); });
+    $('hsx-fall-cnt').addEventListener('change', (e) => { HX.fall.cnt = e.target.value; HX.fall.open = null; HX.fall.k = e.target.value === 'all' ? 'e10' : 'nrate'; HX.fall.dir = -1; paint(); });
+    $('hsx-fall-failed').addEventListener('change', (e) => { HX.fall.failed = e.target.checked; HX.fall.open = null; paint(); });
 
     function coverage(box) {
       const d = HX.d; const out = [];
@@ -243,9 +321,13 @@ BLOCK = BEGIN + r'''
       $('hsx-up-note').textContent = 'Your stock holdings that showed one of the twelve setups of “Setups before 20% rises” (Strategy tab) on one of their last ' + d.window + ' completed trading days, measured with the same rules. Click a row for the conditions, the levels and the readings. Names are added and removed only at the daily rebuild; the price and the distances refresh every 5 minutes.';
       const newOnes = d.up.some((r) => r.setups.some((m) => isNew(m.setup)));
       $('hsx-up-warn').hidden = !newOnes; $('hsx-up-warn').textContent = '⚠ Setups a) to g) (marked “new setup”): ' + NEW_WARN + ' The estimated success rates and the six months come from the same past cases, so this applies to them too.';
+      ['up', 'fall'].forEach((kind) => document.querySelectorAll('#hsx-' + kind + '-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === HX[kind].mkt))));
+      options('up');
       const nu = drawUp();
+      const where = (st) => (st.mkt === 'All' ? '' : ' in ' + st.mkt);
       $('hsx-up-t').parentNode.hidden = !nu; $('hsx-up-empty').hidden = !!nu;
-      $('hsx-up-empty').textContent = 'None of your holdings had a setup in the last ' + d.window + ' trading days (' + d.checked + ' holdings checked, latest close ' + dT(latest) + ').';
+      $('hsx-up-shown').textContent = nu + (nu === 1 ? ' holding shown' : ' holdings shown');
+      $('hsx-up-empty').textContent = HX.up.cnt === 'all' ? 'None of your holdings' + where(HX.up) + ' had a setup in the last ' + d.window + ' trading days (' + d.checked + ' holdings checked, latest close ' + dT(latest) + ').' : 'None of your holdings' + where(HX.up) + ' meets exactly ' + HX.up.cnt + ' of a setup’s conditions on the latest close.';
       const lu = d.live_up;
       $('hsx-up-live').className = 'hs-note' + (lu.warn ? ' hsx-warn' : '');
       $('hsx-up-live').textContent = lu.n_est >= 30 ? (lu.warn ? '⚠ The estimates are running too high: ' : 'Live check: ') + 'of ' + lu.n_est + ' holdings’ setups judged so far, the average estimated success rate was ' + pct(lu.avg_est) + ' and ' + pct(lu.actual) + ' reached +20% within 42 trading days.' : 'Live check of this table: ' + lu.resolved + ' of ' + lu.logged + ' logged setups judged so far; the comparison with the estimates is shown from 30. It counts only this table’s own cases, logged within two trading days of their setup day (the ones already in the window when the table started are left out, because their outcome was partly known).';
@@ -261,11 +343,14 @@ BLOCK = BEGIN + r'''
       const tested = st ? st.fall.order.length : 6;
       $('hsx-fall-note').textContent = passed.length
         ? 'Your stock holdings that showed one of the fall setups that passed the test on one of their last ' + d.window + ' completed trading days. A fall of 10% in 1 month: the lowest close in the next 21 trading days at least 10% under the setup-day close. A fall of more than 20% in 3 months: the lowest close in the next 63 trading days more than 20% under it.'
-        : 'No fall setup passed the test, so no holding is listed. ' + tested + ' fixed rules, written down before testing, were run on every stock and day; to be used here a rule had to beat the rate of a 10% fall within a month among days with the same volatility by at least 5 points in both the build years and the check years, with at least 30 cases in each and no single market, year or month holding more than half of its cases. None did, so the table stays empty rather than lowering the bar. The results are below.';
-      const nf = passed.length ? drawFall() : 0;
+        : 'No fall setup passed the test, so no holding is listed. ' + tested + ' fixed rules, written down before testing, were run on every stock and day; to be used here a rule had to beat the rate of a 10% fall within a month among days with the same volatility by at least 5 points in both the build years and the check years, with at least 30 cases in each and no single market, year or month holding more than half of its cases. None did, so the table stays empty rather than lowering the bar. The results are below; tick the box to see the holdings that match those rules anyway, marked as not passed.';
+      options('fall');
+      const nf = drawFall();
       $('hsx-fall-wrap').hidden = !nf;
-      $('hsx-fall-empty').hidden = !passed.length || !!nf;
-      $('hsx-fall-empty').textContent = 'None of your holdings had a fall setup in the last ' + d.window + ' trading days (' + d.checked + ' holdings checked, latest close ' + dT(latest) + ').';
+      $('hsx-fall-shown').textContent = nf + (nf === 1 ? ' holding shown' : ' holdings shown');
+      $('hsx-fall-empty').hidden = !!nf || (!passed.length && !HX.fall.failed);
+      $('hsx-fall-empty').textContent = HX.fall.cnt === 'all' ? 'None of your holdings' + where(HX.fall) + ' had a fall setup in the last ' + d.window + ' trading days (' + d.checked + ' holdings checked, latest close ' + dT(latest) + ').' : 'None of your holdings' + where(HX.fall) + ' meets exactly ' + HX.fall.cnt + ' of a rule’s conditions on the latest close.';
+      if (HX.fall.failed) $('hsx-fall-note').textContent += ' Shown for information: rules marked “did not pass the test” were no better than any stock with the same volatility, so their rates do not single anything out.';
       const lf = d.live_fall;
       $('hsx-fall-live').hidden = !passed.length && !lf.logged;
       $('hsx-fall-live').className = 'hs-note' + (lf.warn ? ' hsx-warn' : '');
@@ -300,7 +385,7 @@ BLOCK = BEGIN + r'''
     }
     async function refreshLive() {
       if (!HX.d || document.hidden || (typeof LIVE !== 'undefined' && LIVE.paused)) return;
-      const syms = Array.from(new Set(HX.d.up.concat(HX.d.fall).map((r) => r.sym)));
+      const syms = Array.from(new Set(HX.d.up.concat(HX.d.fall, HX.d.fall_all || [], HX.d.stocks || []).map((r) => r.sym)));
       if (!syms.length) return;
       try {
         const res = await fetch('https://scanner.tradingview.com/global/scan', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ symbols: { tickers: syms }, columns: ['close'] }) });

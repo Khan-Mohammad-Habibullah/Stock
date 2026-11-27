@@ -33,7 +33,7 @@ import setups_model as SM
 
 STO = zoneinfo.ZoneInfo("Europe/Stockholm")
 OUT, LOG, STUDY, HSTUDY, PORT = "data/holdings_setups.json", "data/holdings_log.json", "data/setups_study.json", "data/holdings_study.json", "data/portfolio.json"
-SCHEMA = 1
+SCHEMA = 2
 TV_COLS = ["name", "description", "type", "exchange", "country", "currency", "close", "open", "high", "low", "volume", "RSI", "MACD.macd", "MACD.signal",
            "ATR", "SMA50", "SMA200", "price_52_week_high", "average_volume_60d_calc", "market_cap_basic", "earnings_release_next_date"]
 TV_MIN = ["name", "description", "type", "exchange", "country", "currency", "close", "volume", "RSI", "MACD.macd", "MACD.signal", "SMA50", "SMA200",
@@ -230,7 +230,7 @@ def main():
             last_bar[mk] = pd.Series(ds).mode().iloc[0]
     size_cut = {mk: sorted([d.get("market_cap_basic") or 0 for d in U[mk]], reverse=True)[29] for mk in need if mk in U and len(U[mk]) >= 30}
 
-    rows_up, rows_fall, mism, notes = [], [], [], []
+    rows_up, rows_fall, rows_fall_all, held, mism, notes = [], [], [], [], [], []
     passed = (hstudy or {}).get("fall", {}).get("passed", [])
     fmodels = (hstudy or {}).get("fall", {}).get("models", {})
     frules = (hstudy or {}).get("fall", {}).get("rules", {})
@@ -311,14 +311,16 @@ def main():
                                 deadline=XC.trading_days_after(mk, sd_date, SL.HORIZON).isoformat(), since=fmt(r_now.c / rsd.c - 1), max_since=fmt(mx),
                                 levels={kk: fmt(vv) for kk, vv in lv.items()}, status=status, vb=(vbucket(edges, rsd.rv20) if edges else None)))
 
-        # ---- falls: only the rules that passed the test
-        Wf = runs_in_window(df, passed) if passed else {}
-        if any(w["starts_in"] for w in Wf.values()):
+        # ---- falls: the rules that passed the test (the table), and all six rules (shown only when asked for, marked as not passed)
+        r10 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("rate"))
+        r20 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall20", {}).get("rate"))
+        for allowed, sink in ((passed, rows_fall), (HF.FALL_ORDER if frules else [], rows_fall_all)):
+            Wf = runs_in_window(df, allowed) if allowed else {}
+            if not any(w["starts_in"] for w in Wf.values()):
+                continue
             sd = min(st for w in Wf.values() for st in w["starts_in"])
             rsd = df.iloc[sd]
-            r10 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("rate"))
-            r20 = lambda k: (frules.get(k, {}).get("results", {}).get("all", {}).get("fall20", {}).get("rate"))
-            ks = sorted(Wf, key=lambda k: (-(r10(k) or -1), HF.FALL_ORDER.index(k)))
+            ks = sorted(Wf, key=lambda k: (-(k in passed), -(r10(k) or -1), HF.FALL_ORDER.index(k)))
             best = ks[0]
             sd_date = datetime.date.fromisoformat(dates[sd])
             lvl = float(HF.fall_level(df).iloc[sd])
@@ -327,13 +329,26 @@ def main():
             after = df.c.values[sd + 1:]
             mn1 = float(after[:HF.M1].min()) if len(after) else None
             status = ("fell10" if mn1 and mn1 <= rsd.c * (1 - HF.FALL1) else "above" if r_now.c > lvl else "still" if any(Wf[k]["today"] for k in ks) else "gone")
-            rows_fall.append(dict(common, setup_day=dates[sd], setup_close=fmt(rsd.c), days_since=int(n - 1 - sd), best=best,
-                                  rules=[dict(rule=k, rate10=r10(k), rate20=r20(k), n=frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("n"),
-                                              run_start=dates[Wf[k]["run_start"]], days=[dates[i] for i in Wf[k]["days"]], today=Wf[k]["today"],
-                                              conds=cond_list(HF.FALL_RULES, k, r_now, fall_value)) for k in ks],
-                                  est10=e10, est20=e20, level=fmt(lvl), deadline=XC.trading_days_after(mk, sd_date, HF.M3).isoformat(),
-                                  since=fmt(r_now.c / rsd.c - 1), min_since=(fmt(float(after.min())) if len(after) else None), status=status,
-                                  vb=(vbucket(edges, rsd.rv20) if edges else None)))
+            sink.append(dict(common, setup_day=dates[sd], setup_close=fmt(rsd.c), days_since=int(n - 1 - sd), best=best, any_passed=any(k in passed for k in ks),
+                             rules=[dict(rule=k, passed=k in passed, rate10=r10(k), rate20=r20(k), n=frules.get(k, {}).get("results", {}).get("all", {}).get("fall10", {}).get("n"),
+                                         run_start=dates[Wf[k]["run_start"]], days=[dates[i] for i in Wf[k]["days"]], today=Wf[k]["today"],
+                                         conds=cond_list(HF.FALL_RULES, k, r_now, fall_value)) for k in ks],
+                             est10=e10, est20=e20, level=fmt(lvl), deadline=XC.trading_days_after(mk, sd_date, HF.M3).isoformat(),
+                             since=fmt(r_now.c / rsd.c - 1), min_since=(fmt(float(after.min())) if len(after) else None), status=status,
+                             vb=(vbucket(edges, rsd.rv20) if edges else None)))
+
+        # ---- how many of each setup's and each fall rule's conditions the latest close meets (for the "k conditions met" filter)
+        def near(order, rules, valfn):
+            out = []
+            for k in order:
+                tot = len(rules[k]["conds"])
+                met = int(r_now[k + "_met"])
+                if 1 <= met < tot:
+                    cl = cond_list(rules, k, r_now, valfn)
+                    out.append([k, met, tot, "".join("1" if c["ok"] else "0" for c in cl), [c["v"] for c in cl]])
+            return out
+        held.append(dict(sym=s, name=c["name"], market=mk, cur=t.get("currency"), last_close=fmt(r_now.c), last_date=r_now.date.strftime("%Y-%m-%d"),
+                         near_up=near(SL.ORDER, SL.SETUPS, SDLY.cond_value), near_fall=near(HF.FALL_ORDER, HF.FALL_RULES, fall_value)))
 
     # ---- the log (one entry per stock, table and setup day) and the live records
     have = {(e["kind"], e["sym"], e["setup_day"]) for e in LOGD}
@@ -388,7 +403,7 @@ def main():
     out = dict(schema=SCHEMA, built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), test=bool(a.dump),
                last_bar={mk: d.strftime("%Y-%m-%d") for mk, d in last_bar.items()}, window=HF.WINDOW,
                checked=evaluated, held=len(pos),
-               up=sorted(rows_up, key=lambda r: -(srate(r["best"]) or 0)), fall=rows_fall, not_covered=sorted(not_covered, key=lambda x: x["name"]), mismatch=mism,
+               up=sorted(rows_up, key=lambda r: -(srate(r["best"]) or 0)), fall=rows_fall, fall_all=rows_fall_all, stocks=held, not_covered=sorted(not_covered, key=lambda x: x["name"]), mismatch=mism,
                fall_passed=passed, live_up=live_up, live_fall=live_fall, notes=notes, tv_columns=tv_cols,
                calendar={mk: XC.upcoming(mk, last_bar[mk].date(), 140) for mk in last_bar})
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
