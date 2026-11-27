@@ -1,0 +1,55 @@
+name: Explore more setups (one-off)
+
+# Runs only on the setups-explore branch. Tests setups beyond the five on the Strategy tab with the same data and rules,
+# and commits the results to this branch (data/explore_results.json and .txt). Nothing on main or the live site changes.
+on:
+  push:
+    branches: [setups-explore]
+    paths: ["scripts/explore_setups.py", ".github/workflows/explore-setups.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: setups-explore
+  cancel-in-progress: true
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+      - name: Restore saved price data
+        id: restore
+        uses: actions/cache/restore@v4
+        with:
+          path: cache
+          key: explore-data-v1
+      - name: Download price data (first run only)
+        if: steps.restore.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p cache
+          python3 scripts/setups_data.py cache/study_data.json.gz
+      - name: Save price data for reruns
+        if: steps.restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: cache
+          key: explore-data-v1
+      - name: Run the exploration
+        run: python3 scripts/explore_setups.py --dump cache/study_data.json.gz --out data/explore_results.json
+      - name: Commit results to this branch
+        if: always()
+        run: |
+          git config user.name "setups-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for f in data/explore_results.json data/explore_results.txt data/explore_results_error.txt; do [ -f "$f" ] && git add -f "$f"; done
+          if git diff --cached --quiet; then echo "Nothing to commit."; exit 0; fi
+          git commit -q -m "Exploration results ($(date -u +%F))"
+          git push -q origin HEAD:setups-explore
