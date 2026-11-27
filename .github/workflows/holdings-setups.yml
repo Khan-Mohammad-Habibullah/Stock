@@ -1,0 +1,76 @@
+name: Update holdings setup tables
+
+# Rebuilds the two holdings tables on the My holdings tab ("Holdings – setups as of the latest close" and
+# "Holdings – setups before a fall"). Writes ONLY data/holdings_setups.json, data/holdings_log.json and
+# data/holdings_study.json; it reads the existing setups files and never writes to them.
+#   * daily, Tuesday to Saturday, after the "Setups before 20% rises" rebuild (06:00 Stockholm): runs at 04:20 and 05:20 UTC
+#     (06:20 Stockholm in summer and in winter); the script skips the run that is too early (before 06:15 local) or that comes
+#     after the day's rebuild; 07:10 UTC is a fallback for a dropped run
+#   * monthly study on the first weekend of the month at 09:00 UTC, after the existing setups study (07:00 UTC)
+#   * on demand (Actions tab -> Update holdings setup tables -> Run workflow; tick "study" to rerun the study too)
+on:
+  schedule:
+    - cron: "20 4 * * 2-6"
+    - cron: "20 5 * * 2-6"
+    - cron: "10 7 * * 2-6"
+    - cron: "0 9 * * 6,0"
+  workflow_dispatch:
+    inputs:
+      study:
+        description: "Rerun the monthly study as well"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: holdings-tables   # its own group, so it never queues behind or cancels the board's other workflows
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: What to run
+        id: mode
+        run: |
+          study=no; skip=no
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.study }}" = "true" ]; then study=yes; fi
+          if [ "${{ github.event.schedule }}" = "0 9 * * 6,0" ]; then
+            d=$(date -u +%-d); w=$(date -u +%u)
+            if { [ "$w" = 6 ] && [ "$d" -le 7 ]; } || { [ "$w" = 7 ] && [ "$d" = 1 ]; }; then study=yes; else echo "Not the first weekend of the month; skipping."; skip=yes; fi
+          fi
+          [ -f data/holdings_study.json ] || study=yes
+          echo "study=$study" >> "$GITHUB_OUTPUT"; echo "skip=$skip" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v5
+        if: steps.mode.outputs.skip == 'no'
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pandas
+        if: steps.mode.outputs.skip == 'no'
+      - name: Monthly study (fall rules and the six-month paths)
+        if: steps.mode.outputs.skip == 'no' && steps.mode.outputs.study == 'yes'
+        run: python3 scripts/holdings_study.py
+      - name: Daily rebuild of the two tables
+        if: steps.mode.outputs.skip == 'no'
+        run: |
+          if [ "${{ steps.mode.outputs.study }}" = "yes" ]; then python3 scripts/holdings_setups.py --force; else python3 scripts/holdings_setups.py; fi
+      - name: Commit and push
+        if: steps.mode.outputs.skip == 'no'
+        run: |
+          git config user.name "holdings-setups-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for f in data/holdings_setups.json data/holdings_log.json data/holdings_study.json; do [ -f "$f" ] && git add "$f"; done
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -q -m "Rebuild holdings setup tables ($(date -u +%F))"
+          for i in 1 2 3 4 5; do
+            git pull --rebase -q origin main && git push -q origin HEAD:main && exit 0
+            sleep 10
+          done
+          exit 1
