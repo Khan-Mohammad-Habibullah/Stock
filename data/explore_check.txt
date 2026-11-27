@@ -1,0 +1,81 @@
+Base rate by year: 2021 10.3%, 2022 14.4%, 2023 11.3%, 2024 11.4%, 2025 15.4%, 2026 15.2%
+
+== Your oversold reversal (current): 627 cases, 30.5% hit (same-volatility base 23.8%)
+   by year: 2021 15 cases 20% (base 26%), 2022 297 cases 31% (base 24%), 2023 102 cases 34% (base 23%), 2024 67 cases 19% (base 22%), 2025 84 cases 38% (base 24%), 2026 62 cases 27% (base 24%)
+   busiest months: 2022-09 59 cases 37%, 2022-10 55 cases 53%, 2022-05 35 cases 17%, 2022-07 30 cases 33%, 2023-03 26 cases 42%
+   without its 3 busiest months: 478 cases, 28.0%
+   by market: Canada 40 50%, Denmark 131 29%, Finland 100 16%, Germany 116 26%, Norway 72 35%, Sweden 99 33%, USA 69 42%
+   by size: Large 189 29%, Mid 438 31%
+   matching on the latest close: none
+
+== 60%+ below 52-week high (nothing else): 243 cases, 46.9% hit (same-volatility base 26.7%)
+   by year: 2021 4 cases 25% (base 29%), 2022 141 cases 45% (base 28%), 2023 27 cases 59% (base 26%), 2024 26 cases 35% (base 24%), 2025 24 cases 46% (base 24%), 2026 21 cases 62% (base 25%)
+   busiest months: 2022-09 21 cases 52%, 2022-10 20 cases 70%, 2022-06 19 cases 37%, 2022-08 18 cases 6%, 2022-12 11 cases 82%
+   without its 3 busiest months: 183 cases, 44.8%
+   by market: Canada 16 56%, Denmark 63 51%, Finland 40 28%, Germany 40 50%, Norway 40 50%, Sweden 24 58%, USA 20 40%
+   by size: Large 75 45%, Mid 168 48%
+   matching on the latest close: Intel Corporation (NASDAQ:INTC), Better Collective A/S (OMXCOP:BETCO_DKK), Kempower Oy (OMXHEX:KEMPOWR), Electrolux AB Class B (OMXSTO:ELUX_B), Volvo Car AB Class B (OMXSTO:VOLCAR_B)
+
+== 60%+ below high + volume dried up: 133 cases, 53.4% hit (same-volatility base 26.2%)
+   by year: 2021 2 cases 50% (base 23%), 2022 77 cases 53% (base 28%), 2023 16 cases 69% (base 25%), 2024 15 cases 27% (base 23%), 2025 12 cases 75% (base 21%), 2026 11 cases 45% (base 28%)
+   busiest months: 2022-11 13 cases 69%, 2022-06 10 cases 50%, 2022-09 9 cases 44%, 2022-10 9 cases 67%, 2022-08 8 cases 38%
+   without its 3 busiest months: 101 cases, 52.5%
+   by market: Canada 9 67%, Denmark 33 64%, Finland 24 33%, Germany 22 64%, Norway 27 56%, Sweden 9 33%, USA 9 44%
+   by size: Large 33 48%, Mid 100 55%
+   matching on the latest close: Volvo Car AB Class B (OMXSTO:VOLCAR_B)
+
+== 60%+ below high + volume 1.5x+: 189 cases, 48.7% hit (same-volatility base 26.8%)
+   by year: 2021 4 cases 25% (base 29%), 2022 106 cases 48% (base 28%), 2023 22 cases 64% (base 25%), 2024 20 cases 30% (base 24%), 2025 21 cases 48% (base 25%), 2026 16 cases 62% (base 28%)
+   busiest months: 2022-09 24 cases 54%, 2022-05 13 cases 54%, 2022-11 13 cases 69%, 2022-06 9 cases 44%, 2022-07 9 cases 44%
+   without its 3 busiest months: 139 cases, 45.3%
+   by market: Canada 11 55%, Denmark 51 55%, Finland 31 32%, Germany 34 59%, Norway 29 34%, Sweden 18 56%, USA 15 53%
+   by size: Large 57 53%, Mid 132 47%
+   matching on the latest close: none
+
+== Oversold reversal, 60%+ off the high: 146 cases, 44.5% hit (same-volatility base 27.4%)
+   by year: 2021 4 cases 25% (base 30%), 2022 86 cases 44% (base 28%), 2023 17 cases 47% (base 28%), 2024 16 cases 31% (base 23%), 2025 11 cases 55% (base 26%), 2026 12 cases 58% (base 27%)
+   busiest months: 2022-09 14 cases 50%, 2022-10 13 cases 62%, 2022-05 10 cases 40%, 2022-07 10 cases 50%, 2022-02 7 cases 29%
+   without its 3 busiest months: 109 cases, 42.2%
+   by market: Canada 8 62%, Denmark 37 57%, Finland 29 28%, Germany 23 48%, Norway 25 32%, Sweden 13 46%, USA 11 55%
+   by size: Large 46 50%, Mid 100 42%
+   matching on the latest close: Better Collective A/S (OMXCOP:BETCO_DKK), Kempower Oy (OMXHEX:KEMPOWR)
+
+== Oversold reversal + volatile stock: 385 cases, 40.3% hit (same-volatility base 29.1%)
+   by year: 2021 10 cases 20% (base 31%), 2022 213 cases 36% (base 29%), 2023 52 cases 40% (base 30%), 2024 24 cases 38% (base 31%), 2025 55 cases 58% (base 29%), 2026 31 cases 48% (base 30%)
+   busiest months: 2022-05 37 cases 22%, 2022-10 36 cases 64%, 2025-04 35 cases 71%, 2022-09 23 cases 39%, 2022-07 22 cases 36%
+   without its 3 busiest months: 277 cases, 35.7%
+   by market: Canada 35 60%, Denmark 79 37%, Finland 44 23%, Germany 57 42%, Norway 64 36%, Sweden 58 40%, USA 48 52%
+   by size: Large 118 38%, Mid 267 41%
+   matching on the latest close: Nokia Oyj (OMXHEX:NOKIA), Cameco Corporation (TSX:CCO), Equinox Gold Corp. (TSX:EQX), Pan American Silver Corp. (TSX:PAAS), Infineon Technologies AG (XETR:IFX)
+
+== High-volatility breakout: 204 cases, 39.7% hit (same-volatility base 31.1%)
+   by year: 2021 2 cases 50% (base 25%), 2022 76 cases 39% (base 31%), 2023 26 cases 38% (base 31%), 2024 25 cases 44% (base 31%), 2025 32 cases 41% (base 31%), 2026 43 cases 37% (base 31%)
+   busiest months: 2022-03 19 cases 37%, 2022-11 17 cases 47%, 2026-05 10 cases 60%, 2022-05 9 cases 33%, 2022-02 9 cases 33%
+   without its 3 busiest months: 158 cases, 38.0%
+   by market: Canada 20 45%, Denmark 33 30%, Finland 22 36%, Germany 29 48%, Norway 42 29%, Sweden 22 41%, USA 36 53%
+   by size: Large 56 41%, Mid 148 39%
+   matching on the latest close: none
+
+== Washout: market and stock oversold: 320 cases, 47.8% hit (same-volatility base 24.2%)
+   by year: 2022 255 cases 46% (base 24%), 2023 13 cases 54% (base 18%), 2024 10 cases 20% (base 20%), 2025 33 cases 64% (base 27%), 2026 9 cases 56% (base 22%)
+   busiest months: 2022-09 75 cases 56%, 2022-06 64 cases 39%, 2022-10 60 cases 53%, 2025-04 33 cases 64%, 2022-03 16 cases 31%
+   without its 3 busiest months: 121 cases, 44.6%
+   by market: Canada 6 83%, Denmark 70 54%, Finland 51 33%, Germany 65 46%, Norway 35 43%, Sweden 53 53%, USA 40 50%
+   by size: Large 99 44%, Mid 221 49%
+   matching on the latest close: none
+
+== Washout, 60%+ off high, MACD rising: 85 cases, 64.7% hit (same-volatility base 27.6%)
+   by year: 2022 70 cases 66% (base 28%), 2023 2 cases 100% (base 29%), 2024 3 cases 33% (base 26%), 2025 7 cases 43% (base 24%), 2026 3 cases 100% (base 26%)
+   busiest months: 2022-09 30 cases 70%, 2022-06 15 cases 67%, 2022-10 7 cases 71%, 2025-04 7 cases 43%, 2022-05 5 cases 80%
+   without its 3 busiest months: 33 cases, 57.6%
+   by market: Canada 3 100%, Denmark 25 76%, Finland 11 55%, Germany 15 47%, Norway 12 67%, Sweden 12 67%, USA 7 57%
+   by size: Large 30 70%, Mid 55 62%
+   matching on the latest close: none
+
+== Momentum leader pulls back: 930 cases, 24.5% hit (same-volatility base 17.7%)
+   by year: 2021 35 cases 11% (base 19%), 2022 171 cases 27% (base 18%), 2023 190 cases 24% (base 16%), 2024 191 cases 18% (base 16%), 2025 186 cases 36% (base 18%), 2026 157 cases 19% (base 20%)
+   busiest months: 2024-04 33 cases 42%, 2026-03 32 cases 31%, 2022-09 26 cases 27%, 2023-06 26 cases 15%, 2025-03 25 cases 24%
+   without its 3 busiest months: 839 cases, 23.5%
+   by market: Canada 135 29%, Denmark 130 19%, Finland 116 25%, Germany 134 20%, Norway 139 30%, Sweden 139 17%, USA 137 31%
+   by size: Large 365 22%, Mid 565 26%
+   matching on the latest close: Thermo Fisher Scientific Inc. (NYSE:TMO)
