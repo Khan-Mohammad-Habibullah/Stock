@@ -687,7 +687,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const d = HX.d, p = $(id); const age = tdSince(d.built_local.slice(0, 10));
       const bars = Object.entries(d.last_bar).map(([m, x]) => m + ' ' + dT(x, false)).join(', ');
       p.className = 'hs-note';
-      let t = 'Last rebuilt ' + dT(d.built_local.slice(0, 10)) + ' at ' + d.built_local.slice(11, 16) + ' Stockholm time (daily candles to ' + bars + ')' + (HX.st ? '; study last run ' + dT(HX.st.built.slice(0, 10)) : '') + '.' + (d.notes.length ? ' ' + d.notes.join('; ') + '.' : '') + (HX.liveAt ? ' Prices live from TradingView (15 min delayed), updated ' + HX.liveAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '.' : '');
+      let t = 'Last rebuilt ' + dT(d.built_local.slice(0, 10)) + ' at ' + d.built_local.slice(11, 16) + ' Stockholm time (daily candles to ' + bars + ')' + (HX.st ? '; study last run ' + dT(HX.st.built.slice(0, 10)) : '') + '.' + (d.notes.length ? ' ' + d.notes.map((n) => n.charAt(0).toUpperCase() + n.slice(1)).join('. ') + '.' : '') + (HX.liveAt ? ' Prices live from TradingView (15 min delayed), updated ' + HX.liveAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '.' : '');
       if (age != null && age > 2) { p.className = 'hs-note hsx-warn'; t = '⚠ This table is ' + age + ' trading days old, so the latest rebuild may have failed. Prices still refresh but the names may be out of date. ' + t; }
       if (d.test) t = 'TEST DATA. ' + t;
       p.textContent = t;
