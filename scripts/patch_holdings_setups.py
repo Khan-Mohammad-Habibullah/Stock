@@ -58,6 +58,7 @@ BLOCK = BEGIN + r'''
     <p class="hs-note" id="hsx-fall-empty" hidden></p>
     <p class="hs-note" id="hsx-fall-live"></p>
     <p class="hs-note" id="hsx-fall-how"></p>
+    <p class="hs-note" id="hsx-fall-check"></p>
     <div id="hsx-fall-test"></div>
     <p class="hs-note" id="hsx-fall-stamp"></p>
   </div>
@@ -167,9 +168,10 @@ BLOCK = BEGIN + r'''
       { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—') },
       { k: 'nset', label: (kind === 'up' ? 'Setups' : 'Fall rules') + ' with ' + HX[kind].cnt + ' condition' + (HX[kind].cnt === '1' ? '' : 's') + ' met on the latest close', cls: 'sm', dir: -1, val: (r) => r.ms.length, cell: nearSetupsCell(kind) },
       { k: 'nrate', label: kind === 'up' ? 'Highest historical success rate if every condition were met' : 'Highest historical rate of a 10% fall in 1 month if every condition were met', cls: 'sm', dir: -1, val: (r) => r._best, cell: (r) => (r._best == null ? '—' : pct(r._best, 1)), tip: 'This rate applies only when every condition is met on the same day. A partial match is not a setup.' },
+    ].concat(FC_COLS).concat([
       { k: 'px', label: 'Price now', cls: 'num sec', val: (r) => nowPx(r), cell: (r) => px(nowPx(r), r.cur) },
       { k: 'ld', label: 'Latest close', cls: 'sec', val: (r) => r.last_date, cell: (r) => dT(r.last_date) },
-    ];
+    ]);
     const nearDetail = (kind) => (r) => {
       const w = box();
       w.appendChild(para(r.name + ' · ' + r.market + ' · latest close ' + px(r.last_close, r.cur) + ' on ' + dT(r.last_date) + '. A partial match is not a setup: the historical rates apply only when every condition is met on the same day.'));
@@ -177,6 +179,26 @@ BLOCK = BEGIN + r'''
         const h = para((kind === 'up' ? sname(m.k) + ' · historical success rate ' + (rate(m.k) == null ? 'too few cases' : pct(rate(m.k), 1)) : fname(m.k) + (passedRule(m.k) ? '' : ' · did not pass the test')) + ' · ' + m.met + ' of ' + m.tot + ' conditions met on the latest close:'); h.style.color = 'var(--color-fg)'; h.style.marginTop = '8px';
         w.append(h, checklist(condTexts(kind, m.k).map((t, i) => ({ t, ok: m.bits[i] === '1', v: m.vals[i] }))));
       });
+      w.appendChild(fcTable(r));
+      return w;
+    };
+
+    // ---- the forecast, month by month from the latest close (holdings_forecast.py; same numbers in both tables)
+    const fcOf = (r) => (HX.fcMap ? HX.fcMap.get(r.sym) : null);
+    const fcChg = (r, m) => { const h = fcOf(r); return h && h.fc ? Math.exp(h.fc[m].q[1]) - 1 : null; };
+    const fcCell = (r, m) => {
+      const h = fcOf(r); if (!h || !h.fc) return tdL(['—'], 'hsx-mo sec');
+      const x = h.fc[m], b = h.last_close;
+      return tdL([px(b * Math.exp(x.q[1]), h.cur) + ' (' + sg(Math.exp(x.q[1]) - 1) + ')', px(b * Math.exp(x.q[0])) + ' – ' + px(b * Math.exp(x.q[2])), 'by ' + dT(x.date) + (x.kind === 'model' ? '' : ' · no-signal')], 'hsx-mo');
+    };
+    const FC_TIP = (m) => 'Forecast for the close about ' + (m + 1) + ' month' + (m ? 's' : '') + ' (' + 21 * (m + 1) + ' trading days) after the latest close: the middle number, its change from the latest close, and a range that held about half of the outcomes when the model was checked. A statistical estimate from past data, not a promise; see the note under the table for how well it did.';
+    const FC_COLS = MONTHS.map((lab, m) => ({ k: 'f' + m, label: 'Forecast: month ' + (m + 1), cls: 'hsx-mo', dir: -1, val: (r) => fcChg(r, m), cell: (r) => fcCell(r, m), tip: FC_TIP(m) }));
+    const fcTable = (r) => {
+      const h = fcOf(r); if (!h || !h.fc) return para('No forecast for this holding.');
+      const b = h.last_close, f = (q) => px(b * Math.exp(q[1]), h.cur) + ' (' + sg(Math.exp(q[1]) - 1) + '), ' + px(b * Math.exp(q[0])) + ' – ' + px(b * Math.exp(q[2]));
+      const w = el('div');
+      w.appendChild(para('Forecast from the latest close of ' + px(b, h.cur) + ' on ' + dT(h.last_date) + ' (middle number, change, range that held about half of the outcomes):'));
+      w.appendChild(mini(['', ...h.fc.map((x, i) => 'Month ' + (i + 1) + ' · ' + dT(x.date, false))], [['Forecast', ...h.fc.map((x) => f(x.q))], ['No-signal forecast (volatility and average drift only)', ...h.fc.map((x) => f(x.base))]]));
       return w;
     };
 
@@ -208,8 +230,7 @@ BLOCK = BEGIN + r'''
       { k: 'typ', label: 'Typical date if reached', cls: 'sm', val: (r) => (r.typ ? r.typ[1] : null), cell: (r) => (r.typ ? tdL([dT(r.typ[1]), dT(r.typ[0], false) + ' – ' + dT(r.typ[2])], 'sm') : tdL(['—'], 'sm')), tip: 'Among past cases of this setup that reached +20%, half got there by this date. It is not a forecast that this stock will reach the target.' },
       { k: 'dl', label: 'Deadline', cls: 'sm', val: (r) => r.deadline, cell: (r) => { const n = daysLeft(r); const x = tdL([dT(r.deadline), n == null ? '' : n <= 0 ? 'passed' : n + ' trading days left'], 'sm'); if (n != null && n < 10) x.classList.add('hsx-am'); return x; }, tip: 'Setup day plus 42 trading days on the stock’s exchange. After that the setup counts as missed.' },
       { k: 'since', label: 'This stock since the setup day', cls: 'num', dir: -1, val: (r) => nowPx(r) / r.setup_close - 1, cell: (r) => tdL([sg(nowPx(r) / r.setup_close - 1), 'from ' + px(r.setup_close, r.cur)], 'num') },
-    ].concat(MONTHS.map((lab, m) => ({ k: 'm' + m, label: lab, cls: 'hsx-mo', dir: -1, val: (r) => { const s = (upPaths(r) || [])[m]; return s && s.n >= 30 ? s.med : null; }, cell: (r) => monthCell(upPaths(r), m, 'above'),
-      tip: 'Past cases of the stock’s highest-rate setup, ' + (21 * (m + 1)) + ' trading days after their setup day: median change from the setup-day close, the middle half of cases under it, and the share that were above the setup-day close. What followed past cases, not a forecast for this stock.' }))).concat([
+    ].concat(FC_COLS).concat([
       { k: 'px', label: 'Price now', cls: 'num sec', val: (r) => nowPx(r), cell: (r) => px(nowPx(r), r.cur) },
       { k: 'inv', label: 'Invalidation level (distance)', cls: 'sm', val: (r) => r.levels.invalid, cell: (r) => (r.levels.invalid == null ? '—' : px(r.levels.invalid, r.cur) + ' (' + sg(nowPx(r) / r.levels.invalid - 1) + ')'), tip: 'The level of the highest-rate setup, set on its first day in the window. Below it the setup no longer holds; the row is flagged at once.' },
       { k: 'st', label: 'Status', val: (r) => r.status, cell: (r) => { const x = el('td'); x.appendChild(upStatus(r)); return x; } },
@@ -231,14 +252,15 @@ BLOCK = BEGIN + r'''
       });
       if (HX.st && HX.st.up_paths[r.best]) {
         const P = HX.st.up_paths[r.best], vb = r.vb == null ? null : HX.st.base_paths.by_vb[String(r.vb)];
-        w.appendChild(para('The next six months after past cases of ' + sname(r.best) + ' (median change from the setup-day close · share above it · cases):'));
+        w.appendChild(para('For reference, history rather than a forecast: what followed past cases of ' + sname(r.best) + ' (median change from the setup-day close · share above it · cases):'));
         w.appendChild(mini([''].concat(MONTHS), [pathRow('All years', P.All.all, 'above'), pathRow('Build years (before ' + dT(HX.st.period.split) + ')', P.All.build, 'above'), pathRow('Check years (from ' + dT(HX.st.period.split) + ')', P.All.check, 'above'), pathRow(r.market + ' only', P[r.market] && P[r.market].all, 'above'), pathRow('All stocks, any day, same volatility', vb, 'above')]));
       }
+      w.appendChild(fcTable(r));
       w.appendChild(readings(r));
       return w;
     };
     const drawUp = table('hsx-up-t', HX.up, { cols: () => (HX.up.cnt === 'all' ? UP_COLS : nearCols('up')), rows: () => (HX.up.cnt === 'all' ? upRows() : nearRows('up')),
-      detail: (r) => (r._near ? nearDetail('up')(r) : upDetail(r)), foot: upFoot, footOn: () => HX.up.cnt === 'all' });
+      detail: (r) => (r._near ? nearDetail('up')(r) : upDetail(r)), foot: null, footOn: () => false });
 
     // ---- fall table
     const FMODEL_TIP = 'Estimated from past cases with the same method as the upside estimate (fitted on the build years only, kept only if it beat the plain rule rate on the check years, never above the highest actual group rate, rounded to 5%).';
@@ -254,8 +276,7 @@ BLOCK = BEGIN + r'''
       { k: 'e20', label: 'Estimated rate: fall of more than 20% in 3 months', cls: 'sm', dir: -1, val: (r) => (r.est20 ? r.est20.est : null), cell: (r) => (r.any_passed === false ? tdL(['—', 'its rules did not pass the test'], 'sm') : estCell(r.est20)), tip: FMODEL_TIP },
       { k: 'lvl', label: 'Level where the setup no longer holds (distance)', cls: 'sm', val: (r) => r.level, cell: (r) => tdL([px(r.level, r.cur), sg(nowPx(r) / r.level - 1) + ' from it']), tip: 'The highest close of the 10 sessions up to the setup day. A close above it means the setup no longer holds.' },
       { k: 'since', label: 'This stock since the setup day', cls: 'num', val: (r) => nowPx(r) / r.setup_close - 1, cell: (r) => tdL([sg(nowPx(r) / r.setup_close - 1), 'from ' + px(r.setup_close, r.cur)], 'num') },
-    ].concat(MONTHS.map((lab, m) => ({ k: 'm' + m, label: lab, cls: 'hsx-mo', val: (r) => { const s = (fallPaths(r) || [])[m]; return s && s.n >= 30 ? s.med : null; }, cell: (r) => monthCell(fallPaths(r), m, 'below'),
-      tip: 'Past cases of the stock’s highest-rate fall setup, ' + (21 * (m + 1)) + ' trading days after their setup day: median change, the middle half, and the share below the setup-day close. Not a forecast.' }))).concat([
+    ].concat(FC_COLS).concat([
       { k: 'px', label: 'Price now', cls: 'num sec', val: (r) => nowPx(r), cell: (r) => px(nowPx(r), r.cur) },
       { k: 'dl', label: 'Deadline', cls: 'sm', val: (r) => r.deadline, cell: (r) => { const n = daysLeft(r); const x = tdL([dT(r.deadline), n == null ? '' : n <= 0 ? 'passed' : n + ' trading days left'], 'sm'); if (n != null && n < 10) x.classList.add('hsx-am'); return x; }, tip: 'Setup day plus 63 trading days (three months) on the stock’s exchange.' },
       { k: 'st', label: 'Status', val: (r) => r.status, cell: (r) => { const x = el('td'); const p = nowPx(r); x.appendChild(r.status === 'fell10' ? chip('Fell 10% within a month', 'e2') : p > r.level ? chip('Above its level', 'n', 'The price is above the level where the setup no longer holds.') : r.status === 'still' ? chip('Still matching', 'e1') : chip('No longer matching', 'n')); return x; } },
@@ -269,14 +290,16 @@ BLOCK = BEGIN + r'''
       if (P) {
         const a = P.All.all.filter((s) => s.n >= 30); const lo = a.length ? a.reduce((b, s, i) => (s.med < b.v ? { v: s.med, i: P.All.all.indexOf(s) } : b), { v: Infinity, i: -1 }) : null;
         if (lo && lo.i >= 0) w.appendChild(para('Lowest median point of the six months after past cases: ' + sg(lo.v) + ' in month ' + (lo.i + 1) + '.'));
+        w.appendChild(para('For reference, history rather than a forecast: what followed past cases of this rule:'));
         w.appendChild(mini([''].concat(MONTHS), [pathRow('All years', P.All.all, 'below'), pathRow('Build years', P.All.build, 'below'), pathRow('Check years', P.All.check, 'below'), pathRow('All stocks, any day, same volatility', r.vb == null ? null : HX.st.base_paths.by_vb[String(r.vb)], 'below')]));
       }
+      w.appendChild(fcTable(r));
       w.appendChild(readings(r));
       return w;
     };
     const fallRows = () => (HX.d ? ((HX.fall.failed ? HX.d.fall_all : HX.d.fall) || []).filter((r) => inM(r, HX.fall)) : []);
     const drawFall = table('hsx-fall-t', HX.fall, { cols: () => (HX.fall.cnt === 'all' ? FALL_COLS : nearCols('fall')), rows: () => (HX.fall.cnt === 'all' ? fallRows() : nearRows('fall')),
-      detail: (r) => (r._near ? nearDetail('fall')(r) : fallDetail(r)), foot: fallFoot, footOn: () => HX.fall.cnt === 'all' });
+      detail: (r) => (r._near ? nearDetail('fall')(r) : fallDetail(r)), foot: null, footOn: () => false });
 
     // ---- filters: market buttons (like Table C) and how many conditions are met
     function options(kind) {
@@ -298,6 +321,12 @@ BLOCK = BEGIN + r'''
     $('hsx-fall-cnt').addEventListener('change', (e) => { HX.fall.cnt = e.target.value; HX.fall.open = null; HX.fall.k = e.target.value === 'all' ? 'e10' : 'nrate'; HX.fall.dir = -1; paint(); });
     $('hsx-fall-failed').addEventListener('change', (e) => { HX.fall.failed = e.target.checked; HX.fall.open = null; paint(); });
 
+    function fcCheck(st) {
+      const f = st && st.forecast; if (!f) return '';
+      const hs = f.horizons.map((h) => f.h[String(h)]), used = hs.filter((x) => x.use).length;
+      const rng = (a) => { const v = a.map((x) => x * 100); return Math.min(...v).toFixed(1) + '% to ' + Math.max(...v).toFixed(1) + '%'; };
+      return 'How good is the forecast? Checked unchanged on the ' + hs[0].n_check.toLocaleString('en-GB') + ' sampled stock-days since ' + dT(f.cut) + ' (fitted only on earlier ones): its error was ' + rng(hs.map((x) => x.gain_B)) + ' smaller than a no-signal forecast (each stock’s volatility with the average drift), its range held ' + rng(hs.map((x) => x.cover_B)) + ' of the outcomes (it aims at 50%), and its middle number was on the right side of the no-signal one ' + rng(hs.map((x) => x.side_right_B)) + ' of the time. That is a small edge, so read the range rather than the middle number. ' + (used === hs.length ? '' : 'For the ' + (hs.length - used) + ' months where it did not beat the no-signal forecast, that one is shown and marked “no-signal”. ') + 'A first version that also forecast the whole market’s moves did worse than the no-signal forecast at every horizon, so this version was chosen after seeing that result, which makes the check less independent.';
+    }
     function coverage(box) {
       const d = HX.d; const out = [];
       if (d.mismatch.length) { const p = para('⚠ Skipped today because TradingView and the daily bars disagree (data mismatch): ' + d.mismatch.map((m) => m.name + ' (' + m.reason + ')').join('; ') + '.'); p.classList.add('hsx-warn'); out.push(p); }
@@ -317,10 +346,11 @@ BLOCK = BEGIN + r'''
       const d = HX.d, st = HX.st;
       if (!d) return;
       HX.w = weights();
+      HX.fcMap = new Map((d.stocks || []).map((h) => [h.sym, h]));
       const latest = Object.values(d.last_bar).sort().pop();
-      $('hsx-up-note').textContent = 'Your stock holdings that showed one of the twelve setups of “Setups before 20% rises” (Strategy tab) on one of their last ' + d.window + ' completed trading days, measured with the same rules. Click a row for the conditions, the levels and the readings. Names are added and removed only at the daily rebuild; the price and the distances refresh every 5 minutes.';
+      $('hsx-up-note').textContent = 'Your stock holdings that showed one of the twelve setups of “Setups before 20% rises” (Strategy tab) on one of their last ' + d.window + ' completed trading days, measured with the same rules. Click a row for the conditions, the levels and the readings. Names are added and removed only at the daily rebuild; the price and the distances refresh every 5 minutes. The last six columns are a forecast for each stock from its latest close.';
       const newOnes = d.up.some((r) => r.setups.some((m) => isNew(m.setup)));
-      $('hsx-up-warn').hidden = !newOnes; $('hsx-up-warn').textContent = '⚠ Setups a) to g) (marked “new setup”): ' + NEW_WARN + ' The estimated success rates and the six months come from the same past cases, so this applies to them too.';
+      $('hsx-up-warn').hidden = !newOnes; $('hsx-up-warn').textContent = '⚠ Setups a) to g) (marked “new setup”): ' + NEW_WARN + ' The estimated success rates come from the same past cases, and the forecast from the same stock list, so this applies to them too.';
       ['up', 'fall'].forEach((kind) => document.querySelectorAll('#hsx-' + kind + '-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === HX[kind].mkt))));
       options('up');
       const nu = drawUp();
@@ -331,11 +361,9 @@ BLOCK = BEGIN + r'''
       const lu = d.live_up;
       $('hsx-up-live').className = 'hs-note' + (lu.warn ? ' hsx-warn' : '');
       $('hsx-up-live').textContent = lu.n_est >= 30 ? (lu.warn ? '⚠ The estimates are running too high: ' : 'Live check: ') + 'of ' + lu.n_est + ' holdings’ setups judged so far, the average estimated success rate was ' + pct(lu.avg_est) + ' and ' + pct(lu.actual) + ' reached +20% within 42 trading days.' : 'Live check of this table: ' + lu.resolved + ' of ' + lu.logged + ' logged setups judged so far; the comparison with the estimates is shown from 30. It counts only this table’s own cases, logged within two trading days of their setup day (the ones already in the window when the table started are left out, because their outcome was partly known).';
-      $('hsx-up-how').textContent = 'How it is worked out: a holding is listed when a setup started on one of its last ' + d.window + ' completed trading days on its own exchange, and the target (setup-day close plus 20%), the deadline (42 trading days) and the typical date all count from that setup day. The estimated success rate is the same model as Table C on the Strategy tab, with the inputs known on the setup day, and Month 1 to 6 show what followed past cases of the holding’s highest-rate setup (median change from the setup-day close, the middle half of cases, the share above it), with all stocks on any day at the bottom for comparison. Readings come from TradingView and the history from the study’s adjusted daily bars (a holding whose latest close differs between the two by more than 1% is skipped and listed below); the stock list leaves out companies that fell and dropped out, so all of this looks better than it really was, and it describes past chart patterns, not advice.';
-      if (st && d.up.length) {
-        const ks = Array.from(new Set(d.up.map((r) => r.best)));
-        $('hsx-up-check').textContent = 'Did the six-month path hold up after the years it was measured on? Median change at month 6, build years (before ' + dT(st.period.split) + ') against check years: ' + ks.map((k) => { const P = st.up_paths[k].All; return sname(k) + ' ' + sg(P.build[5].med) + ' against ' + sg(P.check[5].med); }).join('; ') + '; all stocks on any day ' + sg(st.base_paths.All[5].med) + ' over the whole period.';
-      } else $('hsx-up-check').textContent = '';
+      $('hsx-up-how').textContent = 'How it is worked out: a holding is listed when a setup started on one of its last ' + d.window + ' completed trading days on its own exchange, and the target (setup-day close plus 20%), the deadline (42 trading days), the typical date and the estimated success rate (the same model as Table C on the Strategy tab) count from that setup day. The six forecast columns count from the latest close instead: a statistical model scales each stock’s range by its own volatility and shifts it by how stocks with the same setups, chart readings and market did against the other stocks on the same day in the past, so it does not forecast the market’s own swings. Readings come from TradingView and the history from the study’s adjusted daily bars (a holding whose latest close differs between the two by more than 1% is skipped and listed below); the stock list behind the past data leaves out companies that fell and dropped out, so the history looks better than it was, and none of this is advice.';
+      $('hsx-up-check').textContent = fcCheck(st);
+      $('hsx-fall-check').textContent = fcCheck(st);
       coverage($('hsx-up-cov')); stamp('hsx-up-stamp');
 
       // fall table
@@ -355,7 +383,7 @@ BLOCK = BEGIN + r'''
       $('hsx-fall-live').hidden = !passed.length && !lf.logged;
       $('hsx-fall-live').className = 'hs-note' + (lf.warn ? ' hsx-warn' : '');
       $('hsx-fall-live').textContent = !passed.length && !lf.logged ? '' : lf.resolved >= 20 ? (lf.warn ? '⚠ The live record is more than 10 points under the historical rate: ' : 'Live record: ') + pct(lf.rate) + ' of ' + lf.resolved + ' judged cases fell 10% within a month, against a historical ' + pct(lf.hist) + '.' : 'Live record: ' + lf.resolved + ' of ' + lf.logged + ' logged cases judged so far; shown from 20.';
-      $('hsx-fall-how').textContent = 'How it is worked out: the rules, the cases and the base rates come from a monthly study on the same stock list and daily bars as “Setups before 20% rises”, with one case per stock and rule every 63 trading days, rules judged on the years before ' + (st ? dT(st.period.split) : '1 Jul 2024') + ' and checked unchanged on the years since. Because the rules were written with the whole period in view, the check years are not fully independent, and the stock list leaves out companies that fell and dropped out, which makes falls look rarer than they were. It describes past chart patterns and is not advice.';
+      $('hsx-fall-how').textContent = 'How it is worked out: the rules, the cases and the base rates come from a monthly study on the same stock list and daily bars as “Setups before 20% rises”, with one case per stock and rule every 63 trading days, rules judged on the years before ' + (st ? dT(st.period.split) : '1 Jul 2024') + ' and checked unchanged on the years since. Because the rules were written with the whole period in view, the check years are not fully independent, and the stock list leaves out companies that fell and dropped out, which makes falls look rarer than they were. The six forecast columns are the same per-stock forecast as in the rise table above (from the latest close, explained under that table). It describes past chart patterns and is not advice.';
       if (st) {
         const R = st.fall.rules;
         const f = (v) => (v && v.n ? pct(v.rate, 1) + ' (same-volatility base ' + pct(v.matched, 1) + ', ' + v.n.toLocaleString('en-GB') + ' cases)' : '—');

@@ -22,6 +22,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(__file__))
 import holdings_falls as HF
+import holdings_forecast as FC
 import setups_data as SD
 import setups_lib as SL
 import setups_study as SS
@@ -73,10 +74,20 @@ def main():
     market_of = {d["sym"]: d["market"] for rows in U.values() for d in rows}
     size_of = {d["sym"]: d["size"] for rows in U.values() for d in rows}
     F = SS.build_frames(bars, market_of)                 # the existing study's frames: features, market washout, the twelve rules
+    FCK = ["sym", "date", "c", "atr", "from52h", "rsi", "vs50", "vs200", "slope50", "vr", "breadth", "r21", "r63", "r126", "sigma", "rv20", "rv60"] + \
+          ["y%d" % h for h in FC.H] + ["end%d" % h for h in FC.H]
+    fc_parts = []
     for s in list(F):
         df = HF.apply_fall_rules(F[s])
         df = HF.outcomes(df)
+        df = FC.add_inputs(df)
+        part = df[df.date >= SL.STUDY_FROM].iloc[::FC.STEP][FCK + SL.ORDER + HF.FALL_ORDER].copy()
+        part["market"], part["large"] = market_of[s], int(size_of.get(s) == "Large")
+        fc_parts.append(part)
         F[s] = df[KEEP + SL.ORDER + HF.FALL_ORDER].copy()
+    FA = pd.concat(fc_parts, ignore_index=True)
+    fcast = FC.fit_and_check(FA, HF.FALL_ORDER, pd.Timestamp(SL.SPLIT))
+    del fc_parts, FA
     A = SL.run_study(F)                                  # adds the volatility bucket (vb) exactly as the study does
     A["market"] = A.sym.map(market_of)
     A["large"] = (A.sym.map(size_of) == "Large").astype(int)
@@ -148,7 +159,7 @@ def main():
         up_paths=up, base_paths=base_paths,
         fall=dict(rules=rules, order=HF.FALL_ORDER, passed=[k for k in HF.FALL_ORDER if rules[k]["passed"]], base=base_fall, paths=fall_paths, models=models,
                   bar=dict(edge_min=HF.EDGE_MIN, max_share=HF.MAX_SHARE, min_cases=SL.MIN_CASES, m1=HF.M1, m3=HF.M3, fall1=HF.FALL1, fall3=HF.FALL3, gap=HF.FALL_GAP)),
-        stock_days=int(len(P)), stocks=int(P.sym.nunique()))
+        stock_days=int(len(P)), stocks=int(P.sym.nunique()), forecast=fcast)
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     json.dump(rnd(out), open(a.out, "w"), separators=(",", ":"))
     for k in HF.FALL_ORDER:
@@ -157,6 +168,9 @@ def main():
             k, rules[k]["passed"], r["build"]["fall10"]["rate"], r["build"]["fall10"]["n"], r["build"]["fall10"]["matched"],
             r["check"]["fall10"]["rate"], r["check"]["fall10"]["n"], r["check"]["fall10"]["matched"], r["all"]["fall20"]["rate"], "; ".join(rules[k]["why_not"])))
     print("fall models:", {c: (m["kind"], round(m["brier_model"], 4), round(m["brier_setup"], 4)) for c, m in models.items()})
+    for h, m in fcast["h"].items():
+        print("forecast h=%s: loss A %.5f / B %.5f vs no-signal %.5f (gain A %+.2f%%, B %+.2f%%), middle-half coverage A %.1f%% B %.1f%% none %.1f%%, side right A %.1f%% B %.1f%%, n %d/%d" % (
+            h, m["loss_model"], m["loss_B"], m["loss_base"], m["gain"] * 100, m["gain_B"] * 100, m["cover_model"] * 100, m["cover_B"] * 100, m["cover_base"] * 100, m["side_right"] * 100, m["side_right_B"] * 100, m["n_build"], m["n_check"]))
     print("up paths month 6 median:", {k: up[k]["All"]["all"][5].get("med") for k in SL.ORDER})
 
 

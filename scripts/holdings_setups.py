@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 import board_lib as L
 import exchange_calendar as XC
 import holdings_falls as HF
+import holdings_forecast as FC
 import setups_daily as SDLY          # read-only: the 'why it matches' texts
 import setups_data as SD
 import setups_lib as SL
@@ -252,6 +253,7 @@ def main():
         for col in ("macdh", "h"):
             df[col + "_1"] = df[col].shift(1)
         df = HF.apply_fall_rules(df)
+        df = FC.add_inputs(df)
         frames[s] = df
         if c.get("log_only"):
             continue
@@ -347,7 +349,16 @@ def main():
                     cl = cond_list(rules, k, r_now, valfn)
                     out.append([k, met, tot, "".join("1" if c["ok"] else "0" for c in cl), [c["v"] for c in cl]])
             return out
-        held.append(dict(sym=s, name=c["name"], market=mk, cur=t.get("currency"), last_close=fmt(r_now.c), last_date=r_now.date.strftime("%Y-%m-%d"),
+        fcm = (hstudy or {}).get("forecast")
+        fc = None
+        if fcm:
+            one = df.iloc[[-1]].copy()
+            one["market"] = mk
+            fc = FC.forecast(fcm, one, HF.FALL_ORDER)
+            ld = r_now.date.date()
+            for x, h in zip(fc, FC.H):
+                x["date"] = XC.trading_days_after(mk, ld, h).isoformat()
+        held.append(dict(sym=s, name=c["name"], market=mk, cur=t.get("currency"), last_close=fmt(r_now.c), last_date=r_now.date.strftime("%Y-%m-%d"), fc=fc,
                          near_up=near(SL.ORDER, SL.SETUPS, SDLY.cond_value), near_fall=near(HF.FALL_ORDER, HF.FALL_RULES, fall_value)))
 
     # ---- the log (one entry per stock, table and setup day) and the live records
