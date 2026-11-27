@@ -39,6 +39,17 @@ TV_COLS = ["name", "description", "type", "exchange", "country", "currency", "cl
 TV_MIN = ["name", "description", "type", "exchange", "country", "currency", "close", "volume", "RSI", "MACD.macd", "MACD.signal", "SMA50", "SMA200",
           "market_cap_basic", "earnings_release_next_date"]
 MISMATCH = 0.01
+SESSION = {"USA": (570, 960), "Canada": (570, 960), "Sweden": (540, 1050), "Denmark": (540, 1050), "Norway": (540, 1050), "Germany": (540, 1050),
+           "Finland": (600, 1110)}   # regular session in the exchange's own time, minutes after midnight
+
+
+def in_session(mk, tzname, now):
+    """True while the exchange is trading (plus 20 minutes for the closing prices to settle): TradingView's close is then a live price."""
+    t = now.astimezone(zoneinfo.ZoneInfo(tzname or "UTC"))
+    if not XC.is_open(mk, t.date()):
+        return False
+    o, c = SESSION[mk]
+    return o <= t.hour * 60 + t.minute < c + 20
 fmt = SDLY.fmt
 
 
@@ -224,12 +235,14 @@ def main():
     fmodels = (hstudy or {}).get("fall", {}).get("models", {})
     frules = (hstudy or {}).get("fall", {}).get("rules", {})
     edges = (hstudy or {}).get("vb_edges")
-    frames, evaluated = {}, 0
+    frames, evaluated, deferred = {}, 0, []
     for s, c in covered.items():
         mk, t = c["market"], c["tv"]
         if s not in bars:
             if not c.get("log_only"):
-                not_covered.append(dict(sym=s, name=c["name"], reason="no daily history from Yahoo matching TradingView's price" + (" (%s)" % c["err"] if c.get("err") else "")))
+                e = c.get("err") or ""
+                not_covered.append(dict(sym=s, name=c["name"], reason=("not enough daily history on Yahoo (%s; the rules need a year)" % e) if e.startswith("only") else
+                                        "no daily history from Yahoo matching TradingView's price" + (" (%s)" % e if e else "")))
             continue
         df = Fu[s].copy() if s in Fu else SL.features(s, bars[s])
         if s not in Fu:
@@ -245,7 +258,10 @@ def main():
         # ---- cross-check against TradingView
         tvc, lr = num(t.get("close")), last_raw.get(s)
         why = None
-        if tvc and lr and abs(lr[4] / tvc - 1) > MISMATCH:
+        live_now = in_session(mk, rawb[s].get("tz"), now)
+        if live_now:
+            deferred.append(c["name"])   # both prices are moving during the session; the scheduled morning run checks them
+        if tvc and lr and not live_now and abs(lr[4] / tvc - 1) > MISMATCH:
             why = "latest close %.4g (Yahoo) against %.4g (TradingView): %+.1f%%" % (lr[4], tvc, (lr[4] / tvc - 1) * 100)
         elif mk in last_bar and df.date.iloc[-1] != last_bar[mk]:
             why = "latest daily bar %s, the market's latest trading day is %s" % (df.date.iloc[-1].date(), last_bar[mk].date())
@@ -360,6 +376,8 @@ def main():
                      hist=(float(np.mean([e["hist10"] for e in f_done if e.get("hist10") is not None])) if any(e.get("hist10") is not None for e in f_done) else None))
     live_fall["warn"] = bool(len(f_done) >= 20 and live_fall["hist"] is not None and live_fall["rate"] < live_fall["hist"] - 0.10)
 
+    if deferred:
+        notes.append("rebuilt while %d holdings' markets were trading, so their latest close could not be checked against TradingView (the scheduled morning rebuild checks it): %s" % (len(deferred), ", ".join(sorted(deferred))))
     for mk in need:
         if prev and mk in last_bar and (prev.get("last_bar") or {}).get(mk) == last_bar[mk].strftime("%Y-%m-%d"):
             notes.append("%s: no new daily candle since the last rebuild (market closed)" % mk)
