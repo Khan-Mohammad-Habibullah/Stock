@@ -347,6 +347,9 @@ def main():
                              entry_close=r["setup_close"], est10=(r["est10"]["est"] if r["est10"] else None), est20=(r["est20"]["est"] if r["est20"] else None),
                              hist10=r["rules"][0]["rate10"], first_seen=local.date().isoformat(), status="open"))
     for e in LOGD:
+        if e["sym"] in frames and "lag" not in e:   # trading days between the setup day and the rebuild that first logged it
+            df = frames[e["sym"]]
+            e["lag"] = int(((df.date > pd.Timestamp(e["setup_day"])) & (df.date < pd.Timestamp(e["first_seen"]))).sum())
         if e["status"] != "open" or e["sym"] not in frames:
             continue
         df = frames[e["sym"]]
@@ -365,21 +368,22 @@ def main():
                 e["fall20"] = int(bool(len(w3) and w3.min() < e["entry_close"] * (1 - HF.FALL3)))
             if e.get("fall10") is not None and e.get("fall20") is not None:
                 e["status"] = "closed"
-    up_done = [e for e in LOGD if e["kind"] == "up" and e["status"] in ("hit", "missed")]
-    live_up = dict(logged=sum(e["kind"] == "up" for e in LOGD), resolved=len(up_done), hits=sum(e["status"] == "hit" for e in up_done))
+    LIVE_LAG = 2   # the live records count only setups logged within 2 trading days of their setup day (older ones were filled in after the fact)
+    up_done = [e for e in LOGD if e["kind"] == "up" and e["status"] in ("hit", "missed") and e.get("lag", 99) <= LIVE_LAG]
+    live_up = dict(logged=sum(e["kind"] == "up" and e.get("lag", 99) <= LIVE_LAG for e in LOGD), resolved=len(up_done), hits=sum(e["status"] == "hit" for e in up_done))
     ests = [e for e in up_done if e.get("est") is not None]
     live_up.update(avg_est=(float(np.mean([e["est"] for e in ests])) if ests else None), actual=(float(np.mean([e["status"] == "hit" for e in ests])) if ests else None), n_est=len(ests))
     live_up["warn"] = bool(len(ests) >= 30 and live_up["actual"] < live_up["avg_est"] - 0.10)
-    f_done = [e for e in LOGD if e["kind"] == "fall" and e.get("fall10") is not None]
-    live_fall = dict(logged=sum(e["kind"] == "fall" for e in LOGD), resolved=len(f_done), hits=sum(e["fall10"] for e in f_done),
+    f_done = [e for e in LOGD if e["kind"] == "fall" and e.get("fall10") is not None and e.get("lag", 99) <= LIVE_LAG]
+    live_fall = dict(logged=sum(e["kind"] == "fall" and e.get("lag", 99) <= LIVE_LAG for e in LOGD), resolved=len(f_done), hits=sum(e["fall10"] for e in f_done),
                      rate=(float(np.mean([e["fall10"] for e in f_done])) if f_done else None),
                      hist=(float(np.mean([e["hist10"] for e in f_done if e.get("hist10") is not None])) if any(e.get("hist10") is not None for e in f_done) else None))
     live_fall["warn"] = bool(len(f_done) >= 20 and live_fall["hist"] is not None and live_fall["rate"] < live_fall["hist"] - 0.10)
 
     if deferred:
-        notes.append("rebuilt while %d holdings' markets were trading, so their latest close could not be checked against TradingView (the scheduled morning rebuild checks it): %s" % (len(deferred), ", ".join(sorted(deferred))))
+        notes.append("rebuilt while the markets of %d holdings were trading, so their latest close is checked against TradingView at the next scheduled morning rebuild" % len(deferred))
     for mk in need:
-        if prev and mk in last_bar and (prev.get("last_bar") or {}).get(mk) == last_bar[mk].strftime("%Y-%m-%d"):
+        if prev and prev.get("built_local", "")[:10] != local.date().isoformat() and mk in last_bar and (prev.get("last_bar") or {}).get(mk) == last_bar[mk].strftime("%Y-%m-%d"):
             notes.append("%s: no new daily candle since the last rebuild (market closed)" % mk)
     out = dict(schema=SCHEMA, built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), test=bool(a.dump),
                last_bar={mk: d.strftime("%Y-%m-%d") for mk, d in last_bar.items()}, window=HF.WINDOW,
