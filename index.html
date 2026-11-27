@@ -179,6 +179,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
   #setups table td.sm { white-space: normal; min-width: 9rem; }
   #setups tr.below td { background: color-mix(in srgb, var(--color-bad) 8%, transparent); }
   #setups .chip.am { background: color-mix(in srgb, var(--color-warn) 20%, transparent); color: var(--color-warn); }
+  #setups .su-warn-box { border-left: 3px solid var(--color-warn); background: color-mix(in srgb, var(--color-warn) 12%, transparent); padding: 8px 12px; border-radius: 6px; color: var(--color-fg); }
+  #setups td.hl-am { background: color-mix(in srgb, var(--color-warn) 24%, transparent); font-weight: 600; }
+  #setups tr.su-grp td { background: color-mix(in srgb, var(--color-fg) 6%, transparent); font-weight: 600; text-transform: none; padding: 8px 10px; }
+  #setups table.su-mini { width: auto; margin: 4px 0 10px; }
+  #setups table.su-mini th, #setups table.su-mini td { padding: 3px 18px 3px 0; text-align: left; font-weight: normal; white-space: nowrap; }
+  #setups table.su-mini th { color: var(--color-fg-muted); }
+  #setups .su-ml { display: block; margin: 2px 0; }
   #setups ul.su-list { margin: 4px 0 0; padding-left: 1.2em; }
   .scr-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
   .scr-tabs button { font: inherit; font-size: var(--cds-font-size-caption); padding: 5px 12px; border: 1px solid var(--color-border-line); border-radius: 999px; background: var(--color-bg); color: var(--color-fg); cursor: pointer; }
@@ -595,6 +602,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
     <p class="su-band">History &middot; tested on 2021&ndash;2026 &middot; rerun on the first weekend of each month</p>
     <h3>Table A &ndash; Setup rules and how they performed</h3>
+    <p class="hs-note su-warn-box" id="su-a-warn"></p>
     <p class="hs-note" id="su-a-note"></p>
     <div class="tbl-wrap"><table class="hold scr" id="su-a"><thead></thead><tbody></tbody></table></div>
     <h3>Table B &ndash; Historical examples, wins and misses</h3>
@@ -605,6 +613,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     <p class="su-band" id="su-today">Today &middot; current candidates &middot; the list is rebuilt once a trading day, Tuesday to Saturday at 06:00 Stockholm time</p>
     <h3>Table C &ndash; Current candidates as of the latest close</h3>
     <p class="hs-note" id="su-c-note"></p>
+    <p class="hs-note su-warn-box" id="su-c-warn"></p>
     <div class="scr-tabs" id="su-tabs-c" role="group" aria-label="Market for Table C"></div>
     <div class="ctl">
       <select id="su-near" aria-label="Which matches to show">
@@ -2855,7 +2864,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const MARKETS = ['USA', 'Sweden', 'Denmark', 'Germany', 'Finland', 'Norway', 'Canada'];
     const $ = (id) => document.getElementById(id);
     const SU = { mkt: 'All', mB: 'All', mC: 'All', q: '', setup: '', near: '', study: null, cur: null, live: new Map(), liveAt: null, err: null,
-      A: { k: 'ord', dir: 1, open: null }, B: { k: 'date', dir: -1, open: null }, C: { k: 'rank', dir: 1, open: null }, R: { k: 'date', dir: -1, open: null } };
+      A: { k: 'ord', dir: 1, open: null }, B: { k: 'date', dir: -1, open: null }, C: { k: 'rate', dir: -1, open: null }, R: { k: 'date', dir: -1, open: null } };
     const LEVEL_TXT = {
       base: 'Breakout level: the highest close of the 40 sessions before the breakout. Support: the lowest close of those 40 sessions. Resistance: the 52-week high when it is above the price. Invalidation: 3% under the breakout level.',
       squeeze: 'Breakout level: the highest close of the 20 sessions before the breakout. Support: the 20-day average. Resistance: the 52-week (else 60-day) high when it is above the price. Invalidation: 3% under the breakout level.',
@@ -2863,6 +2872,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       pull: 'Support: the 50-day average. Resistance: the 60-day high when it is above the price. Invalidation: the lowest low of the last 10 sessions.',
       oversold: 'Support: the lowest low of the last 10 sessions. Resistance: the 50-day average (else the 60-day high) when it is above the price. Invalidation: the lowest low of the last 10 sessions.',
     };
+    ['wash_turn', 'deep_dry', 'deep_vol', 'wash_bounce', 'os60', 'os_hv'].forEach((k) => { LEVEL_TXT[k] = LEVEL_TXT.oversold; });
+    LEVEL_TXT.hv_brk = LEVEL_TXT.base;
+    const NEW_WARN = 'The stock list is today’s 70 largest companies in each market. A company that fell 60% and kept falling usually dropped out of that list, so it is missing from this test. This makes the deep-fall setups (a, b, c, e) look better than they really were. Most of their cases also come from the 2022 bear market, and the washout setups (a, d) rest on a few market crashes. Expect real results to be lower than the historical success rate shown.';
+    const NEW_KEYS = { wash_turn: 'a', deep_dry: 'b', deep_vol: 'c', wash_bounce: 'd', os60: 'e', os_hv: 'f', hv_brk: 'g' };
+    const isNewGroup = (k) => !!(SU.study && SU.study.setups[k] && SU.study.setups[k].group === 'new');
+    const isNewSetup = (k) => { const x = SU.study && SU.study.setups[k]; return !!(x && x.added && (Date.now() - new Date(x.added + 'T12:00:00').getTime()) / 864e5 < 31); };
     const fmtPct = (v, d = 1) => (v == null ? null : (v * 100).toFixed(d) + '%');
     const sgn = (v, d = 1) => (v == null ? '—' : (v > 0 ? '+' : '') + v.toFixed(d) + '%');
     const pxTxt = (v, cur) => (v == null ? '—' : plain(v, v < 10 ? 3 : 2) + (cur ? ' ' + cur : ''));
@@ -2889,7 +2904,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     };
 
     // generic sortable table: cols = [{k, label, cls, val(r), cell(r)}]
-    function table(id, st, cols, getRows, detail, keyOf, empty) {
+    function table(id, st, cols, getRows, detail, keyOf, empty, opts) {
       const el = $(id), head = el.querySelector('thead'), body = el.querySelector('tbody');
       const tr = document.createElement('tr');
       cols.forEach((c) => {
@@ -2904,7 +2919,13 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         const col = cols.find((c) => c.k === st.k) || cols[0];
         const rows = getRows().slice().sort((a, b) => cmp(col.val(a), col.val(b)) * st.dir);
         const out = [];
+        let prevR = null;
         rows.forEach((r) => {
+          if (opts && opts.head && st.k === cols[0].k && st.dir === 1) {
+            const h = opts.head(r, prevR);
+            if (h) { const hr = document.createElement('tr'); hr.className = 'su-grp'; const hc = document.createElement('td'); hc.colSpan = cols.length; hc.textContent = h; hr.appendChild(hc); out.push(hr); }
+          }
+          prevR = r;
           const row = document.createElement('tr'); const key = keyOf(r); row.dataset.key = key;
           if (st.open === key) row.classList.add('sel');
           cols.forEach((c) => { const x = c.cell(r); row.appendChild(typeof x === 'string' ? td(x, c.cls) : x); });
@@ -2939,19 +2960,35 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
 
     // ---- Table A
     const drawA = table('su-a', SU.A, [
-      { k: 'ord', label: 'Setup (rule)', val: (r) => r.ord, cell: (r) => { const c = document.createElement('td'); c.className = 'why'; const b = document.createElement('strong'); b.textContent = setupName(r.k); const p = document.createElement('div'); p.className = 'hs-note'; p.textContent = SU.study.setups[r.k].short; c.append(b, p); return c; } },
+      { k: 'ord', label: 'Setup (rule)', val: (r) => r.ord, cell: (r) => { const c = document.createElement('td'); c.className = 'why'; const b = document.createElement('strong'); b.textContent = (isNewGroup(r.k) ? NEW_KEYS[r.k] + ') ' : '') + setupName(r.k); const p = document.createElement('div'); p.className = 'hs-note'; p.textContent = SU.study.setups[r.k].short; c.append(b); if (isNewSetup(r.k)) { const nw = document.createElement('span'); nw.className = 'chip b2'; nw.textContent = 'New'; nw.title = 'Added on ' + dTxt(SU.study.setups[r.k].added) + '; marked New for the first month.'; c.append(document.createTextNode(' '), nw); } c.append(p); return c; } },
       { k: 'n', label: 'Times it appeared', cls: 'num', dir: -1, val: (r) => r.st && r.st.n, cell: (r) => String(r.st ? r.st.n : '—'), tip: 'Setup days over the five years, counting at most one per stock every 42 trading days. Days whose 42-day outcome is not yet known are left out.' },
       { k: 'rate', label: 'Success rate', cls: 'num', dir: -1, val: (r) => r.st && r.st.rate, cell: (r) => rateTxt(r.st), tip: 'Share of those days after which the highest close of the next 42 trading days was at least 20% above the setup-day close. Shown only from 30 cases.' },
       { k: 'base', label: 'Base rate (any stock, random day)', cls: 'num sec', dir: -1, val: (r) => r.st && r.st.base, cell: (r) => (r.st ? fmtPct(r.st.base) : '—'), tip: 'The same test on every stock and every day in the same list.' },
       { k: 'matched', label: 'Base rate at the same volatility', cls: 'num sec', dir: -1, val: (r) => r.st && r.st.matched, cell: (r) => (r.st && r.st.matched != null ? fmtPct(r.st.matched) : '—'), tip: 'Volatile stocks rise 20% more often whatever the setup. This is the base rate among days with the same 20-day volatility as this setup’s days.' },
+      { k: 'edge', label: 'Edge over same-volatility base (points)', cls: 'num', dir: -1, val: (r) => r.st && r.st.edge, cell: (r) => (r.st && r.st.edge != null ? (r.st.edge > 0 ? '+' : '') + (r.st.edge * 100).toFixed(1) + ' pts' : '—'), tip: 'Success rate minus the base rate among days with the same 20-day volatility, in percentage points. Shown from 30 cases.' },
+      { k: 'weeks', label: 'Different weeks with a case', cls: 'num sec', dir: -1, val: (r) => r.st && r.st.weeks, cell: (r) => (r.st ? String(r.st.weeks) : '—'), tip: 'Number of calendar weeks in which the setup had at least one case. A low number means the cases are bunched into a few episodes.' },
+      { k: 'busy', label: 'Busiest month’s share of cases', cls: 'num sec', dir: -1, val: (r) => r.st && r.st.busy, cell: (r) => { if (!r.st || r.st.busy == null) return '—'; const c = td(fmtPct(r.st.busy), 'num sec' + (r.st.busy > 0.15 ? ' hl-am' : '')); if (r.st.busy > 0.15) c.title = 'More than 15% of all cases fall in one calendar month (' + r.st.top_months[0].m + ').'; return c; }, tip: 'Share of the setup’s cases that fall in its single busiest calendar month. Amber above 15%.' },
       { k: 'test', label: 'Since Jul 2024 (not used to pick the rules)', cls: 'num sec', dir: -1, val: (r) => r.st && r.st.rate_test, cell: (r) => (!r.st ? '—' : r.st.rate_test == null ? 'too few cases' : fmtPct(r.st.rate_test) + ' (' + r.st.n_test + ')'), tip: 'Success rate on setup days from 1 July 2024, which were not used to choose the thresholds.' },
       { k: 'gain', label: 'Median gain (cases that rose)', cls: 'num sec', dir: -1, val: (r) => r.st && r.st.gain, cell: (r) => (r.st && r.st.gain != null ? '+' + fmtPct(r.st.gain) : '—'), tip: 'Highest close within 42 days against the setup-day close, for the cases that reached +20%.' },
       { k: 'days', label: 'Median days to +20%', cls: 'num sec', val: (r) => r.st && r.st.days, cell: (r) => (r.st && r.st.days != null ? String(Math.round(r.st.days)) : '—'), tip: 'Trading days until the close first reached +20%, for the cases that did.' },
       { k: 'drop', label: 'Median largest drop before the peak', cls: 'num sec', dir: -1, val: (r) => r.st && r.st.drop, cell: (r) => (r.st && r.st.drop != null ? sgn(r.st.drop * 100) : '—'), tip: 'Lowest close between the setup day and the peak, against the setup-day close, for the cases that reached +20%.' },
       { k: 'live', label: 'Live record of this screen', cls: 'sm', dir: -1, val: (r) => { const l = live(r.k); return l && l.rate; }, cell: (r) => liveTxt(r.k), tip: 'Names this page listed as current candidates, checked 42 trading days after they first appeared.' },
     ], () => (SU.study ? SU.study.order.map((k, i) => ({ k, ord: i, st: stat(k, SU.mkt) })).filter((r) => !SU.setup || r.k === SU.setup) : []),
-    (r) => { const w = document.createElement('div'); w.append(para(SU.study.setups[r.k].short + '. Every condition must be true on the same day:'), checklist(SU.study.setups[r.k].conditions.map((t) => ({ t, ok: null }))), para(LEVEL_TXT[r.k])); return w; },
-    (r) => r.k, () => 'Loading…');
+    (r) => {
+      const w = document.createElement('div'); w.append(para(SU.study.setups[r.k].short + '. Every condition must be true on the same day:'), checklist(SU.study.setups[r.k].conditions.map((t) => ({ t, ok: null }))), para(LEVEL_TXT[r.k]));
+      if (isNewGroup(r.k)) { const wn = para('⚠ ' + NEW_WARN); wn.classList.add('su-warn-box'); w.appendChild(wn); }
+      if (r.st && r.st.years) {
+        const mini = (heads, rows) => { const t = document.createElement('table'); t.className = 'hold su-mini'; const tr = document.createElement('tr'); heads.forEach((h) => { const th = document.createElement('th'); th.textContent = h; tr.appendChild(th); }); const th0 = document.createElement('thead'); th0.appendChild(tr); const tb = document.createElement('tbody'); rows.forEach((x) => { const r1 = document.createElement('tr'); x.forEach((v) => { const c = document.createElement('td'); c.textContent = v; r1.appendChild(c); }); tb.appendChild(r1); }); t.append(th0, tb); return t; };
+        const rt = (h, n) => (n >= 30 ? fmtPct(h / n) + ' (' + h + ' of ' + n + ')' : h + ' of ' + n + ' (too few cases for a rate)');
+        w.appendChild(para('Cases and historical success rate by year' + (SU.mkt === 'All' ? '' : ' (' + SU.mkt + ' only)') + ':'));
+        w.appendChild(mini(['Year', 'Cases', 'Reached +20%'], Object.keys(r.st.years).sort().map((y) => [y, String(r.st.years[y].n), rt(r.st.years[y].hits, r.st.years[y].n)])));
+        w.appendChild(para('The three busiest months:'));
+        w.appendChild(mini(['Month', 'Cases', 'Share of all cases', 'Reached +20%'], r.st.top_months.map((m) => [m.m, String(m.n), fmtPct(m.n / r.st.n), rt(m.hits, m.n)])));
+      }
+      return w;
+    },
+    (r) => r.k, () => 'Loading…',
+    { head: (r, prev) => (isNewGroup(r.k) && (!prev || !isNewGroup(prev.k)) ? 'Deep-fall, washout and high-volatility setups' : null) });
 
     // ---- Table B
     const exRows = () => (SU.study ? SU.study.examples.filter((e) => inMkt(e.market, SU.mB) && (!SU.setup || e.setup === SU.setup) && matchQ(e.name, e.sym)).map((e) => Object.assign(e, { _k: e.setup + e.sym + e.date })) : []);
@@ -2977,32 +3014,55 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     // ---- Table C
     const px = (c) => { const l = SU.live.get(c.sym); return l && l.close != null ? l.close : c.close; };
     const distTxt = (lvl, c) => (lvl == null ? '—' : pxTxt(lvl, c.cur) + ' (' + sgn((px(c) / lvl - 1) * 100) + ')');
+    const rateOf = (k) => { const t = stat(k, 'All'); return t && t.n >= 30 ? t.hits / t.n : null; };
+    const rateCell = (k) => { const t = stat(k, 'All'); return !t ? '—' : t.n < 30 ? 'too few cases' : fmtPct(t.hits / t.n) + ' of ' + t.n + ' (same-volatility base ' + fmtPct(t.matched) + ')'; };
     const candRows = () => {
       if (!SU.cur) return [];
-      return SU.cur.candidates.filter((c) => (c.complete || SU.near) && inMkt(c.market, SU.mC) && (!SU.setup || c.setup === SU.setup) && matchQ(c.name, c.sym))
-        .map((c) => { c._k = c.sym + c.setup + (c.complete ? 'c' : 'n'); c._below = c.invalid != null && px(c) < c.invalid; c._cls = c._below ? 'below' : ''; return c; });
+      const by = new Map();
+      SU.cur.candidates.filter((c) => (c.complete || SU.near) && inMkt(c.market, SU.mC) && (!SU.setup || c.setup === SU.setup) && matchQ(c.name, c.sym))
+        .forEach((c) => { if (!by.has(c.sym)) by.set(c.sym, []); by.get(c.sym).push(c); });
+      return [...by.values()].map((ms) => {
+        ms.sort((x, y) => (y.complete - x.complete) || ((rateOf(y.setup) == null ? -1 : rateOf(y.setup)) - (rateOf(x.setup) == null ? -1 : rateOf(x.setup))));
+        const best = ms[0];
+        const g = Object.assign({}, best, { ms, _k: best.sym, bestRate: rateOf(best.setup), _comp: ms.some((m) => m.complete) });
+        g._below = ms.filter((m) => m.complete && m.invalid != null && px(m) < m.invalid).map((m) => m.setup);
+        g._cls = g._below.length ? 'below' : '';
+        g._new = ms.some((m) => m.complete && m.new);
+        g._since = ms.filter((m) => m.complete).map((m) => m.first_seen).sort()[0] || best.first_seen;
+        return g;
+      });
     };
     const drawC = table('su-c', SU.C, [
-      { k: 'rank', label: 'Stock', val: (c) => c.name, cell: (c) => nameTd(c.sym, c.name) },
+      { k: 'name', label: 'Stock', val: (c) => c.name, cell: (c) => nameTd(c.sym, c.name) },
       { k: 'market', label: 'Market', cls: 'sec', val: (c) => c.market, cell: (c) => c.market },
-      { k: 'setup', label: 'Matching setup', cls: 'sm', val: (c) => setupName(c.setup), cell: (c) => setupName(c.setup) },
-      { k: 'met', label: 'Conditions met', cls: 'num', dir: -1, val: (c) => c.met / c.total, cell: (c) => c.met + ' of ' + c.total },
-      { k: 'why', label: 'Why it matches', cls: 'why sec', val: (c) => c.why, cell: (c) => { const t = c.complete ? c.why : 'Missing: ' + c.missing.join('; '); const x = td(t.length > 130 ? t.slice(0, 127) + '…' : t, 'why sec'); x.title = t; return x; } },
-      { k: 'rate', label: 'This setup’s historical success rate', cls: 'sm', dir: -1, val: (c) => c.rate, cell: (c) => (c.rate == null ? 'too few cases' : fmtPct(c.rate) + ' of ' + c.n_hist + ' (same-volatility base ' + fmtPct(c.base) + ')'), tip: 'From the latest monthly study, all markets together.' },
-      { k: 'live', label: 'Live record', cls: 'sm sec', val: (c) => { const l = live(c.setup); return l && l.rate; }, cell: (c) => liveTxt(c.setup) },
-      { k: 'prev', label: 'This stock’s own last matching setup', cls: 'sm sec', val: (c) => (c.last_prev ? c.last_prev.date : null), cell: (c) => (!c.last_prev ? 'none in the data' : dTxt(c.last_prev.date) + ' at ' + pxTxt(c.last_prev.price) + ' · ' + (c.last_prev.outcome === 'hit' ? 'reached +20%' : c.last_prev.outcome === 'missed' ? 'missed' : 'outcome pending')) },
+      { k: 'setups', label: 'Matching setups (historical success rate)', cls: 'sm', val: (c) => c.ms.length, dir: -1, cell: (c) => {
+        const x = document.createElement('td'); x.className = 'sm';
+        c.ms.forEach((m) => {
+          const d = document.createElement('span'); d.className = 'su-ml';
+          d.appendChild(document.createTextNode(setupName(m.setup) + ' · ' + (rateOf(m.setup) == null ? 'too few cases' : fmtPct(rateOf(m.setup)) + ' of ' + stat(m.setup, 'All').n) + (m.complete ? '' : ' · one condition short') + ' '));
+          if (isNewGroup(m.setup)) { const w = document.createElement('span'); w.className = 'chip am'; w.textContent = '⚠ new setup: see warning'; w.title = NEW_WARN; d.appendChild(w); }
+          x.appendChild(d);
+        });
+        return x; }, tip: 'A stock that matches several setups is shown once, with every setup it matches, ordered by historical success rate.' },
+      { k: 'rate', label: 'Highest historical success rate', cls: 'sm', dir: -1, val: (c) => c.bestRate, cell: (c) => rateCell(c.setup), tip: 'Of the setups the stock matches, from the latest monthly study, all markets together.' },
+      { k: 'why', label: 'Why it matches (best setup)', cls: 'why sec', val: (c) => c.why, cell: (c) => { const t = c.complete ? c.why : 'Missing: ' + c.missing.join('; '); const x = td(t.length > 130 ? t.slice(0, 127) + '…' : t, 'why sec'); x.title = t; return x; } },
+      { k: 'live', label: 'Live record (best setup)', cls: 'sm sec', val: (c) => { const l = live(c.setup); return l && l.rate; }, cell: (c) => liveTxt(c.setup) },
+      { k: 'prev', label: 'This stock’s own last matching setup (best setup)', cls: 'sm sec', val: (c) => (c.last_prev ? c.last_prev.date : null), cell: (c) => (!c.last_prev ? 'none in the data' : dTxt(c.last_prev.date) + ' at ' + pxTxt(c.last_prev.price) + ' · ' + (c.last_prev.outcome === 'hit' ? 'reached +20%' : c.last_prev.outcome === 'missed' ? 'missed' : 'outcome pending')) },
       { k: 'px', label: 'Price now', cls: 'num sec', val: (c) => px(c), cell: (c) => pxTxt(px(c), c.cur) },
-      { k: 'brk', label: 'Breakout level (distance)', cls: 'sm sec', val: (c) => c.breakout, cell: (c) => distTxt(c.breakout, c) },
+      { k: 'brk', label: 'Breakout level (distance)', cls: 'sm sec', val: (c) => c.breakout, cell: (c) => distTxt(c.breakout, c), tip: 'Levels in the table are those of the setup with the highest historical success rate. Click the row for each matching setup’s own levels.' },
       { k: 'sup', label: 'Support', cls: 'num sec', val: (c) => c.support, cell: (c) => pxTxt(c.support) },
       { k: 'res', label: 'Resistance', cls: 'num sec', val: (c) => c.resistance, cell: (c) => (c.resistance == null ? 'none overhead' : pxTxt(c.resistance)) },
       { k: 'inv', label: 'Invalidation level (distance)', cls: 'sm', val: (c) => c.invalid, cell: (c) => distTxt(c.invalid, c), tip: 'The price at which the setup no longer holds. If the price trades below it the row is flagged at once and the name is removed at the next daily rebuild.' },
       { k: 'earn', label: 'Next earnings', cls: 'sec', val: (c) => c.earnings_next, cell: (c) => (c.earnings_next ? dTxt(c.earnings_next) : '—') },
-      { k: 'st', label: 'Status', val: (c) => (c._below ? 0 : c.new ? 1 : 2), cell: (c) => (c._below ? chipTd('Below invalidation', 'e2', 'The price is under the invalidation level; the name stays until the next daily rebuild.') : c.new ? chipTd('New', 'b2', 'Added in the latest rebuild') : !c.complete ? chipTd('One condition short', 'am') : chipTd('Listed since ' + dTxt(c.first_seen), 'n')) },
+      { k: 'st', label: 'Status', val: (c) => (c._below.length ? 0 : c._new ? 1 : 2), cell: (c) => (c._below.length ? chipTd('Below invalidation', 'e2', 'The price is under the invalidation level of: ' + c._below.map(setupName).join('; ') + '. The name stays until the next daily rebuild.') : c._new ? chipTd('New', 'b2', 'Added in the latest rebuild') : !c._comp ? chipTd('One condition short', 'am') : chipTd('Listed since ' + dTxt(c._since), 'n')) },
     ], candRows, (c) => {
       const w = document.createElement('div');
-      w.append(para(setupName(c.setup) + ' · ' + c.market + ' · ' + c.size + ' cap (rank ' + c.rank + ') · close ' + pxTxt(c.close, c.cur) + ' on ' + dTxt(c.bar_date) + ' · first listed ' + dTxt(c.first_seen) + ' at ' + pxTxt(c.entry_close, c.cur)));
-      w.appendChild(checklist(c.conds.map((x) => ({ t: x.t, ok: x.ok, v: x.v }))));
-      w.appendChild(para(LEVEL_TXT[c.setup]));
+      w.append(para(c.name + ' · ' + c.market + ' · ' + c.size + ' cap (rank ' + c.rank + ') · close ' + pxTxt(c.close, c.cur) + ' on ' + dTxt(c.bar_date) + ' · matches ' + c.ms.length + (c.ms.length === 1 ? ' setup' : ' setups') + ', best historical success rate first.'));
+      c.ms.forEach((m) => {
+        const h = document.createElement('p'); h.className = 'hs-note'; h.style.cssText = 'margin:10px 0 4px;color:var(--color-fg)'; h.textContent = setupName(m.setup) + ' · historical success rate ' + (rateOf(m.setup) == null ? 'too few cases' : fmtPct(rateOf(m.setup)) + ' of ' + stat(m.setup, 'All').n) + ' · first listed ' + dTxt(m.first_seen) + ' at ' + pxTxt(m.entry_close, m.cur) + ' · live record ' + liveTxt(m.setup);
+        w.append(h, checklist(m.conds.map((x) => ({ t: x.t, ok: x.ok, v: x.v }))), para(LEVEL_TXT[m.setup]), para('Levels now: breakout ' + (m.breakout == null ? '—' : pxTxt(m.breakout, m.cur)) + ' · support ' + pxTxt(m.support, m.cur) + ' · resistance ' + (m.resistance == null ? 'none overhead' : pxTxt(m.resistance, m.cur)) + ' · invalidation ' + pxTxt(m.invalid, m.cur) + (m.invalid != null && px(m) < m.invalid ? ' (price is below it)' : '')));
+        if (isNewGroup(m.setup)) { const wn = para('⚠ ' + NEW_WARN); wn.classList.add('su-warn-box'); w.appendChild(wn); }
+      });
       if (c.earnings_next) w.appendChild(para('Next earnings report: ' + dTxt(c.earnings_next) + ' (from TradingView).'));
       return w;
     }, (c) => c._k, () => (SU.cur ? 'No candidates match.' : 'Loading…'));
@@ -3024,7 +3084,9 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       const st = SU.study, cu = SU.cur;
       if (st) {
         const pd = st.period, st0 = st.stats.find((x) => x.market === 'All');
-        $('su-a-note').textContent = 'Every rule was run on every stock and every day from ' + dTxt(pd.from_) + ' to ' + dTxt(pd.to) + ' (' + st.stock_days.toLocaleString('en-GB') + ' stock-days, ' + st.stocks.with_data + ' stocks), not only on the stocks that rose. A rise = the highest close in the next 42 trading days at least 20% above the setup-day close. A success rate is shown only from 30 cases; otherwise "too few cases". Last study run ' + dTxt(st.built.slice(0, 10)) + '.';
+        $('su-a-warn').textContent = '⚠ ' + NEW_WARN;
+        $('su-c-warn').textContent = '⚠ Setups a) to g) (marked “new setup”): ' + NEW_WARN;
+        $('su-a-note').textContent = 'Every rule was run on every stock and every day from ' + dTxt(pd.from_) + ' to ' + dTxt(pd.to) + ' (' + st.stock_days.toLocaleString('en-GB') + ' stock-days, ' + st.stocks.with_data + ' stocks), not only on the stocks that rose. A rise = the highest close in the next 42 trading days at least 20% above the setup-day close. A success rate is shown only from 30 cases; otherwise "too few cases". The five original setups come first; the seven newer ones (a to g) follow under their own heading. Edge = success rate minus the base rate at the same volatility, in percentage points. Different weeks with a case = calendar weeks with at least one case. Busiest month’s share = the share of the setup’s cases that fall in its single busiest calendar month (amber above 15%): a high share means the result rests on one episode. Click a row for its cases and success rate by year and its three busiest months. Last study run ' + dTxt(st.built.slice(0, 10)) + '.';
         $('su-b-note').textContent = 'For each setup and market, the six most recent cases that rose and the six most recent that did not (not picked for how good they look). Click a row for what the chart looked like going in, using only data up to the setup day.';
         $('su-rules-body').replaceChildren(...st.order.flatMap((k) => { const h = document.createElement('p'); h.className = 'hs-note'; h.style.cssText = 'margin-top:10px;color:var(--color-fg)'; h.textContent = setupName(k) + ': ' + st.setups[k].short + '. All of these on the same day:'; return [h, checklist(st.setups[k].conditions.map((t) => ({ t, ok: null }))), para(LEVEL_TXT[k])]; }));
         const out = document.createElement('div');
@@ -3039,6 +3101,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         li('Median gain, days and drop are taken over the cases that reached +20%. "Largest drop before the peak" is the lowest close on the way to the peak against the setup-day close.');
         li('Earnings: past earnings dates are not in the data, so history marks a likely earnings reaction (a gap of 4% or more on 2.5 times the usual volume). Table C shows the next reported date from TradingView.');
         li('Counting: one case per stock and setup every 42 trading days, so one move is not counted several times. Different setups can fire on the same stock and day.');
+        li('Definitions used by the seven newer setups: Market washout = on that day, fewer than 20% of that market’s stocks (those with a 50-day average) close above their own 50-day average, computed per market and per day from the same stock list; with fewer than 10 of the market’s stocks having data that day the washout setups cannot fire. Quiet volume = the average volume of the previous 10 sessions is below 0.8 times the 50-day average volume. Daily range = the 14-day average true range as a share of the price (the measure the older rules use).');
+        li('How the seven newer setups were chosen: they came out of a one-off exploration of many rule combinations on this same five-year data, picked because their success rates were high. That makes their historical success rates a best-of-many result, and the “since Jul 2024” column is not an independent check for them. The five original setups were not changed.');
         out.appendChild(ul);
         const lo = st.left_out || [];
         if (lo.length) {
@@ -3052,7 +3116,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       }
       if (cu) {
         const cl = cu.carried && cu.carried.length ? ' Kept from the previous rebuild because those markets had no new daily candle (holiday) or too little data: ' + cu.carried.join(', ') + '.' : '';
-        $('su-c-note').textContent = 'Stocks whose latest completed daily candle shows the setup, measured against the exact rules above. Names are added and removed only at the daily rebuild, never during the trading day, because an unfinished candle can show a setup that is gone by the close. Between rebuilds only the price, the distance to the breakout and invalidation levels and the flag are refreshed (every 5 minutes, 15 minutes delayed). Names added in the latest rebuild are marked New.' + cl + (cu.first_run ? ' This is the first rebuild, so nothing is marked New yet and the live record starts empty.' : '');
+        $('su-c-note').textContent = 'Stocks whose latest completed daily candle shows the setup, measured against the exact rules above. Names are added and removed only at the daily rebuild, never during the trading day, because an unfinished candle can show a setup that is gone by the close. Between rebuilds only the price, the distance to the breakout and invalidation levels and the flag are refreshed (every 5 minutes, 15 minutes delayed). Names added in the latest rebuild are marked New. A stock that matches more than one setup is shown once, with every setup it matches, sorted by the highest historical success rate among them; each setup match is logged separately, so every setup keeps its own live record.' + cl + (cu.first_run ? ' This is the first rebuild, so nothing is marked New yet and the live record starts empty.' : '');
         $('su-rm-note').textContent = 'Names that left Table C, for 5 rebuilds, with the reason: reached +20%, setup failed (a close below its invalidation level), or conditions no longer met.';
         const age = tdSince(cu.built_local.slice(0, 10));
         const el = $('su-status'); el.className = 'hs-note';

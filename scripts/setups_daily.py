@@ -25,6 +25,7 @@ import setups_study as SS
 STO = zoneinfo.ZoneInfo("Europe/Stockholm")
 KEEP_REMOVED = 5          # rebuilds a removed name stays listed
 NEAR_MAX = 6              # one-condition-short names kept per setup and market
+SCHEMA = 3                # 3 = twelve setups incl. the market washout; an older saved file is recomputed in full, never carried over
 STALE_DAYS = 6            # a stock whose last bar is older than its market's is left out
 
 
@@ -64,7 +65,20 @@ def cond_value(k, key, r):
             ("high52", "vol"): "volume %.1f× average" % r.vr,
             ("high52", "x50"): "50-day %s vs 200-day" % pc(r.sma50 / r.sma200 - 1),
         }
-        return m.get((k, key), "")
+        if (k, key) in m:
+            return m[(k, key)]
+        if k in SL.NEW:   # the seven newer setups share their condition keys
+            gen = {
+                "wash": "market washout: only %.0f%% of the market's stocks close above their 50-day average" % (r.breadth * 100),
+                "deep60": "%s from 52-week high" % pc(r.from52h), "deep40": "%s from 52-week high" % pc(r.from52h),
+                "macd": "MACD histogram %+.2f%% of price (day before %+.2f%%)" % (r.macdh * 100, r.macdh_1 * 100),
+                "up": "close %s, previous high %s" % (g(r.c), g(r.h_1)), "rsi": "RSI %.0f" % r.rsi,
+                "atr5": "daily range %.1f%%" % (r.atr * 100), "vol": "volume %.1f× average" % r.vr,
+                "quiet": "previous 10 sessions' volume %.2f× the 50-day average" % r.vdry,
+                "brk": "close %s, 40-day high %s (%s)" % (g(r.c), g(r.hh40), pc(r.c / r.hh40 - 1)),
+            }
+            return gen.get(key, "")
+        return ""
     except Exception:
         return ""
 
@@ -111,9 +125,10 @@ def main():
         if len(B) < 250:
             err[s] = "only %d completed bars" % len(B); continue
         bars[s] = dict(t=[b[0] // 86400 for b in B], o=[b[1] for b in B], h=[b[2] for b in B], l=[b[3] for b in B], c=[b[4] for b in B], v=[b[5] for b in B])
-    F = {}
-    for s, b in bars.items():
-        df = SL.apply_rules(SL.features(s, b))
+    F = {s: SL.features(s, b) for s, b in bars.items()}
+    SL.add_washout(F, {d["sym"]: mk for mk, rows in U.items() for d in rows})   # market washout per market and day, from completed candles
+    for s in list(F):
+        df = SL.apply_rules(F[s])
         for col in ("macdh", "h"):
             df[col + "_1"] = df[col].shift(1)
         F[s] = df
@@ -128,6 +143,7 @@ def main():
     if study:
         for st in study["stats"]:
             rate[(st["setup"], st["market"])] = st
+    old_schema = bool(prev) and prev.get("schema") != SCHEMA   # the file was written before the twelve-setup rules: recompute every market
     prev_c = {(c["sym"], c["setup"]): c for c in (prev or {}).get("candidates", [])}
     seq = (prev or {}).get("seq", 0) + 1
     today_s = local.date().isoformat()
@@ -137,7 +153,7 @@ def main():
         if mk not in last_bar or len(have) < 0.6 * len(rows):
             carried.append(mk); notes_err.append("%s: too little data (%d of %d stocks), kept the previous list" % (mk, len(have), len(rows)))
             new_c += [c for c in (prev or {}).get("candidates", []) if c["market"] == mk]; continue
-        if prev and prev.get("last_bar", {}).get(mk) == last_bar[mk]:
+        if prev and not old_schema and prev.get("last_bar", {}).get(mk) == last_bar[mk]:
             carried.append(mk)   # no new daily candle: the market was closed (holiday), keep its candidates
             new_c += [c for c in prev["candidates"] if c["market"] == mk]; continue
         for d in have:
@@ -250,7 +266,7 @@ def main():
         h = sum(e["status"] == "hit" for e in done)
         live[k] = dict(logged=len(L), resolved=len(done), hits=h, open=len(L) - len(done), rate=(h / len(done) if len(done) >= SL.MIN_CASES else None))
     out = dict(
-        built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), seq=seq,
+        schema=SCHEMA, built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), seq=seq,
         bar_date=max(last_bar.values()) if last_bar else None, last_bar=last_bar, carried=carried, errors=notes_err,
         skipped=[dict(sym=s, reason=r) for s, r in sorted(err.items())],
         universe={k: len(v) for k, v in U.items()}, first_run=prev is None,

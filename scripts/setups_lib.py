@@ -11,6 +11,7 @@ import math
 import numpy as np
 import pandas as pd
 
+ADDED = "2026-11-27"   # day the seven newer setups were added (the page marks them New for a month)
 HORIZON = 42          # trading days (about two months)
 RISE = 0.20
 MIN_CASES = 30        # a success rate is shown only from this many cases
@@ -74,11 +75,58 @@ def _conds():
             ("vol", "Volume at least 1.5 times its 50-day average", lambda d: d.vr >= 1.5),
             ("x50", "50-day average above the 200-day average", lambda d: d.sma50 > d.sma200),
         ])
+    # ---- seven setups added 27 Nov 2026 (the five above and their results are unchanged)
+    WASH = ("wash", "Market washout: fewer than 20% of this market's stocks close above their own 50-day average (needs 10 or more stocks with data that day)", lambda d: d.wash)
+    D60 = ("deep60", "Close at least 60% below the 52-week high", lambda d: d.from52h <= -0.60)
+    D40 = ("deep40", "Close at least 40% below the 52-week high", lambda d: d.from52h <= -0.40)
+    MACD = ("macd", "MACD histogram higher than the day before", lambda d: d.macdh > G(d, "macdh"))
+    UP = ("up", "Close above the previous day's high", lambda d: d.c > G(d, "h"))
+    RSI = ("rsi", "RSI (14) between 30 and 50", lambda d: d.rsi.between(30, 50))
+    ATR5 = ("atr5", "Daily range (14-day average true range) at least 5% of the price", lambda d: d.atr >= 0.05)
+    S["wash_turn"] = dict(name="Washout: deep fall turning up", short="Market washout, a stock 60% or more below its 52-week high, and its MACD histogram rising",
+                          conds=[WASH, D60, MACD])
+    S["deep_dry"] = dict(name="Deep fall, volume dried up", short="A stock 60% or more below its 52-week high whose volume has dried up",
+                         conds=[D60, ("quiet", "Quiet volume: average volume of the previous 10 sessions below 0.8 times the 50-day average volume", lambda d: d.vdry < 0.8)])
+    S["deep_vol"] = dict(name="Deep fall, heavy volume", short="A stock 60% or more below its 52-week high on heavy volume",
+                         conds=[D60, ("vol", "Volume at least 1.5 times its 50-day average", lambda d: d.vr >= 1.5)])
+    S["wash_bounce"] = dict(name="Washout bounce", short="Market washout, a stock 40% or more below its 52-week high closing above the previous day's high",
+                            conds=[WASH, D40, UP])
+    S["os60"] = dict(name="Oversold reversal, 60%+ off the high", short="The oversold reversal with a deeper fall: 60% or more below the 52-week high",
+                     conds=[D60, RSI, MACD, UP])
+    S["os_hv"] = dict(name="Oversold reversal, volatile stock", short="The oversold reversal (40% off the high) in a stock whose daily range is 5% or more of its price",
+                      conds=[D40, RSI, MACD, UP, ATR5])
+    S["hv_brk"] = dict(name="High-volatility breakout", short="A stock with a daily range of 5% or more closing above its 40-session high on heavy volume",
+                       conds=[ATR5, ("brk", "Close above the highest close of the previous 40 sessions", lambda d: d.c > d.hh40),
+                              ("vol", "Volume at least 1.5 times its 50-day average", lambda d: d.vr >= 1.5)])
+    for k in ("wash_turn", "deep_dry", "deep_vol", "wash_bounce", "os60", "os_hv", "hv_brk"):
+        S[k]["group"] = "new"
+        S[k]["added"] = ADDED
     return S
 
 
 SETUPS = _conds()
-ORDER = ["base", "pull", "squeeze", "oversold", "high52"]
+CORE = ["base", "pull", "squeeze", "oversold", "high52"]
+NEW = ["wash_turn", "deep_dry", "deep_vol", "wash_bounce", "os60", "os_hv", "hv_brk"]
+ORDER = CORE + NEW
+WASH_BELOW = 0.20     # market washout: share of a market's stocks above their 50-day average below this
+WASH_MIN_STOCKS = 10  # fewer stocks than this with data on the day: washout setups cannot fire
+
+
+def add_washout(F, market_of):
+    """Adds 'breadth' (share of the market's stocks, with a 50-day average, that close above it) and 'wash' to every stock frame in F (before apply_rules).
+    Computed per market and per day from the same stock list; past and same-day data only."""
+    parts = []
+    for s, df in F.items():
+        parts.append(pd.DataFrame({"mk": market_of[s], "date": df.date.values, "a": np.where(df.sma50.notna(), (df.c > df.sma50).astype(float), np.nan)}))
+    M = pd.concat(parts)
+    g = M.groupby(["mk", "date"]).a
+    br, n = g.mean(), g.size()
+    br[n < WASH_MIN_STOCKS] = np.nan
+    for s, df in F.items():
+        key = pd.MultiIndex.from_arrays([[market_of[s]] * len(df), df.date.values])
+        df["breadth"] = br.reindex(key).values
+        df["wash"] = (df.breadth < WASH_BELOW).fillna(False)
+    return F
 
 
 # ---------------------------------------------------------------- features (past data only)
@@ -153,7 +201,7 @@ def levels(setup, r):
     hh60 = float(r.hh60) if pd.notna(r.hh60) else None
     hh252 = float(r.hh252) if pd.notna(r.hh252) else None
     out = dict(breakout=None, support=None, resistance=None, invalid=None)
-    if setup == "base":
+    if setup in ("base", "hv_brk"):
         lvl = float(r.hh40)
         out.update(breakout=lvl, support=float(r.ll40), invalid=lvl * 0.97, resistance=hh252 if hh252 and hh252 > c else None)
     elif setup == "squeeze":
@@ -164,7 +212,7 @@ def levels(setup, r):
         out.update(breakout=lvl, support=lvl, invalid=lvl * 0.97, resistance=None)
     elif setup == "pull":
         out.update(support=float(r.sma50), invalid=float(r.l10), resistance=hh60 if hh60 and hh60 > c else None)
-    elif setup == "oversold":
+    elif setup in ("oversold", "wash_turn", "deep_dry", "deep_vol", "wash_bounce", "os60", "os_hv"):
         out.update(support=float(r.l10), invalid=float(r.l10), resistance=float(r.sma50) if pd.notna(r.sma50) and r.sma50 > c else (hh60 if hh60 and hh60 > c else None))
     return out
 

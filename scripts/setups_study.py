@@ -24,12 +24,10 @@ MARKETS = [m["k"] for m in SD.MARKETS]
 EX_PER = 6   # most recent hits and misses kept per setup and market for Table B
 
 
-def build_frames(bars):
-    F = {}
-    for sym, b in bars.items():
-        df = SL.apply_rules(SL.features(sym, b))
-        F[sym] = df
-    return F
+def build_frames(bars, market_of):
+    F = {sym: SL.features(sym, b) for sym, b in bars.items()}
+    SL.add_washout(F, market_of)           # per market and day, from the same stock list
+    return {sym: SL.apply_rules(df) for sym, df in F.items()}
 
 
 def med(x):
@@ -67,13 +65,21 @@ def study(A, U, bars):
             n = len(Y)
             w = Y[Y.hit == 1]
             tr, te = Y[Y.date < cut], Y[Y.date >= cut]
+            ym = Y.date.dt.strftime("%Y-%m")
+            mo = ym.value_counts()
+            top = [dict(m=m, n=int(c), hits=int(Y[ym == m].hit.sum())) for m, c in mo.head(3).items()]
+            years = {str(y): dict(n=int(len(g)), hits=int(g.hit.sum())) for y, g in Y.groupby(Y.date.dt.year)}
+            iso = Y.date.dt.isocalendar()
+            weeks = int(len(set(zip(iso.year, iso.week)))) if n else 0
             st = dict(setup=k, market=mk, n=n, hits=int(len(w)), pending=int((pending if mk == "All" else 0)),
                       rate=(float(Y.hit.mean()) if n >= SL.MIN_CASES else None),
                       base=base[mk], matched=(float(Y.mbase.mean()) if n else None),
                       gain=med(w.gain), days=med(w.days), drop=med(w["drop"]),
                       n_train=len(tr), rate_train=(float(tr.hit.mean()) if len(tr) >= SL.MIN_CASES else None),
                       n_test=len(te), rate_test=(float(te.hit.mean()) if len(te) >= SL.MIN_CASES else None),
-                      matched_test=(float(te.mbase.mean()) if len(te) else None))
+                      matched_test=(float(te.mbase.mean()) if len(te) else None),
+                      edge=(float(Y.hit.mean() - Y.mbase.mean()) if n >= SL.MIN_CASES else None),   # success rate minus the same-volatility base rate
+                      weeks=weeks, busy=(float(mo.iloc[0] / n) if n else None), top_months=top, years=years)
             stats.append(st)
         # examples: the most recent resolved hits and misses per market (not picked for how good they look)
         for mk in MARKETS:
@@ -125,7 +131,8 @@ def main():
         bars = {s: dict(t=[b[0] // 86400 for b in v["bars"]], o=[b[1] for b in v["bars"]], h=[b[2] for b in v["bars"]], l=[b[3] for b in v["bars"]],
                         c=[b[4] for b in v["bars"]], v=[b[5] for b in v["bars"]]) for s, v in raw.items()}
         bar_notes = {s: dict(bars=[(v["bars"][0][0],)]) for s, v in raw.items()}
-    F = build_frames(bars)
+    market_of = {d["sym"]: d["market"] for rows in U.values() for d in rows}
+    F = build_frames(bars, market_of)
     A = SL.run_study(F)
     stats, examples, base = study(A, U, bars)
     last = A.date.max()
@@ -135,7 +142,7 @@ def main():
         horizon=SL.HORIZON, rise=SL.RISE, min_cases=SL.MIN_CASES,
         stocks=dict(total=sum(len(v) for v in U.values()), with_data=len(bars), per_market={k: len(v) for k, v in U.items()}),
         stock_days=int(A[(A.date >= SL.STUDY_FROM) & A.hit.notna()].shape[0]),
-        setups={k: dict(name=SL.SETUPS[k]["name"], short=SL.SETUPS[k]["short"], conditions=[c[1] for c in SL.SETUPS[k]["conds"]]) for k in SL.ORDER},
+        setups={k: dict(name=SL.SETUPS[k]["name"], short=SL.SETUPS[k]["short"], conditions=[c[1] for c in SL.SETUPS[k]["conds"]], group=SL.SETUPS[k].get("group", "core"), added=SL.SETUPS[k].get("added")) for k in SL.ORDER},
         order=SL.ORDER, base=base, stats=stats, examples=examples, left_out=notes(U, bar_notes, err))
     os.makedirs(os.path.dirname(a.out), exist_ok=True)
     json.dump(out, open(a.out, "w"), separators=(",", ":"))
