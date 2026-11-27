@@ -19,13 +19,15 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(__file__))
 import setups_data as SD
+import exchange_calendar as XC
 import setups_lib as SL
+import setups_model as SM
 import setups_study as SS
 
 STO = zoneinfo.ZoneInfo("Europe/Stockholm")
 KEEP_REMOVED = 5          # rebuilds a removed name stays listed
 NEAR_MAX = 6              # one-condition-short names kept per setup and market
-SCHEMA = 3                # 3 = twelve setups incl. the market washout; an older saved file is recomputed in full, never carried over
+SCHEMA = 4                # 4 = adds setup day, target, estimate and deadline to each candidate (3 = twelve setups incl. the market washout); an older saved file is recomputed in full, never carried over
 STALE_DAYS = 6            # a stock whose last bar is older than its market's is left out
 
 
@@ -147,7 +149,7 @@ def main():
     prev_c = {(c["sym"], c["setup"]): c for c in (prev or {}).get("candidates", [])}
     seq = (prev or {}).get("seq", 0) + 1
     today_s = local.date().isoformat()
-    carried, new_c, notes_err = [], [], []
+    carried, new_c, notes_err, expired = [], [], [], []
     for mk, rows in U.items():
         have = [d for d in rows if d["sym"] in F]
         if mk not in last_bar or len(have) < 0.6 * len(rows):
@@ -187,8 +189,14 @@ def main():
                 nxt_d = datetime.datetime.fromtimestamp(nxt, datetime.timezone.utc).date().isoformat() if nxt and nxt > now.timestamp() else None
                 key = (s, k)
                 old = prev_c.get(key)
-                first_seen = old["first_seen"] if (old and old.get("complete") and complete) else today_s
-                entry_close = old["entry_close"] if (old and old.get("complete") and complete) else fmt(r.c)
+                reuse = bool(old and old.get("complete") and complete)
+                if reuse:
+                    eb = old.get("entry_bar") or df[df.date < pd.Timestamp(old["first_seen"])].date.max().strftime("%Y-%m-%d")   # the setup day (a bar date)
+                    if int((df.date > pd.Timestamp(eb)).sum()) >= SL.HORIZON:    # the 42 trading days are over: the case is closed, the row goes
+                        expired.append((old, eb)); reuse = False
+                first_seen = old["first_seen"] if reuse else today_s
+                entry_close = old["entry_close"] if reuse else fmt(r.c)
+                entry_bar = eb if reuse else r.date.strftime("%Y-%m-%d")
                 new_c.append(dict(
                     sym=s, name=d["description"] or d["name"], market=mk, size=d["size"], rank=d["rank"], cur=d["currency"], setup=k,
                     met=met, total=total, complete=complete, bar_date=r.date.strftime("%Y-%m-%d"), close=fmt(r.c),
@@ -198,7 +206,7 @@ def main():
                     rate=(rate.get((k, "All")) or {}).get("rate"), rate_mkt=(rate.get((k, mk)) or {}).get("rate"),
                     base=(rate.get((k, "All")) or {}).get("matched"), n_hist=(rate.get((k, "All")) or {}).get("n"),
                     last_prev=last_prev, earnings_next=nxt_d,
-                    first_seen=first_seen, entry_close=entry_close, new=bool(prev) and complete and first_seen == today_s))
+                    first_seen=first_seen, entry_close=entry_close, entry_bar=entry_bar, new=bool(prev) and complete and first_seen == today_s))
     # near misses: keep the closest few per setup and market
     out_c = []
     for mk in U:
@@ -215,6 +223,30 @@ def main():
         kk = (c["sym"], c["setup"], c["complete"])
         if kk not in seen:
             seen.add(kk); fin.append(c)
+    # ---- one setup day, target, estimate, typical dates and deadline per stock (all its complete matches share them)
+    model = (study or {}).get("model")
+    srate = lambda k: ((rate.get((k, "All")) or {}).get("hits", 0) / (rate.get((k, "All")) or {}).get("n", 1)) if (rate.get((k, "All")) or {}).get("rate") is not None else None
+    d2 = lambda x: datetime.date.fromisoformat(x)
+    by_sym = {}
+    for c in fin:
+        if c["complete"] and c["market"] not in carried:
+            by_sym.setdefault(c["sym"], []).append(c)
+    for sym, ms in by_sym.items():
+        ent = min(ms, key=lambda c: c["entry_bar"])
+        best = max(ms, key=lambda c: (srate(c["setup"]) if srate(c["setup"]) is not None else -1, -SL.ORDER.index(c["setup"])))
+        mk, eb = ent["market"], d2(ent["entry_bar"])
+        dq = (rate.get((best["setup"], "All")) or {}).get("days_q")
+        typ = [XC.trading_days_after(mk, eb, max(1, int(round(q)))).isoformat() for q in dq] if dq else None
+        row = F[sym][F[sym].date == pd.Timestamp(ent["entry_bar"])]
+        est = None
+        if len(row) and model:
+            est = SM.estimate(model, {c["setup"] for c in ms}, row.iloc[0], mk, ent["size"], srate(best["setup"]))
+        info = (rate.get((best["setup"], "All")) or {})
+        for c in ms:
+            c.update(stock_entry_bar=ent["entry_bar"], stock_entry_close=ent["entry_close"], target=fmt(ent["entry_close"] * (1 + SL.RISE)),
+                     best_setup=best["setup"], typ=typ, deadline=XC.trading_days_after(mk, eb, SL.HORIZON).isoformat(),
+                     est=(dict(est, n=info.get("n"), setup=best["setup"]) if est else None))
+    cal = {mk: XC.upcoming(mk, d2(last_bar[mk]), 70) for mk in U if mk in last_bar}
     # ---- removed names: complete before, gone now (only for markets that were recomputed)
     removed = [dict(x) for x in (prev or {}).get("removed", []) if seq - x["seq"] < KEEP_REMOVED]
     now_keys = {(c["sym"], c["setup"]) for c in fin if c["complete"]}
@@ -222,14 +254,22 @@ def main():
         if not oc.get("complete") or (s, k) in now_keys or oc["market"] in carried or s not in F:
             continue
         df = F[s]
-        after = df[df.date > pd.Timestamp(oc["first_seen"])]
+        after = df[df.date > pd.Timestamp(oc.get("entry_bar") or oc["first_seen"])]
         reason = "conditions no longer met"
         if len(after):
             if after.c.max() >= oc["entry_close"] * (1 + SL.RISE):
                 reason = "reached +20%"
-            elif oc.get("invalid") and (after.c < oc["invalid"]).any():
+            elif oc.get("invalid") and (after.head(SL.HORIZON).c < oc["invalid"]).any():
                 reason = "setup failed (closed below its invalidation level)"
+            elif len(after) >= SL.HORIZON:
+                reason = "deadline passed"
         removed.append(dict(sym=s, name=oc["name"], market=oc["market"], setup=k, removed_on=today_s, seq=seq, reason=reason,
+                            first_seen=oc["first_seen"], entry_close=oc["entry_close"], cur=oc["cur"], last_close=fmt(df.c.iloc[-1])))
+    for oc, eb in expired:   # still matching, but the 42 trading days of the old case are over: it leaves with its outcome and the stock re-enters as a new case
+        df = F[oc["sym"]]
+        after = df[df.date > pd.Timestamp(eb)].head(SL.HORIZON)
+        reason = "reached +20%" if len(after) and after.c.max() >= oc["entry_close"] * (1 + SL.RISE) else "deadline passed"
+        removed.append(dict(sym=oc["sym"], name=oc["name"], market=oc["market"], setup=oc["setup"], removed_on=today_s, seq=seq, reason=reason,
                             first_seen=oc["first_seen"], entry_close=oc["entry_close"], cur=oc["cur"], last_close=fmt(df.c.iloc[-1])))
     # ---- the log of every complete candidate and what became of it
     LOG = json.load(open(a.log)) if os.path.exists(a.log) else []
@@ -240,17 +280,17 @@ def main():
         e = logged.get((c["sym"], c["setup"]))
         if e is not None:
             df = F[c["sym"]]
-            n_since = int((df.date > pd.Timestamp(e["first_seen"])).sum())
+            n_since = int((df.date > pd.Timestamp(e.get("entry_bar") or e["first_seen"])).sum())
             if n_since < SL.HORIZON:
                 continue   # the earlier entry is still within its 42 sessions
         entry = dict(sym=c["sym"], name=c["name"], market=c["market"], setup=c["setup"], first_seen=c["first_seen"], entry_close=c["entry_close"],
-                     invalid=c["invalid"], cur=c["cur"], status="open")
+                     invalid=c["invalid"], cur=c["cur"], status="open", entry_bar=c["entry_bar"], est=(c["est"]["est"] if c.get("est") else None))
         LOG.append(entry); logged[(c["sym"], c["setup"])] = entry
     for e in LOG:
         if e["status"] != "open" or e["sym"] not in F:
             continue
         df = F[e["sym"]]
-        after = df[df.date > pd.Timestamp(e["first_seen"])].head(SL.HORIZON)
+        after = df[df.date > pd.Timestamp(e.get("entry_bar") or e["first_seen"])].head(SL.HORIZON)
         if not len(after):
             continue
         top = after.c.max()
@@ -265,12 +305,18 @@ def main():
         done = [e for e in L if e["status"] in ("hit", "missed")]
         h = sum(e["status"] == "hit" for e in done)
         live[k] = dict(logged=len(L), resolved=len(done), hits=h, open=len(L) - len(done), rate=(h / len(done) if len(done) >= SL.MIN_CASES else None))
+    seen_e, ests = set(), []
+    for e in LOG:   # one entry per stock and entry day (a stock matching two setups is logged twice with the same outcome)
+        if e.get("est") is not None and e["status"] in ("hit", "missed") and (e["sym"], e["first_seen"]) not in seen_e:
+            seen_e.add((e["sym"], e["first_seen"])); ests.append((e["est"], 1.0 if e["status"] == "hit" else 0.0))
+    live_est = dict(resolved=len(ests), avg_est=(float(np.mean([x[0] for x in ests])) if ests else None), actual=(float(np.mean([x[1] for x in ests])) if ests else None))
+    live_est["warn"] = bool(len(ests) >= 30 and live_est["actual"] < live_est["avg_est"] - 0.10)   # the estimates are running too high
     out = dict(
         schema=SCHEMA, built=now.isoformat(timespec="minutes"), built_local=local.isoformat(timespec="minutes"), seq=seq,
         bar_date=max(last_bar.values()) if last_bar else None, last_bar=last_bar, carried=carried, errors=notes_err,
         skipped=[dict(sym=s, reason=r) for s, r in sorted(err.items())],
         universe={k: len(v) for k, v in U.items()}, first_run=prev is None,
-        candidates=fin, removed=removed, live=live)
+        candidates=fin, removed=removed, live=live, live_est=live_est, calendar=cal)
     os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
     json.dump(out, open(a.out, "w"), separators=(",", ":"))
     json.dump(LOG, open(a.log, "w"), separators=(",", ":"))

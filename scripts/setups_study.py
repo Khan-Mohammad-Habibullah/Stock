@@ -18,6 +18,7 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(__file__))
 import setups_data as SD
 import setups_lib as SL
+import setups_model as SM
 
 OUT = "data/setups_study.json"
 MARKETS = [m["k"] for m in SD.MARKETS]
@@ -42,7 +43,7 @@ def study(A, U, bars):
     cut = pd.Timestamp(SL.SPLIT)
     closes = {s: g.c.values for s, g in A.groupby("sym", sort=False)}
     first_idx = {s: g.index[0] for s, g in A.groupby("sym", sort=False)}
-    stats, examples = [], []
+    stats, examples, cases = [], [], {}
     base = {"All": float(P.hit.mean())}
     for mk in MARKETS:
         base[mk] = float(P[P.market == mk].hit.mean())
@@ -53,6 +54,7 @@ def study(A, U, bars):
         X = A.loc[keep]
         pending = int(X.hit.isna().sum())
         X = X[X.hit.notna()].copy()
+        cases[k] = X
         info = {}
         for i, r in X.iterrows():
             ci = closes[r.sym]
@@ -75,6 +77,7 @@ def study(A, U, bars):
                       rate=(float(Y.hit.mean()) if n >= SL.MIN_CASES else None),
                       base=base[mk], matched=(float(Y.mbase.mean()) if n else None),
                       gain=med(w.gain), days=med(w.days), drop=med(w["drop"]),
+                      days_q=([float(np.percentile(w.days.dropna(), q)) for q in (25, 50, 75)] if w.days.notna().sum() >= 10 else None),   # trading days to the first close at +20%: 25th, 50th, 75th percentile
                       n_train=len(tr), rate_train=(float(tr.hit.mean()) if len(tr) >= SL.MIN_CASES else None),
                       n_test=len(te), rate_test=(float(te.hit.mean()) if len(te) >= SL.MIN_CASES else None),
                       matched_test=(float(te.mbase.mean()) if len(te) else None),
@@ -98,7 +101,7 @@ def study(A, U, bars):
                         gain=round(pk["gain"] * 100, 1), days=pk["days"], drop=round(pk["drop"] * 100, 1), outcome=outcome,
                         why=SL.characteristics(r), earnings=bool(nxt.earn_like.sum() > 0) if len(nxt) else None,
                         breakout=(float("%.5g" % lv) if (lv := SL.levels(k, r)["breakout"]) else None)))
-    return stats, examples, base
+    return stats, examples, base, cases
 
 
 def notes(U, bars, err):
@@ -134,7 +137,9 @@ def main():
     market_of = {d["sym"]: d["market"] for rows in U.values() for d in rows}
     F = build_frames(bars, market_of)
     A = SL.run_study(F)
-    stats, examples, base = study(A, U, bars)
+    stats, examples, base, cases = study(A, U, bars)
+    uni_size = {d["sym"]: d["size"] for rows in U.values() for d in rows}
+    model = SM.fit_and_check(A, cases, uni_size, pd.Timestamp(SL.SPLIT))
     last = A.date.max()
     out = dict(
         built=datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="minutes"),
@@ -143,7 +148,7 @@ def main():
         stocks=dict(total=sum(len(v) for v in U.values()), with_data=len(bars), per_market={k: len(v) for k, v in U.items()}),
         stock_days=int(A[(A.date >= SL.STUDY_FROM) & A.hit.notna()].shape[0]),
         setups={k: dict(name=SL.SETUPS[k]["name"], short=SL.SETUPS[k]["short"], conditions=[c[1] for c in SL.SETUPS[k]["conds"]], group=SL.SETUPS[k].get("group", "core"), added=SL.SETUPS[k].get("added")) for k in SL.ORDER},
-        order=SL.ORDER, base=base, stats=stats, examples=examples, left_out=notes(U, bar_notes, err))
+        order=SL.ORDER, base=base, model=model, stats=stats, examples=examples, left_out=notes(U, bar_notes, err))
     os.makedirs(os.path.dirname(a.out), exist_ok=True)
     json.dump(out, open(a.out, "w"), separators=(",", ":"))
     # Table C always uses the latest study's success rates: update them in the current candidate file without touching its names

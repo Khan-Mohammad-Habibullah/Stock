@@ -623,6 +623,8 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       <span class="count" id="su-c-shown"></span>
     </div>
     <div class="tbl-wrap"><table class="hold scr" id="su-c"><thead></thead><tbody></tbody></table></div>
+    <p class="hs-note" id="su-c-live"></p>
+    <p class="hs-note" id="su-c-how"></p>
     <h3 id="su-rm-h">Removed in the last 5 rebuilds</h3>
     <p class="hs-note" id="su-rm-note"></p>
     <div class="tbl-wrap"><table class="hold scr" id="su-rm"><thead></thead><tbody></tbody></table></div>
@@ -3016,6 +3018,12 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     const distTxt = (lvl, c) => (lvl == null ? '—' : pxTxt(lvl, c.cur) + ' (' + sgn((px(c) / lvl - 1) * 100) + ')');
     const rateOf = (k) => { const t = stat(k, 'All'); return t && t.n >= 30 ? t.hits / t.n : null; };
     const rateCell = (k) => { const t = stat(k, 'All'); return !t ? '—' : t.n < 30 ? 'too few cases' : fmtPct(t.hits / t.n) + ' of ' + t.n + ' (same-volatility base ' + fmtPct(t.matched) + ')'; };
+    const todayIso = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+    const daysLeft = (c) => { // trading days after today up to and including the deadline, on the stock's own exchange
+      const cal = SU.cur && SU.cur.calendar && SU.cur.calendar[c.market]; if (!cal || !c.deadline) return null;
+      const t = todayIso(); return cal.filter((d) => d > t && d <= c.deadline).length;
+    };
+    const lines = (parts, cls) => { const x = document.createElement('td'); if (cls) x.className = cls; parts.forEach((t, i) => { const d = document.createElement('div'); if (i) d.className = 'hs-note'; d.style.margin = '0'; d.textContent = t; x.appendChild(d); }); return x; };
     const candRows = () => {
       if (!SU.cur) return [];
       const by = new Map();
@@ -3045,6 +3053,19 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
         });
         return x; }, tip: 'A stock that matches several setups is shown once, with every setup it matches, ordered by historical success rate.' },
       { k: 'rate', label: 'Highest historical success rate', cls: 'sm', dir: -1, val: (c) => c.bestRate, cell: (c) => rateCell(c.setup), tip: 'Of the setups the stock matches, from the latest monthly study, all markets together.' },
+      { k: 'est', label: 'Estimated success rate', cls: 'sm', dir: -1, val: (c) => (c.est ? c.est.est : null), cell: (c) => {
+        if (!c.est) return td('—', 'sm');
+        const x = lines([fmtPct(c.est.est, 0), 'range ' + (c.est.lo * 100).toFixed(0) + '–' + (c.est.hi * 100).toFixed(0) + '% · ' + (c.est.n == null ? '' : c.est.n.toLocaleString('en-GB') + ' past cases of ' + setupName(c.est.setup))], 'sm');
+        if (c.est.kind !== 'model') { const ch = document.createElement('span'); ch.className = 'chip n'; ch.textContent = 'setup average'; ch.title = 'The model did not score better than the setup’s own historical success rate on the check years, so that rate is shown.'; x.firstChild.appendChild(document.createTextNode(' ')); x.firstChild.appendChild(ch); }
+        x.title = 'Estimated success rate: the model’s estimate of how often a case like this reached +20% within 42 trading days in the past, with a range of the typical gap between estimate and actual on the check years. The stock-list warning above applies to it too.';
+        return x; }, tip: 'Estimated from past cases only (see the note under the table). The range is the typical gap between estimated and actual rates on the check years. Capped at the highest actual rate seen in any group.' },
+      { k: 'tgt', label: 'Target price', cls: 'num sm', val: (c) => c.target, cell: (c) => (c.target == null ? td('—', 'num sm') : lines([pxTxt(c.target, c.cur), 'needs ' + sgn((c.target / px(c) - 1) * 100) + ' from now'], 'num sm')), tip: 'The close on the setup day plus 20%. Fixed while the stock stays in the table.' },
+      { k: 'typ', label: 'Typical date if reached', cls: 'sm', val: (c) => (c.typ ? c.typ[1] : null), cell: (c) => (!c.typ ? td('—', 'sm') : lines([dTxt(c.typ[1]), dTxt(c.typ[0]).replace(/ \d{4}$/, '') + ' – ' + dTxt(c.typ[2])], 'sm')), tip: 'Among past cases of this setup that reached +20%, half got there by this date. It is not a forecast that this stock will reach the target.' },
+      { k: 'dl', label: 'Deadline', cls: 'sm', val: (c) => c.deadline, cell: (c) => {
+        if (!c.deadline) return td('—', 'sm');
+        const n = daysLeft(c); const x = lines([dTxt(c.deadline), n == null ? '' : n <= 0 ? 'passed: leaves at the next rebuild' : n + ' trading day' + (n === 1 ? '' : 's') + ' left'], 'sm');
+        if (n != null && n < 10) x.classList.add('hl-am');
+        return x; }, tip: 'Setup day plus 42 trading days on the stock’s exchange. After that the setup counts as missed and the row is removed at the next daily rebuild.' },
       { k: 'why', label: 'Why it matches (best setup)', cls: 'why sec', val: (c) => c.why, cell: (c) => { const t = c.complete ? c.why : 'Missing: ' + c.missing.join('; '); const x = td(t.length > 130 ? t.slice(0, 127) + '…' : t, 'why sec'); x.title = t; return x; } },
       { k: 'live', label: 'Live record (best setup)', cls: 'sm sec', val: (c) => { const l = live(c.setup); return l && l.rate; }, cell: (c) => liveTxt(c.setup) },
       { k: 'prev', label: 'This stock’s own last matching setup (best setup)', cls: 'sm sec', val: (c) => (c.last_prev ? c.last_prev.date : null), cell: (c) => (!c.last_prev ? 'none in the data' : dTxt(c.last_prev.date) + ' at ' + pxTxt(c.last_prev.price) + ' · ' + (c.last_prev.outcome === 'hit' ? 'reached +20%' : c.last_prev.outcome === 'missed' ? 'missed' : 'outcome pending')) },
@@ -3058,6 +3079,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
     ], candRows, (c) => {
       const w = document.createElement('div');
       w.append(para(c.name + ' · ' + c.market + ' · ' + c.size + ' cap (rank ' + c.rank + ') · close ' + pxTxt(c.close, c.cur) + ' on ' + dTxt(c.bar_date) + ' · matches ' + c.ms.length + (c.ms.length === 1 ? ' setup' : ' setups') + ', best historical success rate first.'));
+      if (c.target != null) w.append(para('Setup day ' + dTxt(c.stock_entry_bar) + ' at a close of ' + pxTxt(c.stock_entry_close, c.cur) + ' · target ' + pxTxt(c.target, c.cur) + ' · deadline ' + dTxt(c.deadline) + (c.est ? ' · estimated success rate ' + fmtPct(c.est.est, 0) + ' (range ' + (c.est.lo * 100).toFixed(0) + '–' + (c.est.hi * 100).toFixed(0) + '%, ' + (c.est.kind === 'model' ? 'model' : 'setup average') + ')' : '') + (c.typ ? ' · typical date if reached ' + dTxt(c.typ[1]) + ' (middle half of past cases: ' + dTxt(c.typ[0]) + ' to ' + dTxt(c.typ[2]) + ')' : '') + '.'));
       c.ms.forEach((m) => {
         const h = document.createElement('p'); h.className = 'hs-note'; h.style.cssText = 'margin:10px 0 4px;color:var(--color-fg)'; h.textContent = setupName(m.setup) + ' · historical success rate ' + (rateOf(m.setup) == null ? 'too few cases' : fmtPct(rateOf(m.setup)) + ' of ' + stat(m.setup, 'All').n) + ' · first listed ' + dTxt(m.first_seen) + ' at ' + pxTxt(m.entry_close, m.cur) + ' · live record ' + liveTxt(m.setup);
         w.append(h, checklist(m.conds.map((x) => ({ t: x.t, ok: x.ok, v: x.v }))), para(LEVEL_TXT[m.setup]), para('Levels now: breakout ' + (m.breakout == null ? '—' : pxTxt(m.breakout, m.cur)) + ' · support ' + pxTxt(m.support, m.cur) + ' · resistance ' + (m.resistance == null ? 'none overhead' : pxTxt(m.resistance, m.cur)) + ' · invalidation ' + pxTxt(m.invalid, m.cur) + (m.invalid != null && px(m) < m.invalid ? ' (price is below it)' : '')));
@@ -3085,7 +3107,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       if (st) {
         const pd = st.period, st0 = st.stats.find((x) => x.market === 'All');
         $('su-a-warn').textContent = '⚠ ' + NEW_WARN;
-        $('su-c-warn').textContent = '⚠ Setups a) to g) (marked “new setup”): ' + NEW_WARN;
+        $('su-c-warn').textContent = '⚠ Setups a) to g) (marked “new setup”): ' + NEW_WARN + ' The estimated success rates are built from the same past cases, so this applies to them too.';
         $('su-a-note').textContent = 'Every rule was run on every stock and every day from ' + dTxt(pd.from_) + ' to ' + dTxt(pd.to) + ' (' + st.stock_days.toLocaleString('en-GB') + ' stock-days, ' + st.stocks.with_data + ' stocks), not only on the stocks that rose. A rise = the highest close in the next 42 trading days at least 20% above the setup-day close. A success rate is shown only from 30 cases; otherwise "too few cases". The five original setups come first; the seven newer ones (a to g) follow under their own heading. Edge = success rate minus the base rate at the same volatility, in percentage points. Different weeks with a case = calendar weeks with at least one case. Busiest month’s share = the share of the setup’s cases that fall in its single busiest calendar month (amber above 15%): a high share means the result rests on one episode. Click a row for its cases and success rate by year and its three busiest months. Last study run ' + dTxt(st.built.slice(0, 10)) + '.';
         $('su-b-note').textContent = 'For each setup and market, the six most recent cases that rose and the six most recent that did not (not picked for how good they look). Click a row for what the chart looked like going in, using only data up to the setup day.';
         $('su-rules-body').replaceChildren(...st.order.flatMap((k) => { const h = document.createElement('p'); h.className = 'hs-note'; h.style.cssText = 'margin-top:10px;color:var(--color-fg)'; h.textContent = setupName(k) + ': ' + st.setups[k].short + '. All of these on the same day:'; return [h, checklist(st.setups[k].conditions.map((t) => ({ t, ok: null }))), para(LEVEL_TXT[k])]; }));
@@ -3117,7 +3139,17 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:
       if (cu) {
         const cl = cu.carried && cu.carried.length ? ' Kept from the previous rebuild because those markets had no new daily candle (holiday) or too little data: ' + cu.carried.join(', ') + '.' : '';
         $('su-c-note').textContent = 'Stocks whose latest completed daily candle shows the setup, measured against the exact rules above. Names are added and removed only at the daily rebuild, never during the trading day, because an unfinished candle can show a setup that is gone by the close. Between rebuilds only the price, the distance to the breakout and invalidation levels and the flag are refreshed (every 5 minutes, 15 minutes delayed). Names added in the latest rebuild are marked New. A stock that matches more than one setup is shown once, with every setup it matches, sorted by the highest historical success rate among them; each setup match is logged separately, so every setup keeps its own live record.' + cl + (cu.first_run ? ' This is the first rebuild, so nothing is marked New yet and the live record starts empty.' : '');
-        $('su-rm-note').textContent = 'Names that left Table C, for 5 rebuilds, with the reason: reached +20%, setup failed (a close below its invalidation level), or conditions no longer met.';
+        const le = cu.live_est, ml = st && st.model;
+        const lv = $('su-c-live');
+        if (le && le.resolved >= 30) {
+          lv.className = 'hs-note' + (le.warn ? ' su-warn' : '');
+          lv.textContent = (le.warn ? '⚠ The estimates are running too high: ' : 'Live check of the estimates: ') + 'of ' + le.resolved + ' candidates that have been judged since they were first listed, the average estimated success rate was ' + fmtPct(le.avg_est, 0) + ' and ' + fmtPct(le.actual, 0) + ' actually reached +20% within 42 trading days.';
+        } else { lv.className = 'hs-note'; lv.textContent = 'Live check of the estimates: ' + (le ? le.resolved : 0) + ' candidates judged so far; the comparison with what actually happened is shown from 30.'; }
+        if (ml) $('su-c-how').textContent = 'How it is worked out: ' + (ml.kind === 'model'
+          ? 'the estimated success rate comes from a statistical model fitted on past cases of all twelve setups before ' + dTxt(ml.cut) + ' (the setup, daily range, distance from the 52-week high, RSI, volume, the market washout reading, market and size) and kept because on the later cases it scored better (' + ml.brier_model.toFixed(3) + ' against ' + ml.brier_setup.toFixed(3) + ' for the setup’s plain historical rate; lower is better)'
+          : 'the model did not score better than each setup’s plain historical rate on the cases since ' + dTxt(ml.cut) + ', so the setup’s historical success rate is shown as “setup average”')
+          + ', never above the highest actual rate in any of its five check groups, rounded to the nearest 5%, with a range of the average gap between estimated and actual there (' + (ml.gap * 100).toFixed(1) + ' points). The typical date takes the past cases of the stock’s highest-rate setup that reached +20% and counts the trading days they needed (the middle half is shown under the date), on the stock’s own exchange calendar from the setup day; the target is the setup-day close plus 20% and the deadline is 42 trading days after the setup day. All of this is built from past cases in a stock list that leaves out companies that fell and dropped out, so it describes the past and is not a forecast.';
+        $('su-rm-note').textContent = 'Names that left Table C, for 5 rebuilds, with the reason: reached +20%, setup failed (a close below its invalidation level), deadline passed (42 trading days after the setup day) or conditions no longer met.';
         const age = tdSince(cu.built_local.slice(0, 10));
         const el = $('su-status'); el.className = 'hs-note';
         let txt = 'Candidates last rebuilt ' + dTxt(cu.built_local.slice(0, 10)) + ' at ' + cu.built_local.slice(11, 16) + ' Stockholm time (daily candles to ' + dTxt(cu.bar_date) + '). History last rerun ' + (st ? dTxt(st.built.slice(0, 10)) : 'n/a') + '.';
