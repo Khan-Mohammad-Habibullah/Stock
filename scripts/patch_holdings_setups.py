@@ -165,7 +165,6 @@ BLOCK = BEGIN + r'''
     const nearCols = (kind) => [
       { k: 'name', label: 'Stock', val: (r) => r.name, cell: nameTd },
       { k: 'market', label: 'Market', cls: 'sec', val: (r) => r.market, cell: (r) => r.market },
-      { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—') },
       { k: 'nset', label: (kind === 'up' ? 'Setups' : 'Fall rules') + ' with ' + HX[kind].cnt + ' condition' + (HX[kind].cnt === '1' ? '' : 's') + ' met on the latest close', cls: 'sm', dir: -1, val: (r) => r.ms.length, cell: nearSetupsCell(kind) },
       { k: 'nrate', label: kind === 'up' ? 'Highest historical success rate if every condition were met' : 'Highest historical rate of a 20% fall in 2 months if every condition were met', cls: 'sm', dir: -1, val: (r) => r._best, cell: (r) => (r._best == null ? '—' : pct(r._best, 1)), tip: 'This rate applies only when every condition is met on the same day. A partial match is not a setup.' },
     ].concat(FC_COLS).concat([
@@ -211,10 +210,11 @@ BLOCK = BEGIN + r'''
       return r.status === 'still' ? chip('Still matching', 'b1', 'The latest close still meets every condition of at least one listed setup.') : chip('No longer matching', 'n', 'The latest close no longer meets every condition; the row stays while the setup day is within the last 10 trading days.');
     };
     const upPaths = (r) => (HX.st && HX.st.up_paths[r.best] ? HX.st.up_paths[r.best].All.all : null);
-    const UP_COLS = [
+    const arrange = (cols, order) => { const out = order.map((k) => cols.find((c) => c.k === k)); if (out.some((c) => !c) || out.length !== cols.length) throw new Error('column order does not match the columns'); return out; };
+    const FCK = [0, 1, 2, 3, 4, 5].map((m) => 'f' + m);
+    const UP_ALL = [
       { k: 'name', label: 'Stock', val: (r) => r.name, cell: nameTd },
       { k: 'market', label: 'Market', cls: 'sec', val: (r) => r.market, cell: (r) => r.market },
-      { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—'), tip: 'Share of the whole portfolio’s value (percent only).' },
       { k: 'sd', label: 'Setup day', dir: -1, val: (r) => r.setup_day, cell: (r) => tdL([dT(r.setup_day), r.days_since === 0 ? 'latest close' : r.days_since + ' trading day' + (r.days_since === 1 ? '' : 's') + ' ago'], 'sm'), tip: 'The first day within the last 10 completed trading days on which a setup started. Target, deadline and typical date count from it.' },
       { k: 'setups', label: 'Matching setups (historical success rate)', cls: 'sm', dir: -1, val: (r) => r.setups.length, cell: (r) => {
         const x = el('td', 'sm');
@@ -235,6 +235,7 @@ BLOCK = BEGIN + r'''
       { k: 'inv', label: 'Invalidation level (distance)', cls: 'sm', val: (r) => r.levels.invalid, cell: (r) => (r.levels.invalid == null ? '—' : px(r.levels.invalid, r.cur) + ' (' + sg(nowPx(r) / r.levels.invalid - 1) + ')'), tip: 'The level of the highest-rate setup, set on its first day in the window. Below it the setup no longer holds; the row is flagged at once.' },
       { k: 'st', label: 'Status', val: (r) => r.status, cell: (r) => { const x = el('td'); x.appendChild(upStatus(r)); return x; } },
     ]);
+    const UP_COLS = arrange(UP_ALL, ['name', 'st', 'px', 'tgt', 'since', 'sd', 'typ', 'dl'].concat(FCK, ['market', 'setups', 'rate', 'est', 'inv']));
     const upFoot = (c) => {
       if (c.k === 'name') { const x = el('td', null, 'All stocks, any day'); x.colSpan = 1; return x; }
       if (/^m\d$/.test(c.k) && HX.st) return monthCell(HX.st.base_paths.All, +c.k.slice(1), 'above');
@@ -269,10 +270,9 @@ BLOCK = BEGIN + r'''
     const fstat = (k, col) => (HX.st && HX.st.fall.rules[k] && HX.st.fall.rules[k].results.all[col]) || null;
     const estCell2 = (e, k) => { if (!e) return tdL(['—'], 'sm'); const t = fstat(k, 'fall'); const x = tdL([pct(e.est), 'range ' + Math.round(e.lo * 100) + '–' + Math.round(e.hi * 100) + '%', t && t.n ? t.n.toLocaleString('en-GB') + ' past cases of ' + fname(k) : ''], 'sm'); if (e.kind !== 'model') x.firstChild.append(' ', chip('rule average', 'n', 'The model did not score better than the rule’s own historical rate on the check years, so that rate is shown.')); return x; };
     const ftgt = (r) => r.setup_close * (1 - 0.20);
-    const FALL_COLS = [
+    const FALL_ALL = [
       { k: 'name', label: 'Stock', val: (r) => r.name, cell: nameTd },
       { k: 'market', label: 'Market', cls: 'sec', val: (r) => r.market, cell: (r) => r.market },
-      { k: 'w', label: 'Weight', cls: 'num', dir: -1, val: (r) => HX.w.get(r.sym), cell: (r) => (HX.w.has(r.sym) ? pct(HX.w.get(r.sym), 1) : '—'), tip: 'Share of the whole portfolio’s value (percent only).' },
       { k: 'sd', label: 'Setup day', dir: -1, val: (r) => r.setup_day, cell: (r) => tdL([dT(r.setup_day), r.days_since === 0 ? 'latest close' : r.days_since + ' trading day' + (r.days_since === 1 ? '' : 's') + ' ago'], 'sm'), tip: 'The first day within the last 10 completed trading days on which a fall setup started. Target, deadline and typical date count from it.' },
       { k: 'rules', label: 'Matching fall setups (historical rate of a 20% fall in 2 months)', cls: 'sm', dir: -1, val: (r) => r.rules.length, cell: (r) => { const x = el('td', 'sm'); r.rules.forEach((m) => { const d = el('span', 'hsx-ml', fname(m.rule) + ' · ' + pct(m.rate, 1) + ' of ' + m.n + (m.run_start < r.setup_day ? ' · since ' + dT(m.run_start, false) : '') + (m.today ? '' : ' · not on the latest close') + ' '); if (m.passed === false) d.appendChild(chip('did not pass the test', 'n', 'Shown for information only: this rule was no better than any stock with the same volatility.')); x.appendChild(d); }); return x; }, tip: 'Every fall setup the stock matched in the last 10 trading days, highest historical rate first.' },
       { k: 'rate', label: 'Highest historical rate of a 20% fall in 2 months', cls: 'sm', dir: -1, val: (r) => { const t = fstat(r.best, 'fall'); return t && t.n >= 30 ? t.rate : null; }, cell: (r) => { const t = fstat(r.best, 'fall'); return tdL(t && t.n >= 30 ? [pct(t.hits / t.n, 1) + ' of ' + t.n, 'same-volatility base ' + pct(t.matched, 1)] : ['too few cases'], 'sm'); }, tip: 'From the latest monthly study of the fall rules, all markets together.' },
@@ -286,6 +286,7 @@ BLOCK = BEGIN + r'''
       { k: 'inv', label: 'Invalidation level (distance)', cls: 'sm', val: (r) => r.level, cell: (r) => (r.level == null ? '—' : px(r.level, r.cur) + ' (' + sg(nowPx(r) / r.level - 1) + ')'), tip: 'The highest close of the 10 sessions up to the setup day. A close above it means the setup no longer holds; the row is flagged at once.' },
       { k: 'st', label: 'Status', val: (r) => r.status, cell: (r) => { const x = el('td'); const p = nowPx(r); x.appendChild(r.status === 'fell' ? chip('Fell 20%', 'e2', 'A close at least 20% under the setup-day close within 42 trading days.') : p > r.level ? chip('Above invalidation', 'n', 'The price is above the level where the setup no longer holds.') : r.status === 'still' ? chip('Still matching', 'e1', 'The latest close still meets every condition of at least one listed fall setup.') : chip('No longer matching', 'n', 'The latest close no longer meets every condition; the row stays while the setup day is within the last 10 trading days.')); return x; } },
     ]);
+    const FALL_COLS = arrange(FALL_ALL, ['name', 'st', 'px', 'tgt', 'since', 'sd', 'typ', 'dl'].concat(FCK, ['market', 'rules', 'rate', 'est', 'inv']));
     const fallFoot = (c) => (c.k === 'name' ? el('td', null, 'All stocks, any day') : /^m\d$/.test(c.k) && HX.st ? monthCell(HX.st.base_paths.All, +c.k.slice(1), 'below') : el('td'));
     const fallDetail = (r) => {
       const w = box();
